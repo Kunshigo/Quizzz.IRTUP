@@ -35,7 +35,7 @@
             closeBtn = new Button();
             questionsPanel = new Panel();
             addQuestionBtn = new AntdUI.Button();
-            miniQuestionPanel = new AntdUI.In.FlowLayoutPanel();
+            questionPanelSlides = new AntdUI.In.FlowLayoutPanel();
             selectedQuizPanel = new FlowLayoutPanel();
             settingsPanel = new Panel();
             dPCheckBox = new AntdUI.Checkbox();
@@ -113,9 +113,10 @@
             // 
             // questionsPanel
             // 
+            questionsPanel.AutoScroll = true;
             questionsPanel.BackColor = Color.FromArgb(216, 229, 233);
             questionsPanel.Controls.Add(addQuestionBtn);
-            questionsPanel.Controls.Add(miniQuestionPanel);
+            questionsPanel.Controls.Add(questionPanelSlides);
             questionsPanel.Dock = DockStyle.Top;
             questionsPanel.Location = new Point(0, 27);
             questionsPanel.Name = "questionsPanel";
@@ -135,16 +136,16 @@
             addQuestionBtn.Text = "Add Question";
             addQuestionBtn.Click += addQuestionBtn_Click;
             // 
-            // miniQuestionPanel
+            // questionPanelSlides
             // 
-            miniQuestionPanel.Dock = DockStyle.Left;
-            miniQuestionPanel.Location = new Point(0, 0);
-            miniQuestionPanel.Margin = new Padding(0);
-            miniQuestionPanel.Name = "miniQuestionPanel";
-            miniQuestionPanel.Padding = new Padding(10);
-            miniQuestionPanel.Size = new Size(131, 88);
-            miniQuestionPanel.TabIndex = 0;
-            miniQuestionPanel.Resize += miniQuestionPanel_Resize;
+            questionPanelSlides.Dock = DockStyle.Left;
+            questionPanelSlides.Location = new Point(0, 0);
+            questionPanelSlides.Margin = new Padding(0);
+            questionPanelSlides.Name = "questionPanelSlides";
+            questionPanelSlides.Padding = new Padding(10);
+            questionPanelSlides.Size = new Size(131, 88);
+            questionPanelSlides.TabIndex = 0;
+            questionPanelSlides.Resize += miniQuestionPanel_Resize;
             // 
             // selectedQuizPanel
             // 
@@ -256,6 +257,6 @@
         private ComboBox questionTypeComboBox;
         private AntdUI.Checkbox dPCheckBox;
         private ComboBox timeLimitComboBox;
-        private AntdUI.In.FlowLayoutPanel miniQuestionPanel;
+        private AntdUI.In.FlowLayoutPanel questionPanelSlides;
     }
 }
