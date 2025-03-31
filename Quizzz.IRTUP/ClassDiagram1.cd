@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Quizzz.IRTUP.Properties.Resources" Collapsed="true">
+    <Position X="6.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACIAAAAQAAA0AAAAAJEAAAAQAAAQAAEIAAAAADAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.Classes.Resize" Collapsed="true">
+    <Position X="4.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Resize.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.Forms.CreateQuizForm" Collapsed="true">
+    <Position X="2" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAACAAAAAAAACgAAACAIAAAAABAAAAgQAAAAI=</HashCode>
+      <FileName>Forms\CreateQuizForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.loginWindow" Collapsed="true">
+    <Position X="4.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BABAAAAAACAAIBEAACCgAAACIAwAAAABYAJggABQAAA=</HashCode>
+      <FileName>Forms\loginWindow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.MainMenu" Collapsed="true">
+    <Position X="8.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAhAihQBECAiQBEAgCilBAgCYcSjBIARYAQxwQBQIDI=</HashCode>
+      <FileName>Forms\MainMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.registerMenu" Collapsed="true">
+    <Position X="2" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAACAAYBEAAgCAAIACAAQEBABAAAgAgQBIAAA=</HashCode>
+      <FileName>Panels\registerMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.signupWindow" Collapsed="true">
+    <Position X="6.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BABAAAAAACAAAAIAACCgAAACAAAAAAAJYAAggQAQAAA=</HashCode>
+      <FileName>Panels\signupWindow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.teacherForm" Collapsed="true">
+    <Position X="8.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAsAAAAAACAAKAAgAgCAAAECAAAAAAAAAAAAAIAAAAI=</HashCode>
+      <FileName>Panels\teacherForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.Colors" Collapsed="true">
+    <Position X="2" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Colors.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.Program" Collapsed="true">
+    <Position X="8.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.Panels.manageQuizMenu" Collapsed="true">
+    <Position X="4.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAACAAABAAAACAAAACAIAAAAAAAAAAARACAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.Panels.QuizCard" Collapsed="true">
+    <Position X="11" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABIACAAAAAAAACAAAAKEAAAEAAEBAAEAQABCAA=</HashCode>
+      <FileName>Panels\QuizCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.QuestionTypePanels.MultipleChoice" Collapsed="true">
+    <Position X="6.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAgAAAAAACAAAACAEA4AAAAAAAAAABAACA=</HashCode>
+      <FileName>QuestionTypePanels\MultipleChoice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="5.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Forms.UserControl" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Forms.Form" Collapsed="true">
+    <Position X="5.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
