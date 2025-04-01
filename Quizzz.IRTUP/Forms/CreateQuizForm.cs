@@ -22,19 +22,8 @@ using static Quizzz.IRTUP.Forms.CreateQuizForm;
         {
             InitializeComponent();
             questionTypeComboBox.SelectedItem = "Multiple Choice";
-
-            originalMiniPanelWidth = questionPanelSlides.Width;
-            originalMiniPanelHeight = questionPanelSlides.Height;
-
+            CreateFlowLayoutPanels();
             this.Resize += CreateQuizForm_Resize;
-            this.questionsPanel.Resize += questionsPanel_Resize;
-            questionPanelSlides.Resize += miniQuestionPanel_Resize;
-
-            if (questionPanelSlides.Controls.Count > 0 && questionPanelSlides.Controls[0] is UserControl userControl)
-            {
-                originalUserControlWidth = userControl.Width;
-                originalUserControlHeight = userControl.Height;
-            }
         }
 
         private void maximizeBtn_Click(object sender, EventArgs e)
@@ -51,12 +40,7 @@ using static Quizzz.IRTUP.Forms.CreateQuizForm;
 
         private void miniPanel()
         {
-            if (questionTypeComboBox.SelectedItem == "Multiple Choice")
-            {
-                miniMultipleChoice miniMultipleChoice = new miniMultipleChoice();
-                questionPanelSlides.Controls.Clear();
-                questionPanelSlides.Controls.Add(miniMultipleChoice);
-            }
+
         }
 
         private void quizScreen()
@@ -166,28 +150,7 @@ using static Quizzz.IRTUP.Forms.CreateQuizForm;
 
         private void questionsPanel_Resize(object sender, EventArgs e)
         {
-            if (WindowState == FormWindowState.Maximized)
-            {
-                // Scale the miniQuestionPanel proportionally
-                float panelWidthRatio = 0.33f;  // 33% for mini, 66% for main content
-                int newWidth = (int)(questionsPanel.ClientSize.Width * panelWidthRatio);
 
-                // Apply tighter constraints to avoid excessive stretching
-                newWidth = Math.Max(150, Math.Min(250, newWidth));
-
-                // Apply the scaled size
-                questionPanelSlides.Width = newWidth;
-                questionPanelSlides.Height = questionsPanel.ClientSize.Height;
-            }
-            else
-            {
-                // Restore to original size when unmaximized
-                questionPanelSlides.Width = originalMiniPanelWidth;
-                questionPanelSlides.Height = originalMiniPanelHeight;
-            }
-
-            // Refresh the panel
-            questionPanelSlides.Refresh();
         }
 
         private int originalUserControlWidth;
@@ -195,31 +158,6 @@ using static Quizzz.IRTUP.Forms.CreateQuizForm;
 
         private void miniQuestionPanel_Resize(object sender, EventArgs e)
         {
-            foreach (Control control in questionPanelSlides.Controls)
-            {
-                if (control is UserControl userControl)
-                {
-                    if (WindowState == FormWindowState.Maximized)
-                    {
-                        // Ensure the UserControl fits perfectly inside the panel
-                        int padding = questionPanelSlides.Padding.Horizontal + questionPanelSlides.Margin.Horizontal;
-                        int border = SystemInformation.BorderSize.Width * 2;
-
-                        userControl.Width = Math.Min(questionPanelSlides.ClientSize.Width - padding - border, questionPanelSlides.Width);
-                        userControl.Height = Math.Min(questionPanelSlides.ClientSize.Height - padding - border, questionPanelSlides.Height);
-                    }
-                    else
-                    {
-                        // Restore to original size when unmaximized
-                        userControl.Width = originalUserControlWidth;
-                        userControl.Height = originalUserControlHeight;
-                    }
-
-                    userControl.Refresh();
-                }
-            }
-
-            questionPanelSlides.Refresh();
 
         }
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -237,9 +175,113 @@ using static Quizzz.IRTUP.Forms.CreateQuizForm;
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
             }
         }
+
+        private int slideIndex = 0;
+        private Dictionary<FlowLayoutPanel, UserControl> slides = new Dictionary<FlowLayoutPanel, UserControl>();
+
         private void addQuestionBtn_Click(object sender, EventArgs e)
         {
+            CreateFlowLayoutPanels();
+        }
 
+        private void CreateFlowLayoutPanels()
+        {
+            FlowLayoutPanel slide = new FlowLayoutPanel
+            {
+                Size = new Size(131, 88),
+                BorderStyle = BorderStyle.FixedSingle,
+                BackColor = Color.White,
+                Cursor = Cursors.Hand,
+                Dock = DockStyle.Left,
+                WrapContents = true
+            };
+
+            // Create the mini preview UserControl
+            miniMultipleChoice miniControl = new miniMultipleChoice();
+
+            // Subscribe to the event from miniMultipleChoice
+            miniControl.SlideClicked += (sender, e) => ChangePage(slide);
+
+            // Add the mini preview to the slide
+            slide.Controls.Add(miniControl);
+
+            // Create a unique UserControl for this slide
+            UserControl quizPage = new MultipleChoice();
+            slides.Add(slide, quizPage);
+
+            // Add a click event for the FlowLayoutPanel itself to select it
+            slide.Click += (s, args) =>
+            {
+                ChangePage(slide);
+                HighlightSelectedSlide(slide);  // Highlight the selected slide
+            };
+
+            // Add MouseEnter and MouseLeave events for hover effects
+            slide.MouseEnter += (s, args) =>
+            {
+                if (slide.BackColor != Color.LightBlue)  // Ensure it doesn't override the selected color
+                {
+                    slide.BackColor = Color.LightGray;  // Highlight color on hover
+                }
+            };
+
+            slide.MouseLeave += (s, args) =>
+            {
+                if (!slide.BackColor.Equals(Color.LightBlue))  // If it's not selected, return to original color
+                {
+                    slide.BackColor = Color.White;  // Default color when not hovering
+                }
+            };
+
+            // Add the slide to the main panel
+            questionsPanel.Controls.Add(slide);
+
+            // Resize the panel to fit new slides
+            ResizeQuestionsPanel();
+
+            // Scroll to the last slide (optional)
+            ScrollToLastSlide();
+        }
+
+        private void HighlightSelectedSlide(FlowLayoutPanel selectedSlide)
+        {
+            // Reset all slides to their default appearance
+            foreach (FlowLayoutPanel slide in questionsPanel.Controls)
+            {
+                slide.BackColor = Color.White;  // Default color for all slides
+            }
+
+            // Highlight the currently selected slide
+            selectedSlide.BackColor = Color.LightBlue;  // Color for selected slide
+        }
+
+
+
+        private void ChangePage(FlowLayoutPanel selectedSlide)
+        {
+            if (slides.ContainsKey(selectedSlide))
+            {
+                selectedQuizPanel.Controls.Clear();
+                selectedQuizPanel.Controls.Add(slides[selectedSlide]);
+            }
+        }
+
+        private void Slide_Click(object sender, EventArgs e)
+        {
+            if (sender is FlowLayoutPanel clickedSlide)
+            {
+                // Scroll to the clicked slide
+                questionsPanel.AutoScrollPosition = new Point(clickedSlide.Left, 0);
+            }
+        }
+
+        private void ScrollToLastSlide()
+        {
+            if (questionsPanel.Controls.Count > 0)
+            {
+                Control lastSlide = questionsPanel.Controls[questionsPanel.Controls.Count - 1];
+                questionsPanel.AutoScrollPosition = new Point(lastSlide.Left, 0);
+            }
         }
     }
 }

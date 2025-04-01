@@ -17,6 +17,7 @@ namespace Quizzz.IRTUP.QuestionTypePanels
         private Rectangle recTxt;
 
 
+
         public MultipleChoice()
         {
             InitializeComponent();
@@ -44,5 +45,20 @@ namespace Quizzz.IRTUP.QuestionTypePanels
             c.Size = new Size(newWidth, newHeight);
 
         }
+
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_NCHITTEST = 0x0084;
+            const int HTTRANSPARENT = -1;
+
+            if (m.Msg == WM_NCHITTEST)
+            {
+                m.Result = (IntPtr)HTTRANSPARENT;
+                return;
+            }
+            base.WndProc(ref m);
+        }
+
+
     }
 }

@@ -35,7 +35,6 @@
             closeBtn = new Button();
             questionsPanel = new Panel();
             addQuestionBtn = new AntdUI.Button();
-            questionPanelSlides = new AntdUI.In.FlowLayoutPanel();
             selectedQuizPanel = new FlowLayoutPanel();
             settingsPanel = new Panel();
             dPCheckBox = new AntdUI.Checkbox();
@@ -116,7 +115,6 @@
             questionsPanel.AutoScroll = true;
             questionsPanel.BackColor = Color.FromArgb(216, 229, 233);
             questionsPanel.Controls.Add(addQuestionBtn);
-            questionsPanel.Controls.Add(questionPanelSlides);
             questionsPanel.Dock = DockStyle.Top;
             questionsPanel.Location = new Point(0, 27);
             questionsPanel.Name = "questionsPanel";
@@ -128,24 +126,13 @@
             // 
             addQuestionBtn.Dock = DockStyle.Left;
             addQuestionBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            addQuestionBtn.Location = new Point(131, 0);
+            addQuestionBtn.Location = new Point(0, 0);
             addQuestionBtn.Name = "addQuestionBtn";
             addQuestionBtn.Padding = new Padding(0, 25, 0, 25);
             addQuestionBtn.Size = new Size(106, 88);
             addQuestionBtn.TabIndex = 1;
             addQuestionBtn.Text = "Add Question";
             addQuestionBtn.Click += addQuestionBtn_Click;
-            // 
-            // questionPanelSlides
-            // 
-            questionPanelSlides.Dock = DockStyle.Left;
-            questionPanelSlides.Location = new Point(0, 0);
-            questionPanelSlides.Margin = new Padding(0);
-            questionPanelSlides.Name = "questionPanelSlides";
-            questionPanelSlides.Padding = new Padding(10);
-            questionPanelSlides.Size = new Size(131, 88);
-            questionPanelSlides.TabIndex = 0;
-            questionPanelSlides.Resize += miniQuestionPanel_Resize;
             // 
             // selectedQuizPanel
             // 
@@ -257,6 +244,5 @@
         private ComboBox questionTypeComboBox;
         private AntdUI.Checkbox dPCheckBox;
         private ComboBox timeLimitComboBox;
-        private AntdUI.In.FlowLayoutPanel questionPanelSlides;
     }
 }
