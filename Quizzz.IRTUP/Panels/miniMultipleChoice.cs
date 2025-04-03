@@ -14,29 +14,34 @@ namespace Quizzz.IRTUP.Panels
     {
         public event EventHandler SlideClicked;
 
+        public Label QuestionNumberLabel { get; private set; }
+
         public miniMultipleChoice()
         {
             InitializeComponent();
             this.Click += miniMultipleChoice_Click;
+
+            QuestionNumberLabel = new Label
+            {
+                Text = "",
+                ForeColor = Color.DarkSlateGray,
+                AutoSize = true,
+            };
+
+            this.Controls.Add(QuestionNumberLabel);
         }
 
-        protected override void WndProc(ref Message m)
+        public void SetSlideNumber(int number)
         {
-            const int WM_NCHITTEST = 0x0084;
-            const int HTTRANSPARENT = (-1);
-
-            if (m.Msg == WM_NCHITTEST)
-            {
-                m.Result = (IntPtr)HTTRANSPARENT;
-                return;
-            }
-
-            base.WndProc(ref m);
+            slideNumberLabel.Text = "Slide " + number; // Assuming 'slideNumberLabel' is inside miniMultipleChoice
         }
 
         private void miniMultipleChoice_Click(object sender, EventArgs e)
         {
-            SlideClicked?.Invoke(this, EventArgs.Empty);
+            if (this.Parent is FlowLayoutPanel parentPanel)
+            {
+                SlideClicked?.Invoke(parentPanel, EventArgs.Empty);
+            }
         }
     }
 }

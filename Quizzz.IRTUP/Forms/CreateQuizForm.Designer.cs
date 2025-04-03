@@ -42,6 +42,7 @@
             questionTypeComboBox = new ComboBox();
             label2 = new Label();
             label1 = new Label();
+            saveQuizBtn = new AntdUI.Button();
             Header.SuspendLayout();
             controlBox.SuspendLayout();
             questionsPanel.SuspendLayout();
@@ -146,6 +147,7 @@
             // settingsPanel
             // 
             settingsPanel.BackColor = SystemColors.ButtonHighlight;
+            settingsPanel.Controls.Add(saveQuizBtn);
             settingsPanel.Controls.Add(dPCheckBox);
             settingsPanel.Controls.Add(timeLimitComboBox);
             settingsPanel.Controls.Add(questionTypeComboBox);
@@ -205,6 +207,15 @@
             label1.TabIndex = 1;
             label1.Text = "Question Type";
             // 
+            // saveQuizBtn
+            // 
+            saveQuizBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            saveQuizBtn.Location = new Point(109, 560);
+            saveQuizBtn.Name = "saveQuizBtn";
+            saveQuizBtn.Size = new Size(75, 29);
+            saveQuizBtn.TabIndex = 4;
+            saveQuizBtn.Text = "Save";
+            // 
             // CreateQuizForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -244,5 +255,6 @@
         private ComboBox questionTypeComboBox;
         private AntdUI.Checkbox dPCheckBox;
         private ComboBox timeLimitComboBox;
+        private AntdUI.Button saveQuizBtn;
     }
 }

@@ -32,10 +32,11 @@
             cmbSort = new Syncfusion.Windows.Forms.Tools.FontComboBox();
             panel1 = new Panel();
             txtSearch = new TextBox();
-            flowLayoutPanel1 = new FlowLayoutPanel();
+            quizzesPanel = new FlowLayoutPanel();
+            panel2 = new Panel();
             btnAddQuiz = new AntdUI.Button();
             panel1.SuspendLayout();
-            flowLayoutPanel1.SuspendLayout();
+            quizzesPanel.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -98,41 +99,55 @@
             txtSearch.Size = new Size(200, 23);
             txtSearch.TabIndex = 3;
             // 
-            // flowLayoutPanel1
+            // quizzesPanel
             // 
-            flowLayoutPanel1.Controls.Add(btnAddQuiz);
-            flowLayoutPanel1.Dock = DockStyle.Fill;
-            flowLayoutPanel1.Location = new Point(0, 59);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Padding = new Padding(15);
-            flowLayoutPanel1.Size = new Size(1047, 545);
-            flowLayoutPanel1.TabIndex = 4;
+            quizzesPanel.AutoScroll = true;
+            quizzesPanel.BackColor = Color.FromArgb(137, 207, 240);
+            quizzesPanel.Controls.Add(panel2);
+            quizzesPanel.Dock = DockStyle.Top;
+            quizzesPanel.Location = new Point(0, 59);
+            quizzesPanel.Name = "quizzesPanel";
+            quizzesPanel.Size = new Size(1047, 209);
+            quizzesPanel.TabIndex = 4;
+            // 
+            // panel2
+            // 
+            panel2.BackColor = Color.FromArgb(255, 192, 192);
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(13, 13);
+            panel2.Margin = new Padding(13);
+            panel2.Name = "panel2";
+            panel2.Padding = new Padding(10);
+            panel2.Size = new Size(180, 180);
+            panel2.TabIndex = 1;
             // 
             // btnAddQuiz
             // 
             btnAddQuiz.Cursor = Cursors.Hand;
-            btnAddQuiz.DefaultBack = Color.FromArgb(122, 158, 159);
-            btnAddQuiz.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnAddQuiz.Location = new Point(18, 18);
+            btnAddQuiz.DefaultBack = Color.AntiqueWhite;
+            btnAddQuiz.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnAddQuiz.Location = new Point(18, 287);
             btnAddQuiz.Name = "btnAddQuiz";
-            btnAddQuiz.Size = new Size(250, 180);
+            btnAddQuiz.Size = new Size(250, 42);
             btnAddQuiz.TabIndex = 0;
-            btnAddQuiz.Text = "+";
+            btnAddQuiz.Text = "Create Quiz";
             btnAddQuiz.Click += btnAddQuiz_Click;
             // 
             // manageQuizMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(255, 238, 219);
-            Controls.Add(flowLayoutPanel1);
+            BackColor = Color.FromArgb(137, 207, 240);
+            Controls.Add(btnAddQuiz);
+            Controls.Add(quizzesPanel);
             Controls.Add(panel1);
             Margin = new Padding(0);
             Name = "manageQuizMenu";
             Size = new Size(1047, 604);
+            Load += manageQuizMenu_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            flowLayoutPanel1.ResumeLayout(false);
+            quizzesPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -141,8 +156,9 @@
         private AntdUI.Label label1;
         private Syncfusion.Windows.Forms.Tools.FontComboBox cmbSort;
         private Panel panel1;
-        private FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel quizzesPanel;
         private TextBox txtSearch;
         private AntdUI.Button btnAddQuiz;
+        private Panel panel2;
     }
 }

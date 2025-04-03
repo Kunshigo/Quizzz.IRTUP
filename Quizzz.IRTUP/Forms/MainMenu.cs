@@ -18,14 +18,20 @@ namespace Quizzz.IRTUP
 {
     public partial class MainMenu : Form
     {
+        public Dictionary<string, string> teacherDetails;
 
-
-        public MainMenu()
+        public MainMenu(Dictionary<string, string> teacherDetails)
         {
             InitializeComponent();
+            this.teacherDetails = teacherDetails;
+            InitializeTeacherUI();
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NMaF1cXGJCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXxfd3RSRGReVkxxXkU=");
         }
 
+        private void InitializeTeacherUI()
+        {
+            welcomeLbl.Text = $"Welcome, {teacherDetails["Username"]}!";
+        }
 
         private void closeBtn_Click(object sender, EventArgs e)
         {
@@ -197,7 +203,12 @@ namespace Quizzz.IRTUP
             }
         }
 
-        private void mainMenuPanel_Paint(object sender, PaintEventArgs e)
+        private void accountSettingsBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void generalSettingsBtn_Click(object sender, EventArgs e)
         {
 
         }

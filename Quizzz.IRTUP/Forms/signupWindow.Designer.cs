@@ -101,6 +101,7 @@
             signUpPanel.AutoSize = true;
             signUpPanel.Dock = DockStyle.Fill;
             signUpPanel.Location = new Point(0, 27);
+            signUpPanel.Margin = new Padding(0);
             signUpPanel.Name = "signUpPanel";
             signUpPanel.Size = new Size(1109, 551);
             signUpPanel.TabIndex = 4;

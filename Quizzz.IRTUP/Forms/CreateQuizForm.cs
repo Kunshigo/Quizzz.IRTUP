@@ -186,20 +186,23 @@ using static Quizzz.IRTUP.Forms.CreateQuizForm;
 
         private void CreateFlowLayoutPanels()
         {
+            int slideNumber = questionsPanel.Controls.Count; // Determine the slide number
+
             FlowLayoutPanel slide = new FlowLayoutPanel
             {
                 Size = new Size(131, 88),
                 BorderStyle = BorderStyle.FixedSingle,
                 BackColor = Color.White,
                 Cursor = Cursors.Hand,
+                WrapContents = false,
                 Dock = DockStyle.Left,
-                WrapContents = true
+                FlowDirection = FlowDirection.TopDown
             };
 
             // Create the mini preview UserControl
             miniMultipleChoice miniControl = new miniMultipleChoice();
+            miniControl.SetSlideNumber(slideNumber); // Ensure the UserControl updates its number
 
-            // Subscribe to the event from miniMultipleChoice
             miniControl.SlideClicked += (sender, e) => ChangePage(slide);
 
             // Add the mini preview to the slide
@@ -209,51 +212,37 @@ using static Quizzz.IRTUP.Forms.CreateQuizForm;
             UserControl quizPage = new MultipleChoice();
             slides.Add(slide, quizPage);
 
-            // Add a click event for the FlowLayoutPanel itself to select it
+            // Add click event to select slide
             slide.Click += (s, args) =>
             {
                 ChangePage(slide);
-                HighlightSelectedSlide(slide);  // Highlight the selected slide
             };
 
-            // Add MouseEnter and MouseLeave events for hover effects
+            // Add hover effect
             slide.MouseEnter += (s, args) =>
             {
-                if (slide.BackColor != Color.LightBlue)  // Ensure it doesn't override the selected color
+                if (slide.BackColor != Color.LightBlue)
                 {
-                    slide.BackColor = Color.LightGray;  // Highlight color on hover
+                    slide.BackColor = Color.LightGray; // Highlight when hovering
                 }
             };
 
             slide.MouseLeave += (s, args) =>
             {
-                if (!slide.BackColor.Equals(Color.LightBlue))  // If it's not selected, return to original color
+                if (slide.BackColor != Color.LightBlue)
                 {
-                    slide.BackColor = Color.White;  // Default color when not hovering
+                    slide.BackColor = Color.White; // Restore when not hovering
                 }
             };
 
             // Add the slide to the main panel
             questionsPanel.Controls.Add(slide);
 
-            // Resize the panel to fit new slides
             ResizeQuestionsPanel();
-
-            // Scroll to the last slide (optional)
             ScrollToLastSlide();
         }
 
-        private void HighlightSelectedSlide(FlowLayoutPanel selectedSlide)
-        {
-            // Reset all slides to their default appearance
-            foreach (FlowLayoutPanel slide in questionsPanel.Controls)
-            {
-                slide.BackColor = Color.White;  // Default color for all slides
-            }
 
-            // Highlight the currently selected slide
-            selectedSlide.BackColor = Color.LightBlue;  // Color for selected slide
-        }
 
 
 

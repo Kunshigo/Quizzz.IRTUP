@@ -34,8 +34,10 @@
             blue = new Panel();
             green = new Panel();
             red = new Panel();
+            slideNumberLabel = new AntdUI.Label();
             panel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
+            red.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -106,6 +108,7 @@
             // red
             // 
             red.BackColor = Color.FromArgb(249, 112, 104);
+            red.Controls.Add(slideNumberLabel);
             red.Dock = DockStyle.Fill;
             red.Enabled = false;
             red.Location = new Point(3, 3);
@@ -113,6 +116,15 @@
             red.Size = new Size(59, 38);
             red.TabIndex = 0;
             red.Click += miniMultipleChoice_Click;
+            // 
+            // slideNumberLabel
+            // 
+            slideNumberLabel.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            slideNumberLabel.Location = new Point(0, 0);
+            slideNumberLabel.Name = "slideNumberLabel";
+            slideNumberLabel.Size = new Size(75, 23);
+            slideNumberLabel.TabIndex = 0;
+            slideNumberLabel.Text = "label1";
             // 
             // miniMultipleChoice
             // 
@@ -124,6 +136,7 @@
             Size = new Size(131, 88);
             panel1.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
+            red.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -135,5 +148,6 @@
         private Panel yellow;
         private Panel blue;
         private Panel green;
+        private AntdUI.Label slideNumberLabel;
     }
 }

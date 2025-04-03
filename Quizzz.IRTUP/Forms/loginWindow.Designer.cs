@@ -41,6 +41,7 @@
             signUpLbl = new Label();
             pictureBox1 = new PictureBox();
             loginBtn = new Button();
+            showPasswordCheckBox = new CheckBox();
             Header.SuspendLayout();
             controlBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -166,7 +167,7 @@
             passwordTxtBox.MaxLength = 32767;
             passwordTxtBox.MouseState = MaterialSkin.MouseState.OUT;
             passwordTxtBox.Name = "passwordTxtBox";
-            passwordTxtBox.PasswordChar = '\0';
+            passwordTxtBox.PasswordChar = '●';
             passwordTxtBox.PrefixSuffixText = null;
             passwordTxtBox.PromptChar = '_';
             passwordTxtBox.ReadOnly = false;
@@ -185,7 +186,7 @@
             passwordTxtBox.TextAlign = HorizontalAlignment.Left;
             passwordTxtBox.TextMaskFormat = MaskFormat.IncludeLiterals;
             passwordTxtBox.TrailingIcon = null;
-            passwordTxtBox.UseSystemPasswordChar = false;
+            passwordTxtBox.UseSystemPasswordChar = true;
             passwordTxtBox.ValidatingType = null;
             // 
             // label2
@@ -251,13 +252,26 @@
             loginBtn.FlatStyle = FlatStyle.Flat;
             loginBtn.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             loginBtn.ForeColor = Color.Transparent;
-            loginBtn.Location = new Point(98, 384);
+            loginBtn.Location = new Point(97, 408);
             loginBtn.Name = "loginBtn";
             loginBtn.Size = new Size(293, 40);
             loginBtn.TabIndex = 7;
             loginBtn.Text = "Log In";
             loginBtn.UseVisualStyleBackColor = false;
             loginBtn.Click += loginBtn_Click;
+            // 
+            // showPasswordCheckBox
+            // 
+            showPasswordCheckBox.AutoSize = true;
+            showPasswordCheckBox.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            showPasswordCheckBox.ForeColor = Color.Black;
+            showPasswordCheckBox.Location = new Point(33, 365);
+            showPasswordCheckBox.Name = "showPasswordCheckBox";
+            showPasswordCheckBox.Size = new Size(142, 24);
+            showPasswordCheckBox.TabIndex = 21;
+            showPasswordCheckBox.Text = "Show Password";
+            showPasswordCheckBox.UseVisualStyleBackColor = true;
+            showPasswordCheckBox.CheckedChanged += showPasswordCheckBox_CheckedChanged;
             // 
             // loginWindow
             // 
@@ -266,6 +280,7 @@
             BackColor = Color.FromArgb(238, 229, 233);
             ClientSize = new Size(500, 528);
             ControlBox = false;
+            Controls.Add(showPasswordCheckBox);
             Controls.Add(loginBtn);
             Controls.Add(pictureBox1);
             Controls.Add(label3);
@@ -303,5 +318,6 @@
         private Label signUpLbl;
         private PictureBox pictureBox1;
         private Button loginBtn;
+        private CheckBox showPasswordCheckBox;
     }
 }

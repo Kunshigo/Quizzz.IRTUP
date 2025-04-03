@@ -31,6 +31,7 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenu));
             Header = new Panel();
+            welcomeLbl = new Label();
             label2 = new Label();
             label1 = new Label();
             menuPanelBtn = new PictureBox();
@@ -52,15 +53,15 @@
             pictureBox2 = new PictureBox();
             settingsBtn = new Button();
             panel7 = new Panel();
-            button7 = new Button();
+            generalSettingsBtn = new Button();
             panel8 = new Panel();
-            button8 = new Button();
-            panel4 = new Panel();
-            pictureBox4 = new PictureBox();
-            button4 = new Button();
+            accountSettingsBtn = new Button();
             panel3 = new Panel();
             pictureBox3 = new PictureBox();
             button3 = new Button();
+            panel4 = new Panel();
+            pictureBox4 = new PictureBox();
+            button4 = new Button();
             menuTransition = new System.Windows.Forms.Timer(components);
             sideBarTransition = new System.Windows.Forms.Timer(components);
             menuTransition2 = new System.Windows.Forms.Timer(components);
@@ -79,15 +80,16 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             panel7.SuspendLayout();
             panel8.SuspendLayout();
-            panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
+            panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             SuspendLayout();
             // 
             // Header
             // 
             Header.BackColor = Color.Black;
+            Header.Controls.Add(welcomeLbl);
             Header.Controls.Add(label2);
             Header.Controls.Add(label1);
             Header.Controls.Add(menuPanelBtn);
@@ -98,6 +100,17 @@
             Header.Size = new Size(1243, 43);
             Header.TabIndex = 3;
             Header.MouseDown += OnMouseDown;
+            // 
+            // welcomeLbl
+            // 
+            welcomeLbl.AutoSize = true;
+            welcomeLbl.Font = new Font("Century Gothic", 10.75F);
+            welcomeLbl.ForeColor = SystemColors.ButtonHighlight;
+            welcomeLbl.Location = new Point(953, 17);
+            welcomeLbl.Name = "welcomeLbl";
+            welcomeLbl.Size = new Size(49, 20);
+            welcomeLbl.TabIndex = 5;
+            welcomeLbl.Text = "blank";
             // 
             // label2
             // 
@@ -189,11 +202,11 @@
             // 
             // sideBar
             // 
-            sideBar.BackColor = Color.FromArgb(66, 226, 184);
+            sideBar.BackColor = Color.FromArgb(3, 121, 113);
             sideBar.Controls.Add(menuContainer1);
             sideBar.Controls.Add(menuContainer2);
-            sideBar.Controls.Add(panel4);
             sideBar.Controls.Add(panel3);
+            sideBar.Controls.Add(panel4);
             sideBar.Dock = DockStyle.Left;
             sideBar.Location = new Point(0, 43);
             sideBar.Name = "sideBar";
@@ -228,7 +241,7 @@
             // pictureBox1
             // 
             pictureBox1.Anchor = AnchorStyles.Left;
-            pictureBox1.BackColor = Color.FromArgb(66, 226, 184);
+            pictureBox1.BackColor = Color.FromArgb(3, 121, 113);
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox1.ErrorImage = null;
             pictureBox1.Image = Properties.Resources.homeicon;
@@ -241,7 +254,7 @@
             // 
             // menuBtn
             // 
-            menuBtn.BackColor = Color.FromArgb(66, 226, 184);
+            menuBtn.BackColor = Color.FromArgb(3, 121, 113);
             menuBtn.Cursor = Cursors.Hand;
             menuBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             menuBtn.Location = new Point(-50, -19);
@@ -264,7 +277,7 @@
             // 
             // manageQuizBtn
             // 
-            manageQuizBtn.BackColor = Color.FromArgb(114, 233, 201);
+            manageQuizBtn.BackColor = Color.FromArgb(66, 226, 184);
             manageQuizBtn.Cursor = Cursors.Hand;
             manageQuizBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             manageQuizBtn.Location = new Point(-12, -19);
@@ -287,7 +300,7 @@
             // 
             // button6
             // 
-            button6.BackColor = Color.FromArgb(114, 233, 201);
+            button6.BackColor = Color.FromArgb(66, 226, 184);
             button6.Cursor = Cursors.Hand;
             button6.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button6.Location = new Point(-12, -19);
@@ -326,7 +339,7 @@
             // pictureBox2
             // 
             pictureBox2.Anchor = AnchorStyles.Left;
-            pictureBox2.BackColor = Color.FromArgb(66, 226, 184);
+            pictureBox2.BackColor = Color.FromArgb(3, 121, 113);
             pictureBox2.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox2.ErrorImage = null;
             pictureBox2.Image = Properties.Resources.settingicon;
@@ -339,7 +352,7 @@
             // 
             // settingsBtn
             // 
-            settingsBtn.BackColor = Color.FromArgb(66, 226, 184);
+            settingsBtn.BackColor = Color.FromArgb(3, 121, 113);
             settingsBtn.Cursor = Cursors.Hand;
             settingsBtn.Font = new Font("Century Gothic", 9F);
             settingsBtn.Location = new Point(-12, -19);
@@ -352,86 +365,54 @@
             // 
             // panel7
             // 
-            panel7.Controls.Add(button7);
+            panel7.Controls.Add(generalSettingsBtn);
             panel7.Location = new Point(0, 58);
             panel7.Margin = new Padding(0);
             panel7.Name = "panel7";
             panel7.Size = new Size(196, 58);
             panel7.TabIndex = 5;
             // 
-            // button7
+            // generalSettingsBtn
             // 
-            button7.BackColor = Color.FromArgb(114, 233, 201);
-            button7.Cursor = Cursors.Hand;
-            button7.Font = new Font("Century Gothic", 9F);
-            button7.Location = new Point(-12, -19);
-            button7.Name = "button7";
-            button7.Size = new Size(250, 100);
-            button7.TabIndex = 6;
-            button7.Text = "General Settings";
-            button7.UseVisualStyleBackColor = false;
+            generalSettingsBtn.BackColor = Color.FromArgb(66, 226, 184);
+            generalSettingsBtn.Cursor = Cursors.Hand;
+            generalSettingsBtn.Font = new Font("Century Gothic", 9F);
+            generalSettingsBtn.Location = new Point(-12, -19);
+            generalSettingsBtn.Name = "generalSettingsBtn";
+            generalSettingsBtn.Size = new Size(250, 100);
+            generalSettingsBtn.TabIndex = 6;
+            generalSettingsBtn.Text = "General Settings";
+            generalSettingsBtn.UseVisualStyleBackColor = false;
+            generalSettingsBtn.Click += generalSettingsBtn_Click;
             // 
             // panel8
             // 
-            panel8.Controls.Add(button8);
+            panel8.Controls.Add(accountSettingsBtn);
             panel8.Location = new Point(0, 116);
             panel8.Margin = new Padding(0);
             panel8.Name = "panel8";
             panel8.Size = new Size(196, 58);
             panel8.TabIndex = 5;
             // 
-            // button8
+            // accountSettingsBtn
             // 
-            button8.BackColor = Color.FromArgb(114, 233, 201);
-            button8.Cursor = Cursors.Hand;
-            button8.Font = new Font("Century Gothic", 9F);
-            button8.Location = new Point(-12, -19);
-            button8.Name = "button8";
-            button8.Size = new Size(250, 100);
-            button8.TabIndex = 6;
-            button8.Text = "Account Settings";
-            button8.UseVisualStyleBackColor = false;
-            // 
-            // panel4
-            // 
-            panel4.Controls.Add(pictureBox4);
-            panel4.Controls.Add(button4);
-            panel4.Location = new Point(3, 119);
-            panel4.Name = "panel4";
-            panel4.Size = new Size(196, 58);
-            panel4.TabIndex = 5;
-            // 
-            // pictureBox4
-            // 
-            pictureBox4.Anchor = AnchorStyles.Left;
-            pictureBox4.BackColor = Color.FromArgb(66, 226, 184);
-            pictureBox4.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox4.ErrorImage = null;
-            pictureBox4.Image = (Image)resources.GetObject("pictureBox4.Image");
-            pictureBox4.Location = new Point(9, 11);
-            pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(35, 35);
-            pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox4.TabIndex = 6;
-            pictureBox4.TabStop = false;
-            // 
-            // button4
-            // 
-            button4.BackColor = Color.FromArgb(66, 226, 184);
-            button4.Cursor = Cursors.Hand;
-            button4.Font = new Font("Century Gothic", 9F);
-            button4.Location = new Point(-26, -19);
-            button4.Name = "button4";
-            button4.Size = new Size(232, 100);
-            button4.TabIndex = 6;
-            button4.Text = "Logout";
-            button4.UseVisualStyleBackColor = false;
+            accountSettingsBtn.BackColor = Color.FromArgb(66, 226, 184);
+            accountSettingsBtn.Cursor = Cursors.Hand;
+            accountSettingsBtn.Font = new Font("Century Gothic", 9F);
+            accountSettingsBtn.Location = new Point(-12, -19);
+            accountSettingsBtn.Name = "accountSettingsBtn";
+            accountSettingsBtn.Size = new Size(250, 100);
+            accountSettingsBtn.TabIndex = 6;
+            accountSettingsBtn.Text = "Account Settings";
+            accountSettingsBtn.UseVisualStyleBackColor = false;
+            accountSettingsBtn.Click += accountSettingsBtn_Click;
             // 
             // panel3
             // 
             panel3.Controls.Add(pictureBox3);
             panel3.Controls.Add(button3);
-            panel3.Location = new Point(3, 183);
+            panel3.Location = new Point(0, 116);
+            panel3.Margin = new Padding(0);
             panel3.Name = "panel3";
             panel3.Size = new Size(196, 58);
             panel3.TabIndex = 5;
@@ -439,7 +420,7 @@
             // pictureBox3
             // 
             pictureBox3.Anchor = AnchorStyles.Left;
-            pictureBox3.BackColor = Color.FromArgb(66, 226, 184);
+            pictureBox3.BackColor = Color.FromArgb(3, 121, 113);
             pictureBox3.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox3.ErrorImage = null;
             pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
@@ -452,7 +433,7 @@
             // 
             // button3
             // 
-            button3.BackColor = Color.FromArgb(66, 226, 184);
+            button3.BackColor = Color.FromArgb(3, 121, 113);
             button3.Cursor = Cursors.Hand;
             button3.Font = new Font("Century Gothic", 9F);
             button3.Location = new Point(-26, -19);
@@ -461,6 +442,42 @@
             button3.TabIndex = 6;
             button3.Text = "About";
             button3.UseVisualStyleBackColor = false;
+            // 
+            // panel4
+            // 
+            panel4.Controls.Add(pictureBox4);
+            panel4.Controls.Add(button4);
+            panel4.Location = new Point(0, 174);
+            panel4.Margin = new Padding(0);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(196, 58);
+            panel4.TabIndex = 5;
+            // 
+            // pictureBox4
+            // 
+            pictureBox4.Anchor = AnchorStyles.Left;
+            pictureBox4.BackColor = Color.FromArgb(3, 121, 113);
+            pictureBox4.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox4.ErrorImage = null;
+            pictureBox4.Image = (Image)resources.GetObject("pictureBox4.Image");
+            pictureBox4.Location = new Point(9, 11);
+            pictureBox4.Name = "pictureBox4";
+            pictureBox4.Size = new Size(35, 35);
+            pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox4.TabIndex = 6;
+            pictureBox4.TabStop = false;
+            // 
+            // button4
+            // 
+            button4.BackColor = Color.FromArgb(3, 121, 113);
+            button4.Cursor = Cursors.Hand;
+            button4.Font = new Font("Century Gothic", 9F);
+            button4.Location = new Point(-26, -19);
+            button4.Name = "button4";
+            button4.Size = new Size(232, 100);
+            button4.TabIndex = 6;
+            button4.Text = "Logout";
+            button4.UseVisualStyleBackColor = false;
             // 
             // menuTransition
             // 
@@ -486,7 +503,6 @@
             mainMenuPanel.Size = new Size(1044, 601);
             mainMenuPanel.TabIndex = 5;
             mainMenuPanel.WrapContents = false;
-            mainMenuPanel.Paint += mainMenuPanel_Paint;
             // 
             // MainMenu
             // 
@@ -518,10 +534,10 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             panel7.ResumeLayout(false);
             panel8.ResumeLayout(false);
-            panel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
+            panel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ResumeLayout(false);
         }
 
@@ -554,13 +570,14 @@
         private Button button6;
         private FlowLayoutPanel menuContainer2;
         private Panel panel7;
-        private Button button7;
+        private Button generalSettingsBtn;
         private Panel panel8;
-        private Button button8;
+        private Button accountSettingsBtn;
         private System.Windows.Forms.Timer menuTransition;
         private System.Windows.Forms.Timer sideBarTransition;
         private System.Windows.Forms.Timer menuTransition2;
         private FlowLayoutPanel mainMenuPanel;
         private Label label2;
+        private Label welcomeLbl;
     }
 }
