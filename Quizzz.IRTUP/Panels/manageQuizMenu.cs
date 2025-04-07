@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.OleDb;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -17,13 +18,33 @@ namespace Quizzz.IRTUP.Panels
     {
         public int Checker { get; private set; }
         public event EventHandler<int> PanelSwitchRequested;
+        private int _teacherID;
+        private Dictionary<string, string> teacherDetails;
 
-        public manageQuizMenu()
+        public manageQuizMenu(Dictionary<string, string> teacherDetails)
         {
             InitializeComponent();
+            this.teacherDetails = teacherDetails;
+
+            _teacherID = int.Parse(teacherDetails["TeacherID"]);
+            InitializeQuizzesPanelLayout();
+            LoadQuizzes(_teacherID);
         }
 
-        private void CreateQuizCard(string quizName, int quizID)
+        private void InitializeQuizzesPanelLayout()
+        {
+            quizzesPanel.FlowDirection = FlowDirection.LeftToRight;
+            quizzesPanel.WrapContents = true;
+            quizzesPanel.AutoScroll = true;
+        }
+
+        public void Initialize(int teacherID)
+        {
+            _teacherID = teacherID;
+            LoadQuizzes(teacherID);
+        }
+
+        private void CreateQuizCard(string quizName, int quizID, DateTime dateCreated)
         {
             Panel quizPanel = new Panel
             {
@@ -31,8 +52,8 @@ namespace Quizzz.IRTUP.Panels
                 Height = 180,
                 Dock = DockStyle.Top,
                 Padding = new Padding(10),
-                Margin = new Padding(13),
-                BackColor = Color.LightBlue,
+                Margin = new Padding(3),
+                BackColor = Color.FromArgb(255, 192, 192),
             };
 
             Label quizTitle = new Label
@@ -44,15 +65,26 @@ namespace Quizzz.IRTUP.Panels
                 Height = 40
             };
 
+            Label dateLabel = new Label
+            {
+                Text = $"Created: {dateCreated:MMM dd, yyyy}",
+                Dock = DockStyle.Top,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Segoe UI", 9, FontStyle.Italic),
+                ForeColor = Color.Gray,
+                Height = 30
+            };
+
             Button quizButton = new Button
             {
                 Text = "Open Quiz",
-                Dock = DockStyle.Fill,
-                Tag = quizId,
+                Dock = DockStyle.Bottom,
+                Tag = quizID, // ✅ Pass the QuizID here
                 BackColor = Color.DarkSlateBlue,
+                ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat
             };
-
+            quizButton.FlatAppearance.BorderSize = 0;
             quizButton.Click += QuizButton_Click;
 
             // Add controls to the panel
@@ -65,25 +97,54 @@ namespace Quizzz.IRTUP.Panels
 
         private void btnAddQuiz_Click(object sender, EventArgs e)
         {
+            string quizName = Microsoft.VisualBasic.Interaction.InputBox("Enter Quiz Name:", "Add New Quiz");
 
+            if (!string.IsNullOrWhiteSpace(quizName))
+            {
+                DatabaseHelper db = new DatabaseHelper();
+
+                string insertQuery = "INSERT INTO Quizzes (Title, TeacherID, CreatedDate) VALUES (@Title, @TeacherID, @CreatedDate);";
+                OleDbParameter[] parameters = new OleDbParameter[]
+                {
+            new OleDbParameter("@Title", quizName),
+            new OleDbParameter("@TeacherID", _teacherID),
+            new OleDbParameter("@CreatedDate", DateTime.Now.ToString("yyyy-MM-dd"))
+                };
+
+                bool success = db.ExecuteQuery(insertQuery, parameters);
+
+                if (success)
+                {
+                    LoadQuizzes(_teacherID); // Refresh list of quizzes
+                }
+                else
+                {
+                    MessageBox.Show("Failed to add quiz.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void LoadQuizzes(int teacherID)
         {
             DatabaseHelper db = new DatabaseHelper();
-            DataTable quizData = db.GetAllQuizzes(teacherID); // Fetch quizzes for the specific teacher
+            DataTable quizData = db.GetAllQuizzes(teacherID); // You must define this in DatabaseHelper
 
-            // Clear existing quizzes before adding new ones
+            // Clear existing quiz cards before adding new ones
             quizzesPanel.Controls.Clear();
 
             foreach (DataRow row in quizData.Rows)
             {
-                string quizName = row["QuizName"].ToString();
-                int quizID = (int)row["QuizID"];
+                string quizName = row["Title"].ToString();
+                int quizID = Convert.ToInt32(row["QuizID"]);
+                DateTime dateCreated = SafeDate(row["CreatedDate"]);
 
-                // Create the quiz card and add it to the panel
-                CreateQuizCard(quizName, quizID);
+                CreateQuizCard(quizName, quizID, dateCreated);
             }
+        }
+
+        private DateTime SafeDate(object value)
+        {
+            return value != DBNull.Value ? Convert.ToDateTime(value) : DateTime.MinValue;
         }
 
 
@@ -93,13 +154,14 @@ namespace Quizzz.IRTUP.Panels
             int quizID = (int)clickedQuiz.Tag;
 
             MessageBox.Show($"Opening Quiz ID: {quizID}");
-            // Open the quiz editor form and pass quizID
+            CreateQuizForm cQF = new CreateQuizForm(quizID);
+            cQF.ShowDialog();
         }
 
         private void manageQuizMenu_Load(object sender, EventArgs e)
         {
-            int teacherID = Convert.ToInt32((this.FindForm() as MainMenu)?.teacherDetails["teacherID"]);
-            LoadQuizzes(teacherID);
+            ////int teacherID = Convert.ToInt32((this.FindForm() as MainMenu)?.teacherDetails["teacherID"]);
+            //LoadQuizzes(teacherID);
         }
     }
 }

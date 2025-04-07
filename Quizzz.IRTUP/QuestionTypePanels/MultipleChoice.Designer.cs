@@ -94,7 +94,6 @@
             // 
             button4.BackColor = Color.FromArgb(249, 199, 132);
             button4.Dock = DockStyle.Left;
-            button4.Enabled = false;
             button4.FlatStyle = FlatStyle.Flat;
             button4.Location = new Point(10, 10);
             button4.Name = "button4";
@@ -128,7 +127,6 @@
             // 
             button3.BackColor = Color.FromArgb(113, 137, 255);
             button3.Dock = DockStyle.Left;
-            button3.Enabled = false;
             button3.FlatStyle = FlatStyle.Flat;
             button3.Location = new Point(10, 10);
             button3.Name = "button3";
@@ -162,7 +160,6 @@
             // 
             button2.BackColor = Color.FromArgb(112, 193, 179);
             button2.Dock = DockStyle.Left;
-            button2.Enabled = false;
             button2.FlatStyle = FlatStyle.Flat;
             button2.Location = new Point(10, 10);
             button2.Name = "button2";
@@ -196,7 +193,6 @@
             // 
             button1.BackColor = Color.FromArgb(249, 112, 104);
             button1.Dock = DockStyle.Left;
-            button1.Enabled = false;
             button1.FlatStyle = FlatStyle.Flat;
             button1.Location = new Point(10, 10);
             button1.Name = "button1";

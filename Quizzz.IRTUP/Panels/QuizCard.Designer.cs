@@ -28,83 +28,65 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panel1 = new Panel();
-            lblDate = new Label();
-            lblCategory = new Label();
-            lblQuestions = new Label();
-            lblTitle = new Label();
-            panel1.SuspendLayout();
+            lblQuizName = new Label();
+            openBtn = new AntdUI.Button();
+            createdDateLabel = new Label();
             SuspendLayout();
             // 
-            // panel1
+            // lblQuizName
             // 
-            panel1.Controls.Add(lblDate);
-            panel1.Controls.Add(lblCategory);
-            panel1.Controls.Add(lblQuestions);
-            panel1.Controls.Add(lblTitle);
-            panel1.Dock = DockStyle.Fill;
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(250, 180);
-            panel1.TabIndex = 0;
-            panel1.Paint += QuizCard_Paint;
-            panel1.MouseEnter += QuizCard_MouseEnter;
-            panel1.MouseLeave += QuizCard_MouseLeave;
+            lblQuizName.AutoSize = true;
+            lblQuizName.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblQuizName.ImageAlign = ContentAlignment.TopLeft;
+            lblQuizName.Location = new Point(46, 21);
+            lblQuizName.Name = "lblQuizName";
+            lblQuizName.RightToLeft = RightToLeft.No;
+            lblQuizName.Size = new Size(89, 21);
+            lblQuizName.TabIndex = 1;
+            lblQuizName.Text = "quizName";
+            lblQuizName.TextAlign = ContentAlignment.TopCenter;
             // 
-            // lblDate
+            // openBtn
             // 
-            lblDate.AutoSize = true;
-            lblDate.Location = new Point(12, 81);
-            lblDate.Name = "lblDate";
-            lblDate.Size = new Size(69, 15);
-            lblDate.TabIndex = 0;
-            lblDate.Text = "datecreated";
+            openBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            openBtn.Location = new Point(17, 120);
+            openBtn.Name = "openBtn";
+            openBtn.Size = new Size(145, 42);
+            openBtn.TabIndex = 2;
+            openBtn.Text = "Open Quiz";
+            openBtn.Click += openBtn_Click;
             // 
-            // lblCategory
+            // createdDateLabel
             // 
-            lblCategory.AutoSize = true;
-            lblCategory.Location = new Point(12, 59);
-            lblCategory.Name = "lblCategory";
-            lblCategory.Size = new Size(53, 15);
-            lblCategory.TabIndex = 0;
-            lblCategory.Text = "category";
-            // 
-            // lblQuestions
-            // 
-            lblQuestions.AutoSize = true;
-            lblQuestions.Location = new Point(12, 37);
-            lblQuestions.Name = "lblQuestions";
-            lblQuestions.Size = new Size(92, 15);
-            lblQuestions.TabIndex = 0;
-            lblQuestions.Text = "no. of questions";
-            // 
-            // lblTitle
-            // 
-            lblTitle.AutoSize = true;
-            lblTitle.Location = new Point(12, 17);
-            lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(61, 15);
-            lblTitle.TabIndex = 0;
-            lblTitle.Text = "quizName";
+            createdDateLabel.AutoSize = true;
+            createdDateLabel.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            createdDateLabel.ImageAlign = ContentAlignment.TopLeft;
+            createdDateLabel.Location = new Point(46, 51);
+            createdDateLabel.Name = "createdDateLabel";
+            createdDateLabel.RightToLeft = RightToLeft.No;
+            createdDateLabel.Size = new Size(89, 21);
+            createdDateLabel.TabIndex = 1;
+            createdDateLabel.Text = "quizName";
+            createdDateLabel.TextAlign = ContentAlignment.TopCenter;
             // 
             // QuizCard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(panel1);
+            BackColor = Color.FromArgb(255, 192, 192);
+            Controls.Add(openBtn);
+            Controls.Add(createdDateLabel);
+            Controls.Add(lblQuizName);
             Name = "QuizCard";
-            Size = new Size(250, 180);
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            Size = new Size(180, 180);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private Panel panel1;
-        private Label lblDate;
-        private Label lblCategory;
-        private Label lblQuestions;
-        private Label lblTitle;
+        private Label lblQuizName;
+        private AntdUI.Button openBtn;
+        private Label createdDateLabel;
     }
 }

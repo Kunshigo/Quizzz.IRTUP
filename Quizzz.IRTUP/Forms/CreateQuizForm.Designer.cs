@@ -37,12 +37,12 @@
             addQuestionBtn = new AntdUI.Button();
             selectedQuizPanel = new FlowLayoutPanel();
             settingsPanel = new Panel();
+            saveQuizBtn = new AntdUI.Button();
             dPCheckBox = new AntdUI.Checkbox();
             timeLimitComboBox = new ComboBox();
             questionTypeComboBox = new ComboBox();
             label2 = new Label();
             label1 = new Label();
-            saveQuizBtn = new AntdUI.Button();
             Header.SuspendLayout();
             controlBox.SuspendLayout();
             questionsPanel.SuspendLayout();
@@ -159,6 +159,16 @@
             settingsPanel.Size = new Size(200, 601);
             settingsPanel.TabIndex = 6;
             // 
+            // saveQuizBtn
+            // 
+            saveQuizBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            saveQuizBtn.Location = new Point(109, 560);
+            saveQuizBtn.Name = "saveQuizBtn";
+            saveQuizBtn.Size = new Size(75, 29);
+            saveQuizBtn.TabIndex = 4;
+            saveQuizBtn.Text = "Save";
+            saveQuizBtn.Click += saveQuizBtn_Click;
+            // 
             // dPCheckBox
             // 
             dPCheckBox.Font = new Font("Century Gothic", 11F);
@@ -206,15 +216,6 @@
             label1.Size = new Size(121, 21);
             label1.TabIndex = 1;
             label1.Text = "Question Type";
-            // 
-            // saveQuizBtn
-            // 
-            saveQuizBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            saveQuizBtn.Location = new Point(109, 560);
-            saveQuizBtn.Name = "saveQuizBtn";
-            saveQuizBtn.Size = new Size(75, 29);
-            saveQuizBtn.TabIndex = 4;
-            saveQuizBtn.Text = "Save";
             // 
             // CreateQuizForm
             // 

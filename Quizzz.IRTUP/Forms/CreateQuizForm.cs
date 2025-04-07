@@ -1,4 +1,5 @@
-﻿    using Quizzz.IRTUP.Panels;
+﻿using Quizzz.IRTUP.Classes;
+using Quizzz.IRTUP.Panels;
     using Quizzz.IRTUP.QuestionTypePanels;
     using System;
     using System.Collections.Generic;
@@ -17,10 +18,13 @@ using static Quizzz.IRTUP.Forms.CreateQuizForm;
     public partial class CreateQuizForm : Form
     {
         private Rectangle recPanel;
+        private int quizID;
+        private int questionID;
 
-        public CreateQuizForm()
+        public CreateQuizForm(int quizID)
         {
             InitializeComponent();
+            this.quizID = quizID;
             questionTypeComboBox.SelectedItem = "Multiple Choice";
             CreateFlowLayoutPanels();
             this.Resize += CreateQuizForm_Resize;
@@ -184,6 +188,7 @@ using static Quizzz.IRTUP.Forms.CreateQuizForm;
             CreateFlowLayoutPanels();
         }
 
+
         private void CreateFlowLayoutPanels()
         {
             int slideNumber = questionsPanel.Controls.Count; // Determine the slide number
@@ -207,7 +212,7 @@ using static Quizzz.IRTUP.Forms.CreateQuizForm;
 
             // Add the mini preview to the slide
             slide.Controls.Add(miniControl);
-
+            string questionType = questionTypeComboBox.Text;
             // Create a unique UserControl for this slide
             UserControl quizPage = new MultipleChoice();
             slides.Add(slide, quizPage);
@@ -242,10 +247,6 @@ using static Quizzz.IRTUP.Forms.CreateQuizForm;
             ScrollToLastSlide();
         }
 
-
-
-
-
         private void ChangePage(FlowLayoutPanel selectedSlide)
         {
             if (slides.ContainsKey(selectedSlide))
@@ -271,6 +272,33 @@ using static Quizzz.IRTUP.Forms.CreateQuizForm;
                 Control lastSlide = questionsPanel.Controls[questionsPanel.Controls.Count - 1];
                 questionsPanel.AutoScrollPosition = new Point(lastSlide.Left, 0);
             }
+        }
+
+        private void saveQuizBtn_Click(object sender, EventArgs e)
+        {
+            DatabaseHelper dbHelper = new DatabaseHelper();
+
+            foreach (var slidePair in slides)
+            {
+                if (slidePair.Value is MultipleChoice mcControl)
+                {
+                    var question = mcControl.GetQuestionData();
+
+                    // Optional: Add validation
+                    if (string.IsNullOrWhiteSpace(question.QuestionText) ||
+                        question.Choices.Any(c => string.IsNullOrWhiteSpace(c)) ||
+                        question.CorrectAnswerIndex < 0)
+                    {
+                        MessageBox.Show("Please complete all questions before saving.");
+                        continue;
+                    }
+
+                    dbHelper.SaveMultipleChoiceQuestion(quizID, question);
+                    MessageBox.Show($"Saving: {question.QuestionText}, CorrectAnswerIndex: {question.CorrectAnswerIndex}");
+                }
+            }
+
+            MessageBox.Show("Quiz saved successfully!");
         }
     }
 }

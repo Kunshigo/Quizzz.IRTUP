@@ -94,10 +94,6 @@ namespace Quizzz.IRTUP
                 passwordTxtBox.Clear();
                 passwordTxtBox.Focus();
             }
-
-
-
-            
         }
 
         private void showPasswordCheckBox_CheckedChanged(object sender, EventArgs e)

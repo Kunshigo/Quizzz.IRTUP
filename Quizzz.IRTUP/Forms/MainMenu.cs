@@ -143,7 +143,7 @@ namespace Quizzz.IRTUP
         bool isMaximized = false;
         private void manageQuizBtn_Click(object sender, EventArgs e)
         {
-            manageQuizMenu ManageQuizMenu = new manageQuizMenu();
+            manageQuizMenu ManageQuizMenu = new manageQuizMenu(this.teacherDetails);
             mainMenuPanel.Controls.Clear();
             switch (WindowState)
             {
@@ -167,7 +167,7 @@ namespace Quizzz.IRTUP
 
         private void MainMenu_Resize(object sender, EventArgs e)
         {
-            manageQuizMenu ManageQuizMenu = new manageQuizMenu();
+            manageQuizMenu ManageQuizMenu = new manageQuizMenu(this.teacherDetails);
             mainMenuPanel.Width = this.ClientSize.Width - 20;
             mainMenuPanel.Height = this.ClientSize.Height - 20;
 
@@ -205,7 +205,9 @@ namespace Quizzz.IRTUP
 
         private void accountSettingsBtn_Click(object sender, EventArgs e)
         {
-
+            mainMenuPanel.Controls.Clear();
+            AccountSettingsUserControl aSUC = new AccountSettingsUserControl(teacherDetails);
+            mainMenuPanel.Controls.Add(aSUC);
         }
 
         private void generalSettingsBtn_Click(object sender, EventArgs e)
