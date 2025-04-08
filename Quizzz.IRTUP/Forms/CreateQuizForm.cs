@@ -46,6 +46,7 @@ namespace Quizzz.IRTUP.Forms
                 DataTable questions = db.GetQuizQuestions(quizID);
 
                 questionsPanel.Controls.Clear();
+                questionsPanel.Controls.Add(addQuestionBtn);
                 slides.Clear();
 
                 foreach (DataRow questionRow in questions.Rows)
@@ -129,13 +130,13 @@ namespace Quizzz.IRTUP.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading quiz: " + ex.Message);
             }
         }
 
 
         private void maximizeBtn_Click(object sender, EventArgs e)
             {
+            //hey
                 if (WindowState == FormWindowState.Normal)
                 {
                     WindowState = FormWindowState.Maximized;

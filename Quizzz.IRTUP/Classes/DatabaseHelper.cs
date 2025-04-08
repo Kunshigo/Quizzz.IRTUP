@@ -97,47 +97,91 @@ namespace Quizzz.IRTUP.Classes
                 return;
             }
 
-            int insertedQuestionID = -1;
-
-            // Step 1: Save question to Questions table (unchanged)
-            string insertQuestionQuery = "INSERT INTO Questions (QuizID, QuestionText, QuestionType, QuestionNo) VALUES (@QuizID, @QuestionText, @QuestionType, @QuestionNo)";
-
             using (OleDbConnection conn = new OleDbConnection(connectionString))
-            using (OleDbCommand cmd = new OleDbCommand(insertQuestionQuery, conn))
             {
-                cmd.Parameters.AddWithValue("@QuizID", quizID);
-                cmd.Parameters.AddWithValue("@QuestionText", questionText);
-                cmd.Parameters.AddWithValue("@QuestionType", question.QuestionType);
-                cmd.Parameters.AddWithValue("@QuestionNo", questionNo);
-
-                // ... rest of the code ...
-            }
-
-
-            // Step 2: Save choices to Choices table - add QuestionNo parameter
-            string insertChoicesQuery = "INSERT INTO Choices (QuizID, QuestionNo, CorrectAnswer, Choice1, Choice2, Choice3, Choice4) " +
-                                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-            using (OleDbConnection conn = new OleDbConnection(connectionString))
-            using (OleDbCommand cmd = new OleDbCommand(insertChoicesQuery, conn))
-            {
-                cmd.Parameters.AddWithValue("?", quizID);
-                cmd.Parameters.AddWithValue("?", questionNo); // Add question number
-                cmd.Parameters.AddWithValue("?", correctAnswerIndex + 1); // +1 for Access
-                cmd.Parameters.AddWithValue("?", choices[0]);
-                cmd.Parameters.AddWithValue("?", choices[1]);
-                cmd.Parameters.AddWithValue("?", choices[2]);
-                cmd.Parameters.AddWithValue("?", choices[3]);
-
-                try
+                conn.Open();
+                using (OleDbTransaction transaction = conn.BeginTransaction())
                 {
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                    MessageBox.Show("Question and choices saved successfully!");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error saving choices: " + ex.Message);
+                    try
+                    {
+                        // First, check if question exists
+                        int existingQuestionId = -1;
+                        using (OleDbCommand checkCmd = new OleDbCommand(
+                            "SELECT QuestionID FROM Questions WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo", conn, transaction))
+                        {
+                            checkCmd.Parameters.AddWithValue("@QuizID", quizID);
+                            checkCmd.Parameters.AddWithValue("@QuestionNo", questionNo);
+                            object result = checkCmd.ExecuteScalar();
+                            if (result != null)
+                                existingQuestionId = Convert.ToInt32(result);
+                        }
+
+                        if (existingQuestionId > 0)
+                        {
+                            // UPDATE Questions
+                            using (OleDbCommand updateQ = new OleDbCommand(
+                                "UPDATE Questions SET QuestionText = @QuestionText, QuestionType = @QuestionType WHERE QuestionID = @QuestionID", conn, transaction))
+                            {
+                                updateQ.Parameters.AddWithValue("@QuestionText", questionText);
+                                updateQ.Parameters.AddWithValue("@QuestionType", question.QuestionType);
+                                updateQ.Parameters.AddWithValue("@QuestionID", existingQuestionId);
+                                updateQ.ExecuteNonQuery();
+                            }
+
+                            // UPDATE Choices
+                            using (OleDbCommand updateC = new OleDbCommand(
+                                "UPDATE Choices SET CorrectAnswer = @CorrectAnswer, Choice1 = @Choice1, Choice2 = @Choice2, Choice3 = @Choice3, Choice4 = @Choice4 WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo", conn, transaction))
+                            {
+                                updateC.Parameters.AddWithValue("@CorrectAnswer", correctAnswerIndex + 1);
+                                updateC.Parameters.AddWithValue("@Choice1", choices[0]);
+                                updateC.Parameters.AddWithValue("@Choice2", choices[1]);
+                                updateC.Parameters.AddWithValue("@Choice3", choices[2]);
+                                updateC.Parameters.AddWithValue("@Choice4", choices[3]);
+                                updateC.Parameters.AddWithValue("@QuizID", quizID);
+                                updateC.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                updateC.ExecuteNonQuery();
+                            }
+
+                            question.QuestionID = existingQuestionId; // Optional
+                        }
+                        else
+                        {
+                            // INSERT into Questions
+                            using (OleDbCommand insertQ = new OleDbCommand(
+                                "INSERT INTO Questions (QuizID, QuestionText, QuestionType, QuestionNo) VALUES (@QuizID, @QuestionText, @QuestionType, @QuestionNo)", conn, transaction))
+                            {
+                                insertQ.Parameters.AddWithValue("@QuizID", quizID);
+                                insertQ.Parameters.AddWithValue("@QuestionText", questionText);
+                                insertQ.Parameters.AddWithValue("@QuestionType", question.QuestionType);
+                                insertQ.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                insertQ.ExecuteNonQuery();
+
+                                insertQ.CommandText = "SELECT @@IDENTITY";
+                                question.QuestionID = Convert.ToInt32(insertQ.ExecuteScalar());
+                            }
+
+                            // INSERT into Choices
+                            using (OleDbCommand insertC = new OleDbCommand(
+                                "INSERT INTO Choices (QuizID, QuestionNo, CorrectAnswer, Choice1, Choice2, Choice3, Choice4) VALUES (@QuizID, @QuestionNo, @CorrectAnswer, @Choice1, @Choice2, @Choice3, @Choice4)", conn, transaction))
+                            {
+                                insertC.Parameters.AddWithValue("@QuizID", quizID);
+                                insertC.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                insertC.Parameters.AddWithValue("@CorrectAnswer", correctAnswerIndex + 1);
+                                insertC.Parameters.AddWithValue("@Choice1", choices[0]);
+                                insertC.Parameters.AddWithValue("@Choice2", choices[1]);
+                                insertC.Parameters.AddWithValue("@Choice3", choices[2]);
+                                insertC.Parameters.AddWithValue("@Choice4", choices[3]);
+                                insertC.ExecuteNonQuery();
+                            }
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show("Error saving question: " + ex.Message);
+                    }
                 }
             }
         }
