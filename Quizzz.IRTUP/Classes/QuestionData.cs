@@ -8,6 +8,7 @@ namespace Quizzz.IRTUP.Classes
 {
     public class QuestionData
     {
+        //hey
         public int QuizID { get; set; }
         public int QuestionID { get; set; }
         public string QuestionText { get; set; }
