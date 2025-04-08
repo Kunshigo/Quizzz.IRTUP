@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.OleDb;
 using System.Data;
+using Quizzz.IRTUP.QuestionTypePanels;
 
 namespace Quizzz.IRTUP.Classes
 {
@@ -83,73 +84,92 @@ namespace Quizzz.IRTUP.Classes
             return dt;
         }
 
-        public void SaveMultipleChoiceQuestion(int quizID, QuestionData question)
+        public void SaveMultipleChoiceQuestion(QuestionData question, int quizID)
         {
-            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            string questionText = question.QuestionText;
+            List<string> choices = question.Choices;
+            int correctAnswerIndex = question.CorrectAnswerIndex;
+            int questionNo = question.QuestionNo;
+
+            if (string.IsNullOrWhiteSpace(questionText) || choices.Any(c => string.IsNullOrWhiteSpace(c)))
             {
-                conn.Open();
+                MessageBox.Show("Please fill in the question and all choices.");
+                return;
+            }
 
-                if (question.QuestionID > 0)  // Editing an existing question
+            int insertedQuestionID = -1;
+
+            // Step 1: Save question to Questions table (unchanged)
+            string insertQuestionQuery = "INSERT INTO Questions (QuizID, QuestionText, QuestionType, QuestionNo) VALUES (@QuizID, @QuestionText, @QuestionType, @QuestionNo)";
+
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            using (OleDbCommand cmd = new OleDbCommand(insertQuestionQuery, conn))
+            {
+                cmd.Parameters.AddWithValue("@QuizID", quizID);
+                cmd.Parameters.AddWithValue("@QuestionText", questionText);
+                cmd.Parameters.AddWithValue("@QuestionType", question.QuestionType);
+                cmd.Parameters.AddWithValue("@QuestionNo", questionNo);
+
+                // ... rest of the code ...
+            }
+
+
+            // Step 2: Save choices to Choices table - add QuestionNo parameter
+            string insertChoicesQuery = "INSERT INTO Choices (QuizID, QuestionNo, CorrectAnswer, Choice1, Choice2, Choice3, Choice4) " +
+                                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            using (OleDbCommand cmd = new OleDbCommand(insertChoicesQuery, conn))
+            {
+                cmd.Parameters.AddWithValue("?", quizID);
+                cmd.Parameters.AddWithValue("?", questionNo); // Add question number
+                cmd.Parameters.AddWithValue("?", correctAnswerIndex + 1); // +1 for Access
+                cmd.Parameters.AddWithValue("?", choices[0]);
+                cmd.Parameters.AddWithValue("?", choices[1]);
+                cmd.Parameters.AddWithValue("?", choices[2]);
+                cmd.Parameters.AddWithValue("?", choices[3]);
+
+                try
                 {
-                    // Update the existing question
-                    string updateQuestionSql = "UPDATE Questions SET QuestionText = ?, QuestionType = ? WHERE QuestionID = ?";
-                    using (OleDbCommand updateCmd = new OleDbCommand(updateQuestionSql, conn))
-                    {
-                        updateCmd.Parameters.AddWithValue("?", question.QuestionText);
-                        updateCmd.Parameters.AddWithValue("?", question.QuestionType);
-                        updateCmd.Parameters.AddWithValue("?", question.QuestionID);  // Use existing QuestionID
-                        updateCmd.ExecuteNonQuery();
-                    }
-
-                    // Now, update the Choices for the existing QuestionID
-                    string updateAnswerSql = @"
-            UPDATE Choices
-            SET CorrectAnswer = ?, Choice1 = ?, Choice2 = ?, Choice3 = ?, Choice4 = ?
-            WHERE QuestionID = ?";  // Ensure this WHERE condition is using the existing QuestionID
-
-                    using (OleDbCommand updateAnsCmd = new OleDbCommand(updateAnswerSql, conn))
-                    {
-                        updateAnsCmd.Parameters.AddWithValue("?", question.Choices[question.CorrectAnswerIndex]);
-                        updateAnsCmd.Parameters.AddWithValue("?", question.Choices[0]);
-                        updateAnsCmd.Parameters.AddWithValue("?", question.Choices[1]);
-                        updateAnsCmd.Parameters.AddWithValue("?", question.Choices[2]);
-                        updateAnsCmd.Parameters.AddWithValue("?", question.Choices[3]);
-                        updateAnsCmd.Parameters.AddWithValue("?", question.QuestionID);  // Use existing QuestionID
-                        updateAnsCmd.ExecuteNonQuery();
-                    }
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Question and choices saved successfully!");
                 }
-                else  // This means it's a new question
+                catch (Exception ex)
                 {
-                    // Insert new question into Questions table
-                    string insertQuestionSql = "INSERT INTO Questions (QuizID, QuestionText, QuestionType) VALUES (?, ?, ?)";
-                    using (OleDbCommand insertCmd = new OleDbCommand(insertQuestionSql, conn))
-                    {
-                        insertCmd.Parameters.AddWithValue("?", quizID);
-                        insertCmd.Parameters.AddWithValue("?", question.QuestionText);
-                        insertCmd.Parameters.AddWithValue("?", question.QuestionType);
-                        insertCmd.ExecuteNonQuery();
-                    }
-
-                    // Get the new QuestionID (to link with Choices)
-                    OleDbCommand getIdCmd = new OleDbCommand("SELECT @@IDENTITY", conn);
-                    int newQuestionID = Convert.ToInt32(getIdCmd.ExecuteScalar());
-
-                    // Insert the new choices into the Choices table
-                    string insertAnswerSql = @"
-            INSERT INTO Choices (QuestionID, CorrectAnswer, Choice1, Choice2, Choice3, Choice4)
-            VALUES (?, ?, ?, ?, ?, ?)";
-                    using (OleDbCommand insertAnsCmd = new OleDbCommand(insertAnswerSql, conn))
-                    {
-                        insertAnsCmd.Parameters.AddWithValue("?", newQuestionID);
-                        insertAnsCmd.Parameters.AddWithValue("?", question.Choices[question.CorrectAnswerIndex]);
-                        insertAnsCmd.Parameters.AddWithValue("?", question.Choices[0]);
-                        insertAnsCmd.Parameters.AddWithValue("?", question.Choices[1]);
-                        insertAnsCmd.Parameters.AddWithValue("?", question.Choices[2]);
-                        insertAnsCmd.Parameters.AddWithValue("?", question.Choices[3]);
-                        insertAnsCmd.ExecuteNonQuery();
-                    }
+                    MessageBox.Show("Error saving choices: " + ex.Message);
                 }
             }
+        }
+
+        public DataTable GetQuizQuestions(int quizID)
+        {
+            string query = "SELECT * FROM Questions WHERE QuizID = @QuizID ORDER BY QuestionNo";
+            OleDbParameter[] parameters = new OleDbParameter[]
+            {
+        new OleDbParameter("@QuizID", quizID)
+            };
+            return GetData(query, parameters);
+        }
+
+        public DataTable GetQuestionChoices(int quizID, int questionNo)
+        {
+            string query = "SELECT * FROM Choices WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo";
+            OleDbParameter[] parameters = new OleDbParameter[]
+            {
+        new OleDbParameter("@QuizID", quizID),
+        new OleDbParameter("@QuestionNo", questionNo)
+            };
+
+            DataTable result = GetData(query, parameters);
+
+            // Debug output - remove after testing
+            if (result.Rows.Count == 0)
+            {
+                MessageBox.Show($"No choices found for QuizID: {quizID}, QuestionNo: {questionNo}");
+            }
+
+            return result;
         }
 
         public DataTable GetAllQuizzes(int teacherID)
@@ -162,5 +182,7 @@ namespace Quizzz.IRTUP.Classes
 
             return GetData(query, parameters);
         }
+
+
     }
 }

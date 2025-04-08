@@ -229,18 +229,18 @@
 
         #endregion
         private PictureBox pictureBox1;
-        private TextBox questionTxtBox;
-        private Panel panel4;
-        private TextBox textBox4;
-        private Button button4;
+        public TextBox questionTxtBox;
+        public Panel panel4;
+        public TextBox textBox4;
+        public Button button4;
         private Panel panel3;
-        private TextBox textBox3;
-        private Button button3;
+        public TextBox textBox3;
+        public Button button3;
         private Panel panel2;
-        private TextBox textBox2;
-        private Button button2;
+        public TextBox textBox2;
+        public Button button2;
         private Panel panel1;
-        private TextBox textBox1;
-        private Button button1;
+        public TextBox textBox1;
+        public Button button1;
     }
 }

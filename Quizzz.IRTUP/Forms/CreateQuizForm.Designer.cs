@@ -161,10 +161,11 @@
             // 
             // saveQuizBtn
             // 
+            saveQuizBtn.DefaultBack = Color.FromArgb(127, 216, 190);
             saveQuizBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            saveQuizBtn.Location = new Point(109, 560);
+            saveQuizBtn.Location = new Point(22, 560);
             saveQuizBtn.Name = "saveQuizBtn";
-            saveQuizBtn.Size = new Size(75, 29);
+            saveQuizBtn.Size = new Size(162, 29);
             saveQuizBtn.TabIndex = 4;
             saveQuizBtn.Text = "Save";
             saveQuizBtn.Click += saveQuizBtn_Click;

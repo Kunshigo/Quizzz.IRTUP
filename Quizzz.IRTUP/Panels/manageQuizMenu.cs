@@ -95,6 +95,8 @@ namespace Quizzz.IRTUP.Panels
             quizzesPanel.Controls.Add(quizPanel);
         }
 
+
+
         private void btnAddQuiz_Click(object sender, EventArgs e)
         {
             string quizName = Microsoft.VisualBasic.Interaction.InputBox("Enter Quiz Name:", "Add New Quiz");
@@ -153,9 +155,11 @@ namespace Quizzz.IRTUP.Panels
             Button clickedQuiz = sender as Button;
             int quizID = (int)clickedQuiz.Tag;
 
-            MessageBox.Show($"Opening Quiz ID: {quizID}");
             CreateQuizForm cQF = new CreateQuizForm(quizID);
             cQF.ShowDialog();
+
+            // Optional: Refresh the quiz list after editing
+            LoadQuizzes(_teacherID);
         }
 
         private void manageQuizMenu_Load(object sender, EventArgs e)
