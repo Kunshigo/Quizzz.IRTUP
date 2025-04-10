@@ -35,6 +35,7 @@
             quizzesPanel = new FlowLayoutPanel();
             panel2 = new Panel();
             btnAddQuiz = new AntdUI.Button();
+            deleteQuizBtn = new AntdUI.Button();
             panel1.SuspendLayout();
             quizzesPanel.SuspendLayout();
             SuspendLayout();
@@ -125,7 +126,7 @@
             // 
             btnAddQuiz.Cursor = Cursors.Hand;
             btnAddQuiz.DefaultBack = Color.AntiqueWhite;
-            btnAddQuiz.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnAddQuiz.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold);
             btnAddQuiz.Location = new Point(18, 287);
             btnAddQuiz.Name = "btnAddQuiz";
             btnAddQuiz.Size = new Size(250, 42);
@@ -133,11 +134,24 @@
             btnAddQuiz.Text = "Create Quiz";
             btnAddQuiz.Click += btnAddQuiz_Click;
             // 
+            // deleteQuizBtn
+            // 
+            deleteQuizBtn.Cursor = Cursors.Hand;
+            deleteQuizBtn.DefaultBack = Color.FromArgb(249, 112, 104);
+            deleteQuizBtn.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold);
+            deleteQuizBtn.Location = new Point(783, 287);
+            deleteQuizBtn.Name = "deleteQuizBtn";
+            deleteQuizBtn.Size = new Size(250, 42);
+            deleteQuizBtn.TabIndex = 0;
+            deleteQuizBtn.Text = "Delete";
+            deleteQuizBtn.Click += deleteQuizBtn_Click;
+            // 
             // manageQuizMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(137, 207, 240);
+            Controls.Add(deleteQuizBtn);
             Controls.Add(btnAddQuiz);
             Controls.Add(quizzesPanel);
             Controls.Add(panel1);
@@ -160,5 +174,6 @@
         private TextBox txtSearch;
         private AntdUI.Button btnAddQuiz;
         private Panel panel2;
+        private AntdUI.Button deleteQuizBtn;
     }
 }
