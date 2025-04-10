@@ -35,6 +35,7 @@
             quizzesPanel = new FlowLayoutPanel();
             panel2 = new Panel();
             btnAddQuiz = new AntdUI.Button();
+            delQuizBtn = new AntdUI.Button();
             panel1.SuspendLayout();
             quizzesPanel.SuspendLayout();
             SuspendLayout();
@@ -133,11 +134,24 @@
             btnAddQuiz.Text = "Create Quiz";
             btnAddQuiz.Click += btnAddQuiz_Click;
             // 
+            // delQuizBtn
+            // 
+            delQuizBtn.Cursor = Cursors.Hand;
+            delQuizBtn.DefaultBack = Color.AntiqueWhite;
+            delQuizBtn.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            delQuizBtn.Location = new Point(763, 543);
+            delQuizBtn.Name = "delQuizBtn";
+            delQuizBtn.Size = new Size(250, 42);
+            delQuizBtn.TabIndex = 0;
+            delQuizBtn.Text = "Delete Quiz";
+            delQuizBtn.Click += deleteQuizBtn_Click;
+            // 
             // manageQuizMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(137, 207, 240);
+            Controls.Add(delQuizBtn);
             Controls.Add(btnAddQuiz);
             Controls.Add(quizzesPanel);
             Controls.Add(panel1);
@@ -160,5 +174,6 @@
         private TextBox txtSearch;
         private AntdUI.Button btnAddQuiz;
         private Panel panel2;
+        private AntdUI.Button delQuizBtn;
     }
 }

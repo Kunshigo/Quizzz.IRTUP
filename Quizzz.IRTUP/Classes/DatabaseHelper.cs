@@ -129,17 +129,46 @@ namespace Quizzz.IRTUP.Classes
                             }
 
                             // UPDATE Choices
-                            using (OleDbCommand updateC = new OleDbCommand(
-                                "UPDATE Choices SET CorrectAnswer = @CorrectAnswer, Choice1 = @Choice1, Choice2 = @Choice2, Choice3 = @Choice3, Choice4 = @Choice4 WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo", conn, transaction))
+                            bool hasChoices = false;
+                            using (OleDbCommand checkChoices = new OleDbCommand(
+                                "SELECT COUNT(*) FROM Choices WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo", conn, transaction))
                             {
-                                updateC.Parameters.AddWithValue("@CorrectAnswer", correctAnswerIndex + 1);
-                                updateC.Parameters.AddWithValue("@Choice1", choices[0]);
-                                updateC.Parameters.AddWithValue("@Choice2", choices[1]);
-                                updateC.Parameters.AddWithValue("@Choice3", choices[2]);
-                                updateC.Parameters.AddWithValue("@Choice4", choices[3]);
-                                updateC.Parameters.AddWithValue("@QuizID", quizID);
-                                updateC.Parameters.AddWithValue("@QuestionNo", questionNo);
-                                updateC.ExecuteNonQuery();
+                                checkChoices.Parameters.AddWithValue("@QuizID", quizID);
+                                checkChoices.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                int count = Convert.ToInt32(checkChoices.ExecuteScalar());
+                                hasChoices = count > 0;
+                            }
+                            if (hasChoices)
+                            {
+                                // Perform UPDATE
+                                using (OleDbCommand updateC = new OleDbCommand(
+                                    "UPDATE Choices SET CorrectAnswer = @CorrectAnswer, Choice1 = @Choice1, Choice2 = @Choice2, Choice3 = @Choice3, Choice4 = @Choice4 WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo", conn, transaction))
+                                {
+                                    updateC.Parameters.AddWithValue("@CorrectAnswer", correctAnswerIndex + 1);
+                                    updateC.Parameters.AddWithValue("@Choice1", choices[0]);
+                                    updateC.Parameters.AddWithValue("@Choice2", choices[1]);
+                                    updateC.Parameters.AddWithValue("@Choice3", choices[2]);
+                                    updateC.Parameters.AddWithValue("@Choice4", choices[3]);
+                                    updateC.Parameters.AddWithValue("@QuizID", quizID);
+                                    updateC.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                    updateC.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                            {
+                                // Perform INSERT
+                                using (OleDbCommand insertC = new OleDbCommand(
+                                    "INSERT INTO Choices (QuizID, QuestionNo, CorrectAnswer, Choice1, Choice2, Choice3, Choice4) VALUES (@QuizID, @QuestionNo, @CorrectAnswer, @Choice1, @Choice2, @Choice3, @Choice4)", conn, transaction))
+                                {
+                                    insertC.Parameters.AddWithValue("@QuizID", quizID);
+                                    insertC.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                    insertC.Parameters.AddWithValue("@CorrectAnswer", correctAnswerIndex + 1);
+                                    insertC.Parameters.AddWithValue("@Choice1", choices[0]);
+                                    insertC.Parameters.AddWithValue("@Choice2", choices[1]);
+                                    insertC.Parameters.AddWithValue("@Choice3", choices[2]);
+                                    insertC.Parameters.AddWithValue("@Choice4", choices[3]);
+                                    insertC.ExecuteNonQuery();
+                                }
                             }
 
                             question.QuestionID = existingQuestionId; // Optional
@@ -227,6 +256,81 @@ namespace Quizzz.IRTUP.Classes
             return GetData(query, parameters);
         }
 
+        public bool DeleteQuestion(int quizID, int questionNo, int questionID)
+        {
+            try
+            {
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                {
+                    conn.Open();
 
+                    // Delete choices using QuizID + QuestionNo
+                    string deleteChoices = "DELETE FROM Choices WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo";
+                    using (OleDbCommand cmdChoices = new OleDbCommand(deleteChoices, conn))
+                    {
+                        cmdChoices.Parameters.AddWithValue("@QuizID", quizID);
+                        cmdChoices.Parameters.AddWithValue("@QuestionNo", questionNo);
+                        cmdChoices.ExecuteNonQuery();
+                    }
+
+                    // Delete question using QuestionID
+                    string deleteQuestion = "DELETE FROM Questions WHERE QuestionID = @QuestionID";
+                    using (OleDbCommand cmdQuestion = new OleDbCommand(deleteQuestion, conn))
+                    {
+                        cmdQuestion.Parameters.AddWithValue("@QuestionID", questionID);
+                        cmdQuestion.ExecuteNonQuery();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to delete question: " + ex.Message);
+                return false;
+            }
+        }
+
+        public bool DeleteQuiz(int quizID)
+        {
+            try
+            {
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                {
+                    conn.Open();
+
+                    // Delete choices linked to this quiz
+                    string deleteChoices = "DELETE FROM Choices WHERE QuizID = @QuizID";
+                    using (OleDbCommand cmd1 = new OleDbCommand(deleteChoices, conn))
+                    {
+                        cmd1.Parameters.AddWithValue("@QuizID", quizID);
+                        cmd1.ExecuteNonQuery();
+                    }
+
+                    // Delete questions first
+                    string deleteQuestions = "DELETE FROM Questions WHERE QuizID = @QuizID";
+                    using (OleDbCommand cmd2 = new OleDbCommand(deleteQuestions, conn))
+                    {
+                        cmd2.Parameters.AddWithValue("@QuizID", quizID);
+                        cmd2.ExecuteNonQuery();
+                    }
+
+                    // Then delete the quiz
+                    string deleteQuiz = "DELETE FROM Quizzes WHERE QuizID = @QuizID";
+                    using (OleDbCommand cmd3 = new OleDbCommand(deleteQuiz, conn))
+                    {
+                        cmd3.Parameters.AddWithValue("@QuizID", quizID);
+                        cmd3.ExecuteNonQuery();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to delete quiz: " + ex.Message);
+                return false;
+            }
+        }
     }
 }

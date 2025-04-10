@@ -43,6 +43,7 @@
             questionTypeComboBox = new ComboBox();
             label2 = new Label();
             label1 = new Label();
+            delQuestionBtn = new AntdUI.Button();
             Header.SuspendLayout();
             controlBox.SuspendLayout();
             questionsPanel.SuspendLayout();
@@ -147,6 +148,7 @@
             // settingsPanel
             // 
             settingsPanel.BackColor = SystemColors.ButtonHighlight;
+            settingsPanel.Controls.Add(delQuestionBtn);
             settingsPanel.Controls.Add(saveQuizBtn);
             settingsPanel.Controls.Add(dPCheckBox);
             settingsPanel.Controls.Add(timeLimitComboBox);
@@ -218,6 +220,17 @@
             label1.TabIndex = 1;
             label1.Text = "Question Type";
             // 
+            // delQuestionBtn
+            // 
+            delQuestionBtn.DefaultBack = Color.FromArgb(127, 216, 190);
+            delQuestionBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            delQuestionBtn.Location = new Point(22, 525);
+            delQuestionBtn.Name = "delQuestionBtn";
+            delQuestionBtn.Size = new Size(162, 29);
+            delQuestionBtn.TabIndex = 4;
+            delQuestionBtn.Text = "Delete";
+            delQuestionBtn.Click += delQuestionBtn_Click;
+            // 
             // CreateQuizForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -258,5 +271,6 @@
         private AntdUI.Checkbox dPCheckBox;
         private ComboBox timeLimitComboBox;
         private AntdUI.Button saveQuizBtn;
+        private AntdUI.Button delQuestionBtn;
     }
 }

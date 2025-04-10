@@ -1,20 +1,20 @@
 ﻿using Quizzz.IRTUP.Classes;
 using Quizzz.IRTUP.Panels;
-    using Quizzz.IRTUP.QuestionTypePanels;
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Drawing;
-    using System.Linq;
-    using System.Runtime.InteropServices;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Windows.Forms;
+using Quizzz.IRTUP.QuestionTypePanels;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using static Quizzz.IRTUP.Forms.CreateQuizForm;
 
-namespace Quizzz.IRTUP.Forms 
-{ 
+namespace Quizzz.IRTUP.Forms
+{
     public partial class CreateQuizForm : Form
     {
         private Rectangle recPanel;
@@ -28,14 +28,14 @@ namespace Quizzz.IRTUP.Forms
             questionTypeComboBox.SelectedItem = "Multiple Choice";
             this.Resize += CreateQuizForm_Resize;
 
-                if (quizID > 0)
-                {
-                    LoadQuizQuestions(quizID);
-                }
-                else
-                {
-                    CreateFlowLayoutPanels();
-                }
+            if (quizID > 0)
+            {
+                LoadQuizQuestions(quizID);
+            }
+            else
+            {
+                CreateFlowLayoutPanels();
+            }
         }
 
         private void LoadQuizQuestions(int quizID)
@@ -135,165 +135,165 @@ namespace Quizzz.IRTUP.Forms
 
 
         private void maximizeBtn_Click(object sender, EventArgs e)
-            {
+        {
             //hey
-                if (WindowState == FormWindowState.Normal)
-                {
-                    WindowState = FormWindowState.Maximized;
-                }
-                else
-                {
-                    WindowState = FormWindowState.Normal;
-                }
+            if (WindowState == FormWindowState.Normal)
+            {
+                WindowState = FormWindowState.Maximized;
+            }
+            else
+            {
+                WindowState = FormWindowState.Normal;
+            }
+        }
+
+        private void miniPanel()
+        {
+
+        }
+
+        private void quizScreen()
+        {
+            if (questionTypeComboBox.SelectedItem == "Multiple Choice")
+            {
+                MultipleChoice multipleChoice = new MultipleChoice();
+                selectedQuizPanel.Controls.Clear();
+                selectedQuizPanel.Controls.Add(multipleChoice);
+            }
+        }
+
+        private void questionTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            quizScreen();
+            miniPanel();
+
+            if (WindowState == FormWindowState.Maximized)
+            {
+                ResizeQuestionsPanel();
+                ResizeSelectedQuizPanel();
             }
 
-            private void miniPanel()
-            {
+        }
 
-            }
+        private void ResizeSelectedQuizPanel()
+        {
+            selectedQuizPanel.Width = this.ClientSize.Width - 20;
+            selectedQuizPanel.Height = this.ClientSize.Height - 20;
 
-            private void quizScreen()
+            foreach (Control control in selectedQuizPanel.Controls)
             {
-                if (questionTypeComboBox.SelectedItem == "Multiple Choice")
+                if (control is MultipleChoice multipleChoice)
                 {
-                    MultipleChoice multipleChoice = new MultipleChoice();
-                    selectedQuizPanel.Controls.Clear();
-                    selectedQuizPanel.Controls.Add(multipleChoice);
-                }
-            }
+                    multipleChoice.Width = selectedQuizPanel.ClientSize.Width - 10;
+                    multipleChoice.Height = selectedQuizPanel.ClientSize.Height - 10;
 
-            private void questionTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
-            {
-                quizScreen();
-                miniPanel();
-
-                if (WindowState == FormWindowState.Maximized)
-                {
-                    ResizeQuestionsPanel();
-                    ResizeSelectedQuizPanel();
-                }
-
-            }
-
-            private void ResizeSelectedQuizPanel()
-            {
-                selectedQuizPanel.Width = this.ClientSize.Width - 20;
-                selectedQuizPanel.Height = this.ClientSize.Height - 20;
-
-                foreach (Control control in selectedQuizPanel.Controls)
-                {
-                    if (control is MultipleChoice multipleChoice)
-                    {
-                        multipleChoice.Width = selectedQuizPanel.ClientSize.Width - 10;
-                        multipleChoice.Height = selectedQuizPanel.ClientSize.Height - 10;
-
-                        multipleChoice.Refresh();
-                    }
-                }
-
-                selectedQuizPanel.Refresh();
-            }
-
-            private void selectedQuizPanel_Resize(object sender, EventArgs e)
-            {
-                selectedQuizPanel.Dock = DockStyle.Fill;
-
-                foreach (Control control in selectedQuizPanel.Controls)
-                {
-                    if (control is MultipleChoice multiplechoice)
-                    {
-                        multiplechoice.Width = selectedQuizPanel.ClientSize.Width;
-                        multiplechoice.Height = selectedQuizPanel.ClientSize.Height;
-
-                        multiplechoice.Refresh();
-                    }
-                }
-
-                selectedQuizPanel.Refresh();
-            }
-
-            private void ResizeQuestionsPanel()
-            {
-                if (WindowState == FormWindowState.Maximized)
-                {
-                    // Apply maximized panel size
-                    float panelHeightRatio = 0.15f;  // 15% of form height
-                    int newHeight = (int)(this.ClientSize.Height * panelHeightRatio);
-                    newHeight = Math.Max(100, Math.Min(300, newHeight));  // Constrain height
-                    questionsPanel.Height = newHeight;
-                }
-                else
-                {
-                    // Keep the original size when not maximized
-                    questionsPanel.Height = 88;  // Original height
-                }
-
-                // Refresh the panel
-                questionsPanel.Refresh();
-            }
-
-            private void CreateQuizForm_Resize(object sender, EventArgs e)
-            {
-
-                if (WindowState == FormWindowState.Maximized)
-                {
-                    // Resize only when maximized
-                    float panelHeightRatio = 0.15f;  // 15% of form height
-                    int newHeight = (int)(this.ClientSize.Height * panelHeightRatio);
-                    newHeight = Math.Max(100, Math.Min(300, newHeight));  // Constrain height
-                    questionsPanel.Height = newHeight;
-                }
-                else
-                {
-                    // Keep the original size when not maximized
-                    questionsPanel.Height = 88;  // Original height
-                }
-
-
-                // Refresh the panel to apply changes
-                questionsPanel.Refresh();
-            }
-
-            private int originalMiniPanelWidth;
-            private int originalMiniPanelHeight;
-
-            private void questionsPanel_Resize(object sender, EventArgs e)
-            {
-
-            }
-
-            private int originalUserControlWidth;
-            private int originalUserControlHeight;
-
-            private void miniQuestionPanel_Resize(object sender, EventArgs e)
-            {
-
-            }
-            public const int WM_NCLBUTTONDOWN = 0xA1;
-            public const int HTCAPTION = 0x2;
-            [DllImport("User32.dll")]
-            public static extern bool ReleaseCapture();
-            [DllImport("User32.dll")]
-            public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-
-            private void OnMouseDown(object sender, MouseEventArgs e)
-            {
-                if (e.Button == MouseButtons.Left)
-                {
-                    ReleaseCapture();
-                    SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+                    multipleChoice.Refresh();
                 }
             }
 
-            private int slideIndex = 0;
-            private Dictionary<FlowLayoutPanel, (UserControl Control, int QuestionID)> slides = new Dictionary<FlowLayoutPanel, (UserControl, int)>();
+            selectedQuizPanel.Refresh();
+        }
 
-            private void addQuestionBtn_Click(object sender, EventArgs e)
+        private void selectedQuizPanel_Resize(object sender, EventArgs e)
+        {
+            selectedQuizPanel.Dock = DockStyle.Fill;
+
+            foreach (Control control in selectedQuizPanel.Controls)
             {
-                CreateFlowLayoutPanels();
+                if (control is MultipleChoice multiplechoice)
+                {
+                    multiplechoice.Width = selectedQuizPanel.ClientSize.Width;
+                    multiplechoice.Height = selectedQuizPanel.ClientSize.Height;
+
+                    multiplechoice.Refresh();
+                }
             }
 
-        
+            selectedQuizPanel.Refresh();
+        }
+
+        private void ResizeQuestionsPanel()
+        {
+            if (WindowState == FormWindowState.Maximized)
+            {
+                // Apply maximized panel size
+                float panelHeightRatio = 0.15f;  // 15% of form height
+                int newHeight = (int)(this.ClientSize.Height * panelHeightRatio);
+                newHeight = Math.Max(100, Math.Min(300, newHeight));  // Constrain height
+                questionsPanel.Height = newHeight;
+            }
+            else
+            {
+                // Keep the original size when not maximized
+                questionsPanel.Height = 88;  // Original height
+            }
+
+            // Refresh the panel
+            questionsPanel.Refresh();
+        }
+
+        private void CreateQuizForm_Resize(object sender, EventArgs e)
+        {
+
+            if (WindowState == FormWindowState.Maximized)
+            {
+                // Resize only when maximized
+                float panelHeightRatio = 0.15f;  // 15% of form height
+                int newHeight = (int)(this.ClientSize.Height * panelHeightRatio);
+                newHeight = Math.Max(100, Math.Min(300, newHeight));  // Constrain height
+                questionsPanel.Height = newHeight;
+            }
+            else
+            {
+                // Keep the original size when not maximized
+                questionsPanel.Height = 88;  // Original height
+            }
+
+
+            // Refresh the panel to apply changes
+            questionsPanel.Refresh();
+        }
+
+        private int originalMiniPanelWidth;
+        private int originalMiniPanelHeight;
+
+        private void questionsPanel_Resize(object sender, EventArgs e)
+        {
+
+        }
+
+        private int originalUserControlWidth;
+        private int originalUserControlHeight;
+
+        private void miniQuestionPanel_Resize(object sender, EventArgs e)
+        {
+
+        }
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HTCAPTION = 0x2;
+        [DllImport("User32.dll")]
+        public static extern bool ReleaseCapture();
+        [DllImport("User32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
+        private void OnMouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+            }
+        }
+
+        private int slideIndex = 0;
+        private Dictionary<FlowLayoutPanel, (UserControl Control, int QuestionID)> slides = new Dictionary<FlowLayoutPanel, (UserControl, int)>();
+
+        private void addQuestionBtn_Click(object sender, EventArgs e)
+        {
+            CreateFlowLayoutPanels();
+        }
+
+
 
         private void CreateFlowLayoutPanels()
         {
@@ -301,13 +301,13 @@ namespace Quizzz.IRTUP.Forms
 
             FlowLayoutPanel slide = new FlowLayoutPanel
             {
-                    Size = new Size(131, 88),
-                    BorderStyle = BorderStyle.FixedSingle,
-                    BackColor = Color.White,
-                    Cursor = Cursors.Hand,
-                    WrapContents = false,
-                    Dock = DockStyle.Left,
-                    FlowDirection = FlowDirection.TopDown
+                Size = new Size(131, 88),
+                BorderStyle = BorderStyle.FixedSingle,
+                BackColor = Color.White,
+                Cursor = Cursors.Hand,
+                WrapContents = false,
+                Dock = DockStyle.Left,
+                FlowDirection = FlowDirection.TopDown
             };
 
             // Create the mini preview UserControl
@@ -343,48 +343,48 @@ namespace Quizzz.IRTUP.Forms
             };
 
             slide.MouseLeave += (s, args) =>
-                {
-                    if (slide.BackColor != Color.LightBlue)
-                    {
-                        slide.BackColor = Color.White; // Restore when not hovering
-                    }
-                };
-
-                // Add the slide to the main panel
-                questionsPanel.Controls.Add(slide);
-
-                ResizeQuestionsPanel();
-                ScrollToLastSlide();
-            }
-
-            private void ChangePage(FlowLayoutPanel selectedSlide)
             {
-                if (slides.ContainsKey(selectedSlide))
+                if (slide.BackColor != Color.LightBlue)
                 {
-                    selectedQuizPanel.Controls.Clear();
-                    selectedQuizPanel.Controls.Add(slides[selectedSlide].Control);
+                    slide.BackColor = Color.White; // Restore when not hovering
                 }
-            }
+            };
 
-            private void Slide_Click(object sender, EventArgs e)
+            // Add the slide to the main panel
+            questionsPanel.Controls.Add(slide);
+
+            ResizeQuestionsPanel();
+            ScrollToLastSlide();
+        }
+
+        private void ChangePage(FlowLayoutPanel selectedSlide)
+        {
+            if (slides.ContainsKey(selectedSlide))
             {
-                if (sender is FlowLayoutPanel clickedSlide)
-                {
-                    // Scroll to the clicked slide
-                    questionsPanel.AutoScrollPosition = new Point(clickedSlide.Left, 0);
-                }
+                selectedQuizPanel.Controls.Clear();
+                selectedQuizPanel.Controls.Add(slides[selectedSlide].Control);
             }
+        }
 
-            private void ScrollToLastSlide()
+        private void Slide_Click(object sender, EventArgs e)
+        {
+            if (sender is FlowLayoutPanel clickedSlide)
             {
-                if (questionsPanel.Controls.Count > 0)
-                {
-                    Control lastSlide = questionsPanel.Controls[questionsPanel.Controls.Count - 1];
-                    questionsPanel.AutoScrollPosition = new Point(lastSlide.Left, 0);
-                }
+                // Scroll to the clicked slide
+                questionsPanel.AutoScrollPosition = new Point(clickedSlide.Left, 0);
             }
+        }
 
-    private void saveQuizBtn_Click(object sender, EventArgs e)
+        private void ScrollToLastSlide()
+        {
+            if (questionsPanel.Controls.Count > 0)
+            {
+                Control lastSlide = questionsPanel.Controls[questionsPanel.Controls.Count - 1];
+                questionsPanel.AutoScrollPosition = new Point(lastSlide.Left, 0);
+            }
+        }
+
+        private void saveQuizBtn_Click(object sender, EventArgs e)
         {
             DatabaseHelper db = new DatabaseHelper();
 
@@ -405,9 +405,30 @@ namespace Quizzz.IRTUP.Forms
 
                     db.SaveMultipleChoiceQuestion(question, quizID);
                 }
+
             }
 
             MessageBox.Show("Quiz Saved Successfully!");
+        }
+
+        private void delQuestionBtn_Click(object sender, EventArgs e)
+        {
+            if (selectedQuizPanel.Controls.Count > 0 &&
+                selectedQuizPanel.Controls[0] is MultipleChoice mc &&
+                mc.QuestionID > 0)
+            {
+                var confirm = MessageBox.Show("Are you sure you want to delete this question?", "Confirm", MessageBoxButtons.YesNo);
+                if (confirm == DialogResult.Yes)
+                {
+                    DatabaseHelper db = new DatabaseHelper();
+                    bool deleted = db.DeleteQuestion(quizID, mc.QuestionNo, mc.QuestionID);
+                    if (deleted)
+                    {
+                        MessageBox.Show("Question deleted.");
+                        LoadQuizQuestions(quizID);
+                    }
+                }
+            }
         }
     }
 }
