@@ -332,5 +332,166 @@ namespace Quizzz.IRTUP.Classes
                 return false;
             }
         }
+
+        public void SaveTrueFalseQuestion(int quizID, int questionNo, string questionText, string correctAnswer)
+        {
+            if (string.IsNullOrWhiteSpace(questionText) || string.IsNullOrWhiteSpace(correctAnswer))
+            {
+                MessageBox.Show("Please fill in the question and select an answer.");
+                return;
+            }
+
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+                using (OleDbTransaction transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // First, check if question exists
+                        int existingQuestionId = -1;
+                        using (OleDbCommand checkCmd = new OleDbCommand(
+                            "SELECT QuestionID FROM Questions WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo", conn, transaction))
+                        {
+                            checkCmd.Parameters.AddWithValue("@QuizID", quizID);
+                            checkCmd.Parameters.AddWithValue("@QuestionNo", questionNo);
+                            object result = checkCmd.ExecuteScalar();
+                            if (result != null)
+                                existingQuestionId = Convert.ToInt32(result);
+                        }
+
+                        if (existingQuestionId > 0)
+                        {
+                            // UPDATE Questions table
+                            using (OleDbCommand updateQ = new OleDbCommand(
+                                "UPDATE Questions SET QuestionText = @QuestionText, QuestionType = @QuestionType " +
+                                "WHERE QuestionID = @QuestionID", conn, transaction))
+                            {
+                                updateQ.Parameters.AddWithValue("@QuestionText", questionText);
+                                updateQ.Parameters.AddWithValue("@QuestionType", "True or False");
+                                updateQ.Parameters.AddWithValue("@QuestionID", existingQuestionId);
+                                updateQ.ExecuteNonQuery();
+                            }
+
+                            // Check if TrueFalse entry exists
+                            bool hasTrueFalseEntry = false;
+                            using (OleDbCommand checkTF = new OleDbCommand(
+                                "SELECT COUNT(*) FROM TrueFalseQuestion WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo", conn, transaction))
+                            {
+                                checkTF.Parameters.AddWithValue("@QuizID", quizID);
+                                checkTF.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                int count = Convert.ToInt32(checkTF.ExecuteScalar());
+                                hasTrueFalseEntry = count > 0;
+                            }
+
+                            if (hasTrueFalseEntry)
+                            {
+                                // UPDATE TrueFalseQuestion
+                                using (OleDbCommand updateTF = new OleDbCommand(
+                                    "UPDATE TrueFalseQuestion SET CorrectAnswer = @CorrectAnsewr " +
+                                    "WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo", conn, transaction))
+                                {
+                                    updateTF.Parameters.AddWithValue("@CorrectAnswer", correctAnswer);
+                                    updateTF.Parameters.AddWithValue("@QuizID", quizID);
+                                    updateTF.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                    updateTF.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                            {
+                                // INSERT into TrueFalseQuestion
+                                using (OleDbCommand insertTF = new OleDbCommand(
+                                    "INSERT INTO TrueFalseQuestion (QuizID, QuestionNo, CorrectAnswer) " +
+                                    "VALUES (@QuizID, @QuestionNo, @CorrectAnswer)", conn, transaction))
+                                {
+                                    insertTF.Parameters.AddWithValue("@QuizID", quizID);
+                                    insertTF.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                    insertTF.Parameters.AddWithValue("@CorrectAnswer", correctAnswer);
+                                    insertTF.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // INSERT into Questions
+                            int newQuestionId;
+                            using (OleDbCommand insertQ = new OleDbCommand(
+                                "INSERT INTO Questions (QuizID, QuestionText, QuestionType, QuestionNo) " +
+                                "VALUES (@QuizID, @QuestionText, @QuestionType, @QuestionNo)", conn, transaction))
+                            {
+                                insertQ.Parameters.AddWithValue("@QuizID", quizID);
+                                insertQ.Parameters.AddWithValue("@QuestionText", questionText);
+                                insertQ.Parameters.AddWithValue("@QuestionType", "True or False");
+                                insertQ.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                insertQ.ExecuteNonQuery();
+
+                                // Get the new QuestionID
+                                insertQ.CommandText = "SELECT @@IDENTITY";
+                                newQuestionId = Convert.ToInt32(insertQ.ExecuteScalar());
+                            }
+
+                            // INSERT into TrueFalseQuestion
+                            using (OleDbCommand insertTF = new OleDbCommand(
+                                "INSERT INTO TrueFalseQuestion (QuizID, QuestionNo, CorrectAnswer) " +
+                                "VALUES (@QuizID, @QuestionNo, @CorrectAnswer)", conn, transaction))
+                            {
+                                insertTF.Parameters.AddWithValue("@QuizID", quizID);
+                                insertTF.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                insertTF.Parameters.AddWithValue("@CorrectAnswer", correctAnswer);
+                                insertTF.ExecuteNonQuery();
+                            }
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show("Error saving True/False question: " + ex.Message);
+                        // Add debug output to see parameter values
+                        MessageBox.Show($"Debug values - QuizID: {quizID}, QNo: {questionNo}, Text: {questionText}, Ans: {correctAnswer}");
+                    }
+                }
+            }
+        }
+        public DataTable GetTrueFalseQuestion(int quizID, int questionNo)
+        {
+            string query = "SELECT * FROM TrueFalseQuestion WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo";
+
+            // Debug output to verify parameters
+            MessageBox.Show($"Executing query with: QuizID={quizID}, QuestionNo={questionNo}");
+
+            OleDbParameter[] parameters = new OleDbParameter[]
+            {
+        new OleDbParameter("@QuizID", OleDbType.Integer) { Value = quizID },
+        new OleDbParameter("@QuestionNo", OleDbType.Integer) { Value = questionNo }
+            };
+
+            try
+            {
+                DataTable result = GetData(query, parameters);
+
+                if (result.Rows.Count > 0)
+                {
+                    var row = result.Rows[0];
+                    MessageBox.Show($"✅ Loaded: QuestionNo = {row["QuestionNo"]}, CorrectAnswer = {row["CorrectAnswer"]}");
+                }
+                else
+                {
+                    MessageBox.Show("⚠️ No rows returned - check if data exists for these parameters");
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"❌ Error loading True/False question: {ex.Message}\nQuery: {query}");
+                return new DataTable();
+            }
+        }
+
+
+
+
     }
 }

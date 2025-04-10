@@ -55,6 +55,9 @@ namespace Quizzz.IRTUP.Forms
                     string questionText = questionRow["QuestionText"].ToString();
                     string questionType = questionRow["QuestionType"].ToString();
 
+                    // Debug output
+                    MessageBox.Show($"Loading question - Type: {questionType}, No: {questionNo}");
+
                     // Create the question panel
                     FlowLayoutPanel slide = new FlowLayoutPanel
                     {
@@ -73,47 +76,64 @@ namespace Quizzz.IRTUP.Forms
                     miniControl.SlideClicked += (sender, e) => ChangePage(slide);
                     slide.Controls.Add(miniControl);
 
-                    // Create the main question control
-                    MultipleChoice quizPage = new MultipleChoice();
-                    quizPage.QuestionID = Convert.ToInt32(questionRow["QuestionID"]);
-                    quizPage.QuestionNo = questionNo;
-                    quizPage.questionTxtBox.Text = questionText;
-
-                    // Load choices - IMPORTANT FIXES HERE
-                    DataTable choices = db.GetQuestionChoices(quizID, questionNo);
-                    if (choices.Rows.Count > 0)
+                    // Create the appropriate question control
+                    if (questionType == "Multiple Choice")
                     {
-                        DataRow choiceRow = choices.Rows[0];
+                        MultipleChoice quizPage = new MultipleChoice();
+                        quizPage.QuestionID = Convert.ToInt32(questionRow["QuestionID"]);
+                        quizPage.QuestionNo = questionNo;
+                        quizPage.questionTxtBox.Text = questionText;
 
-                        // Set choice texts
-                        quizPage.textBox1.Text = choiceRow["Choice1"]?.ToString() ?? "";
-                        quizPage.textBox2.Text = choiceRow["Choice2"]?.ToString() ?? "";
-                        quizPage.textBox3.Text = choiceRow["Choice3"]?.ToString() ?? "";
-                        quizPage.textBox4.Text = choiceRow["Choice4"]?.ToString() ?? "";
-
-                        // Set correct answer (convert from 1-based to 0-based index)
-                        int correctAnswer = Convert.ToInt32(choiceRow["CorrectAnswer"]);
-                        quizPage.correctAnswerIndex = correctAnswer - 1;
-
-                        // Highlight the correct answer button
-                        Button[] buttons = { quizPage.button1, quizPage.button2,
-                                   quizPage.button3, quizPage.button4 };
-
-                        // Reset all buttons first
-                        foreach (var btn in buttons)
+                        // Load choices
+                        DataTable choices = db.GetQuestionChoices(quizID, questionNo);
+                        if (choices.Rows.Count > 0)
                         {
-                            btn.FlatAppearance.BorderSize = 0;
+                            DataRow choiceRow = choices.Rows[0];
+                            quizPage.textBox1.Text = choiceRow["Choice1"]?.ToString() ?? "";
+                            quizPage.textBox2.Text = choiceRow["Choice2"]?.ToString() ?? "";
+                            quizPage.textBox3.Text = choiceRow["Choice3"]?.ToString() ?? "";
+                            quizPage.textBox4.Text = choiceRow["Choice4"]?.ToString() ?? "";
+
+                            int correctAnswer = Convert.ToInt32(choiceRow["CorrectAnswer"]);
+                            quizPage.SelectCorrectAnswer(correctAnswer - 1);
                         }
 
-                        // Highlight correct answer if valid index
-                        if (quizPage.correctAnswerIndex >= 0 && quizPage.correctAnswerIndex < buttons.Length)
+                        slides.Add(slide, (quizPage, quizPage.QuestionID, "Multiple Choice"));
+                    }
+                    else if (questionType == "True or False")
+                    {
+                        TrueFalse quizPage = new TrueFalse();
+                        quizPage.QuestionID = Convert.ToInt32(questionRow["QuestionID"]);
+                        quizPage.QuestionNo = questionNo;
+                        quizPage.questionTxtBox.Text = questionText;
+
+                        // Load correct answer with type handling
+                        DataTable tfData = db.GetTrueFalseQuestion(quizID, questionNo);
+                        if (tfData.Rows.Count > 0)
                         {
-                            buttons[quizPage.correctAnswerIndex].FlatAppearance.BorderSize = 3;
-                            buttons[quizPage.correctAnswerIndex].FlatAppearance.BorderColor = Color.Green;
+                            object answerValue = tfData.Rows[0]["CorrectAnswer"];
+                            string correctAns = "False"; // Default value
+
+                            if (answerValue != DBNull.Value)
+                            {
+                                // Handle different possible return types
+                                if (answerValue is bool)
+                                {
+                                    correctAns = (bool)answerValue ? "True" : "False";
+                                }
+                                else
+                                {
+                                    correctAns = answerValue.ToString();
+                                }
+                            }
+
+                            quizPage.CorrectAnswer = correctAns;
+                            quizPage.SelectCorrectAnswer(correctAns == "True" ? 0 : 1);
                         }
+
+                        slides.Add(slide, (quizPage, quizPage.QuestionID, "True or False"));
                     }
 
-                    slides.Add(slide, (quizPage, quizPage.QuestionID));
 
                     // Add events
                     slide.Click += (s, args) => ChangePage(slide);
@@ -130,6 +150,7 @@ namespace Quizzz.IRTUP.Forms
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Error loading questions: " + ex.Message);
             }
         }
 
@@ -164,15 +185,56 @@ namespace Quizzz.IRTUP.Forms
 
         private void questionTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            quizScreen();
-            miniPanel();
+            if (selectedQuizPanel.Controls.Count == 0) return;
 
-            if (WindowState == FormWindowState.Maximized)
+            var selectedSlide = slides.FirstOrDefault(x => x.Value.Control == selectedQuizPanel.Controls[0]).Key;
+            if (selectedSlide == null) return;
+
+            string newType = questionTypeComboBox.SelectedItem.ToString();
+            var currentSlideData = slides[selectedSlide];
+
+            // Don't change if same type
+            if (currentSlideData.QuestionType == newType) return;
+
+            // Get current question data
+            string currentQuestionText = "";
+            int questionNo = currentSlideData.Control is IQuestion q ? q.QuestionNo : 0;
+
+            if (currentSlideData.Control is MultipleChoice mc)
             {
-                ResizeQuestionsPanel();
-                ResizeSelectedQuizPanel();
+                currentQuestionText = mc.questionTxtBox.Text;
+            }
+            else if (currentSlideData.Control is TrueFalse tf)
+            {
+                currentQuestionText = tf.questionTxtBox.Text;
             }
 
+            // Create new control of the selected type
+            UserControl newControl = null;
+
+            switch (newType)
+            {
+                case "Multiple Choice":
+                    newControl = new MultipleChoice();
+                    ((MultipleChoice)newControl).questionTxtBox.Text = currentQuestionText;
+                    ((MultipleChoice)newControl).QuestionNo = questionNo;
+                    break;
+                case "True or False":
+                    newControl = new TrueFalse();
+                    ((TrueFalse)newControl).questionTxtBox.Text = currentQuestionText;
+                    ((TrueFalse)newControl).QuestionNo = questionNo;
+                    break;
+            }
+
+            if (newControl != null)
+            {
+                // Update the slide in our dictionary with the new type
+                slides[selectedSlide] = (newControl, currentSlideData.QuestionID, newType);
+
+                // Update the display
+                selectedQuizPanel.Controls.Clear();
+                selectedQuizPanel.Controls.Add(newControl);
+            }
         }
 
         private void ResizeSelectedQuizPanel()
@@ -286,18 +348,18 @@ namespace Quizzz.IRTUP.Forms
         }
 
         private int slideIndex = 0;
-        private Dictionary<FlowLayoutPanel, (UserControl Control, int QuestionID)> slides = new Dictionary<FlowLayoutPanel, (UserControl, int)>();
+        private Dictionary<FlowLayoutPanel, (UserControl Control, int QuestionID, string QuestionType)> slides =
+    new Dictionary<FlowLayoutPanel, (UserControl, int, string)>();
 
         private void addQuestionBtn_Click(object sender, EventArgs e)
         {
             CreateFlowLayoutPanels();
         }
 
-
-
         private void CreateFlowLayoutPanels()
         {
-            int slideNumber = questionsPanel.Controls.Count; // Determine the slide number
+            int slideNumber = slides.Count + 1;
+            string questionType = questionTypeComboBox.Text;
 
             FlowLayoutPanel slide = new FlowLayoutPanel
             {
@@ -310,59 +372,63 @@ namespace Quizzz.IRTUP.Forms
                 FlowDirection = FlowDirection.TopDown
             };
 
-            // Create the mini preview UserControl
+            // Create appropriate control
+            UserControl quizPage = null;
+
+            switch (questionType)
+            {
+                case "Multiple Choice":
+                    quizPage = new MultipleChoice();
+                    ((MultipleChoice)quizPage).QuestionNo = slideNumber;
+                    break;
+                case "True or False":
+                    quizPage = new TrueFalse();
+                    ((TrueFalse)quizPage).QuestionNo = slideNumber;
+                    break;
+            }
+
+            if (quizPage == null) return;
+
+            // Create mini preview
             miniMultipleChoice miniControl = new miniMultipleChoice();
-            miniControl.SetSlideNumber(slideNumber); // Ensure the UserControl updates its number
-
+            miniControl.SetSlideNumber(slideNumber);
             miniControl.SlideClicked += (sender, e) => ChangePage(slide);
-
-            // Add the mini preview to the slide
             slide.Controls.Add(miniControl);
-            string questionType = questionTypeComboBox.Text;
-            // Create a unique UserControl for this slide
-            MultipleChoice quizPage = new MultipleChoice();
-            quizPage.QuestionID = 0;
-            quizPage.QuestionNo = slideNumber;
 
+            // Add to dictionary with the correct initial type
+            slides.Add(slide, (quizPage, 0, questionType));
 
-            slides.Add(slide, (quizPage, 0));
+            // Add events
+            slide.Click += (s, args) => ChangePage(slide);
+            slide.MouseEnter += (s, args) => slide.BackColor = Color.LightGray;
+            slide.MouseLeave += (s, args) => slide.BackColor = Color.White;
 
-            // Add click event to select slide
-            slide.Click += (s, args) =>
-            {
-                ChangePage(slide);
-            };
-
-            // Add hover effect
-            slide.MouseEnter += (s, args) =>
-            {
-                if (slide.BackColor != Color.LightBlue)
-                {
-                    slide.BackColor = Color.LightGray; // Highlight when hovering
-                }
-            };
-
-            slide.MouseLeave += (s, args) =>
-            {
-                if (slide.BackColor != Color.LightBlue)
-                {
-                    slide.BackColor = Color.White; // Restore when not hovering
-                }
-            };
-
-            // Add the slide to the main panel
             questionsPanel.Controls.Add(slide);
-
-            ResizeQuestionsPanel();
-            ScrollToLastSlide();
+            ChangePage(slide);
         }
 
         private void ChangePage(FlowLayoutPanel selectedSlide)
         {
             if (slides.ContainsKey(selectedSlide))
             {
+                // Freeze the combobox event handler temporarily
+                questionTypeComboBox.SelectedIndexChanged -= questionTypeComboBox_SelectedIndexChanged;
+
+                // Update combobox to match current slide type
+                questionTypeComboBox.SelectedItem = slides[selectedSlide].QuestionType;
+
+                // Reattach the event handler
+                questionTypeComboBox.SelectedIndexChanged += questionTypeComboBox_SelectedIndexChanged;
+
+                // Show the control
                 selectedQuizPanel.Controls.Clear();
                 selectedQuizPanel.Controls.Add(slides[selectedSlide].Control);
+
+                // Highlight current slide
+                foreach (var slide in slides.Keys)
+                {
+                    slide.BackColor = slide == selectedSlide ? Color.LightBlue : Color.White;
+                }
             }
         }
 
@@ -390,22 +456,42 @@ namespace Quizzz.IRTUP.Forms
 
             foreach (var entry in slides)
             {
-                if (entry.Value.Control is MultipleChoice mcControl)
+                int questionNo = 0;
+                string questionText = "";
+                string questionType = entry.Value.QuestionType;
+
+                if (entry.Value.Control is MultipleChoice mc)
                 {
-                    // Create a data object
+                    questionNo = mc.QuestionNo;
+                    questionText = mc.questionTxtBox.Text;
+
                     QuestionData question = new QuestionData
                     {
                         QuizID = quizID,
-                        QuestionType = mcControl.QuestionType,
-                        QuestionText = mcControl.QuestionText,
-                        Choices = mcControl.GetChoices().ToList(),
-                        CorrectAnswerIndex = mcControl.CorrectAnswerIndex,
-                        QuestionNo = mcControl.QuestionNo // Add question number
+                        QuestionType = "Multiple Choice",
+                        QuestionText = questionText,
+                        Choices = new List<string> {
+                    mc.textBox1.Text,
+                    mc.textBox2.Text,
+                    mc.textBox3.Text,
+                    mc.textBox4.Text
+                },
+                        CorrectAnswerIndex = mc.correctAnswerIndex,
+                        QuestionNo = questionNo
                     };
-
                     db.SaveMultipleChoiceQuestion(question, quizID);
                 }
+                else if (entry.Value.Control is TrueFalse tf)
+                {
+                    // Ensure QuestionNo is properly set
+                    questionNo = tf.QuestionNo;
+                    questionText = tf.questionTxtBox.Text;
 
+                    // Debug output to check values before saving
+                    MessageBox.Show($"Saving True/False - QNo: {questionNo}, Text: {questionText}, Ans: {tf.CorrectAnswer}");
+
+                    db.SaveTrueFalseQuestion(quizID, questionNo, questionText, tf.CorrectAnswer);
+                }
             }
 
             MessageBox.Show("Quiz Saved Successfully!");
@@ -413,22 +499,39 @@ namespace Quizzz.IRTUP.Forms
 
         private void delQuestionBtn_Click(object sender, EventArgs e)
         {
-            if (selectedQuizPanel.Controls.Count > 0 &&
-                selectedQuizPanel.Controls[0] is MultipleChoice mc &&
-                mc.QuestionID > 0)
+            if (selectedQuizPanel.Controls.Count > 0)
             {
-                var confirm = MessageBox.Show("Are you sure you want to delete this question?", "Confirm", MessageBoxButtons.YesNo);
-                if (confirm == DialogResult.Yes)
+                var control = selectedQuizPanel.Controls[0];
+
+                int qNo = 0, qID = 0;
+
+                if (control is MultipleChoice mc && mc.QuestionID > 0)
                 {
-                    DatabaseHelper db = new DatabaseHelper();
-                    bool deleted = db.DeleteQuestion(quizID, mc.QuestionNo, mc.QuestionID);
-                    if (deleted)
+                    qNo = mc.QuestionNo;
+                    qID = mc.QuestionID;
+                }
+                else if (control is TrueFalse tf && tf.QuestionID > 0)
+                {
+                    qNo = tf.QuestionNo;
+                    qID = tf.QuestionID;
+                }
+
+                if (qID > 0)
+                {
+                    var confirm = MessageBox.Show("Are you sure you want to delete this question?", "Confirm", MessageBoxButtons.YesNo);
+                    if (confirm == DialogResult.Yes)
                     {
-                        MessageBox.Show("Question deleted.");
-                        LoadQuizQuestions(quizID);
+                        DatabaseHelper db = new DatabaseHelper();
+                        bool deleted = db.DeleteQuestion(quizID, qNo, qID);
+                        if (deleted)
+                        {
+                            MessageBox.Show("Question deleted.");
+                            LoadQuizQuestions(quizID);
+                        }
                     }
                 }
             }
+
         }
     }
 }

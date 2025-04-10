@@ -64,7 +64,7 @@ namespace Quizzz.IRTUP.QuestionTypePanels
             recTxt = new Rectangle(questionTxtBox.Location, questionTxtBox.Size);
         }
 
-        private void SelectCorrectAnswer(int index)
+        public void SelectCorrectAnswer(int index)
         {
             correctAnswerIndex = index;
 
