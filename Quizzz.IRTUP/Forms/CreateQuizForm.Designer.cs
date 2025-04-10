@@ -37,8 +37,8 @@
             addQuestionBtn = new AntdUI.Button();
             selectedQuizPanel = new FlowLayoutPanel();
             settingsPanel = new Panel();
-            delQuestionBtn = new AntdUI.Button();
             saveQuizBtn = new AntdUI.Button();
+            dPCheckBox = new AntdUI.Checkbox();
             timeLimitComboBox = new ComboBox();
             questionTypeComboBox = new ComboBox();
             label2 = new Label();
@@ -147,8 +147,8 @@
             // settingsPanel
             // 
             settingsPanel.BackColor = SystemColors.ButtonHighlight;
-            settingsPanel.Controls.Add(delQuestionBtn);
             settingsPanel.Controls.Add(saveQuizBtn);
+            settingsPanel.Controls.Add(dPCheckBox);
             settingsPanel.Controls.Add(timeLimitComboBox);
             settingsPanel.Controls.Add(questionTypeComboBox);
             settingsPanel.Controls.Add(label2);
@@ -158,17 +158,6 @@
             settingsPanel.Name = "settingsPanel";
             settingsPanel.Size = new Size(200, 601);
             settingsPanel.TabIndex = 6;
-            // 
-            // delQuestionBtn
-            // 
-            delQuestionBtn.DefaultBack = Color.FromArgb(249, 112, 104);
-            delQuestionBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            delQuestionBtn.Location = new Point(22, 525);
-            delQuestionBtn.Name = "delQuestionBtn";
-            delQuestionBtn.Size = new Size(162, 29);
-            delQuestionBtn.TabIndex = 4;
-            delQuestionBtn.Text = "Delete";
-            delQuestionBtn.Click += delQuestionBtn_Click;
             // 
             // saveQuizBtn
             // 
@@ -181,11 +170,20 @@
             saveQuizBtn.Text = "Save";
             saveQuizBtn.Click += saveQuizBtn_Click;
             // 
+            // dPCheckBox
+            // 
+            dPCheckBox.Font = new Font("Century Gothic", 11F);
+            dPCheckBox.Location = new Point(22, 249);
+            dPCheckBox.Name = "dPCheckBox";
+            dPCheckBox.Size = new Size(162, 23);
+            dPCheckBox.TabIndex = 3;
+            dPCheckBox.Text = "Double Points";
+            // 
             // timeLimitComboBox
             // 
             timeLimitComboBox.FormattingEnabled = true;
             timeLimitComboBox.Items.AddRange(new object[] { "5 Seconds", "10 Seconds", "20 Seconds", "30 Seconds", "50 Seconds", "1 Minute", "2 Minutes", "4 Minutes" });
-            timeLimitComboBox.Location = new Point(26, 149);
+            timeLimitComboBox.Location = new Point(26, 177);
             timeLimitComboBox.Name = "timeLimitComboBox";
             timeLimitComboBox.Size = new Size(146, 23);
             timeLimitComboBox.TabIndex = 2;
@@ -204,7 +202,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(22, 125);
+            label2.Location = new Point(22, 153);
             label2.Name = "label2";
             label2.Size = new Size(85, 21);
             label2.TabIndex = 1;
@@ -257,8 +255,8 @@
         private AntdUI.Button addQuestionBtn;
         private Label label2;
         private ComboBox questionTypeComboBox;
+        private AntdUI.Checkbox dPCheckBox;
         private ComboBox timeLimitComboBox;
         private AntdUI.Button saveQuizBtn;
-        private AntdUI.Button delQuestionBtn;
     }
 }

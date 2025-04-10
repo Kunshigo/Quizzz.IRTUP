@@ -26,9 +26,6 @@ namespace Quizzz.IRTUP
             this.teacherDetails = teacherDetails;
             InitializeTeacherUI();
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NMaF1cXGJCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXxfd3RSRGReVkxxXkU=");
-            manageQuizMenu ManageQuizMenu = new manageQuizMenu(this.teacherDetails);
-
-            mainMenuPanel.Controls.Add(ManageQuizMenu);
         }
 
         private void InitializeTeacherUI()

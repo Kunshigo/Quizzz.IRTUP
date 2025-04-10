@@ -16,8 +16,5 @@ namespace Quizzz.IRTUP.Classes
         public int CorrectAnswerIndex { get; set; }
         public string QuestionType { get; set; }
         public int QuestionNo { get; set; }
-
-        // For True/False
-        public bool CorrectAnswer { get; set; }
     }
 }

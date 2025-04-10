@@ -50,11 +50,10 @@ namespace Quizzz.IRTUP.Panels
             {
                 Width = 180,
                 Height = 180,
+                Dock = DockStyle.Top,
                 Padding = new Padding(10),
                 Margin = new Padding(3),
-                BackColor = isDeleteMode ? Color.FromArgb(255, 180, 180) : Color.FromArgb(255, 192, 192),
-                BorderStyle = isDeleteMode ? BorderStyle.FixedSingle : BorderStyle.None,
-                Tag = quizID
+                BackColor = Color.FromArgb(255, 192, 192),
             };
 
             Label quizTitle = new Label
@@ -78,32 +77,21 @@ namespace Quizzz.IRTUP.Panels
 
             Button quizButton = new Button
             {
-                Text = isDeleteMode ? "🗑 Click to Delete" : "Open Quiz",
+                Text = "Open Quiz",
                 Dock = DockStyle.Bottom,
-                Tag = quizID,
-                BackColor = isDeleteMode ? Color.IndianRed : Color.DarkSlateBlue,
+                Tag = quizID, // ✅ Pass the QuizID here
+                BackColor = Color.DarkSlateBlue,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat
             };
             quizButton.FlatAppearance.BorderSize = 0;
             quizButton.Click += QuizButton_Click;
 
-            // Hover highlight effect
-            quizPanel.MouseEnter += (s, e) =>
-            {
-                if (isDeleteMode)
-                    quizPanel.BackColor = Color.FromArgb(255, 150, 150);
-            };
-            quizPanel.MouseLeave += (s, e) =>
-            {
-                if (isDeleteMode)
-                    quizPanel.BackColor = Color.FromArgb(255, 180, 180);
-            };
-
-            // Add controls
+            // Add controls to the panel
             quizPanel.Controls.Add(quizButton);
-            quizPanel.Controls.Add(dateLabel);
             quizPanel.Controls.Add(quizTitle);
+
+
             quizzesPanel.Controls.Add(quizPanel);
         }
 
@@ -167,26 +155,11 @@ namespace Quizzz.IRTUP.Panels
             Button clickedQuiz = sender as Button;
             int quizID = (int)clickedQuiz.Tag;
 
-            if (isDeleteMode)
-            {
-                var confirm = MessageBox.Show("Are you sure you want to delete this quiz?", "Confirm", MessageBoxButtons.YesNo);
-                if (confirm == DialogResult.Yes)
-                {
-                    DatabaseHelper db = new DatabaseHelper();
-                    if (db.DeleteQuiz(quizID))
-                    {
-                        MessageBox.Show("Quiz deleted.");
-                        LoadQuizzes(_teacherID);
-                    }
-                }
-                isDeleteMode = false;
-            }
-            else
-            {
-                CreateQuizForm cQF = new CreateQuizForm(quizID);
-                cQF.ShowDialog();
-                LoadQuizzes(_teacherID);
-            }
+            CreateQuizForm cQF = new CreateQuizForm(quizID);
+            cQF.ShowDialog();
+
+            // Optional: Refresh the quiz list after editing
+            LoadQuizzes(_teacherID);
         }
 
         private void manageQuizMenu_Load(object sender, EventArgs e)
@@ -194,34 +167,5 @@ namespace Quizzz.IRTUP.Panels
             ////int teacherID = Convert.ToInt32((this.FindForm() as MainMenu)?.teacherDetails["teacherID"]);
             //LoadQuizzes(teacherID);
         }
-
-        private bool isDeleteMode = false;
-
-        private void deleteQuizBtn_Click(object sender, EventArgs e)
-        {
-            isDeleteMode = !isDeleteMode;
-
-            if (isDeleteMode)
-            {
-                MessageBox.Show("⚠ Delete Mode Enabled\nClick a quiz card to delete it.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                foreach (Control ctrl in quizzesPanel.Controls)
-                {
-                    if (ctrl is Panel panel) FlashControl(panel);
-                }
-            }
-            else
-                MessageBox.Show("Delete Mode Disabled.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            LoadQuizzes(_teacherID); // Refresh UI to reflect mode
-        }
-
-        private async void FlashControl(Control control)
-        {
-            Color originalColor = control.BackColor;
-            control.BackColor = Color.Red;
-            await Task.Delay(100);
-            control.BackColor = originalColor;
-        }
-
     }
 }

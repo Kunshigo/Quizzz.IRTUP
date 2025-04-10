@@ -33,8 +33,8 @@
             yellow = new Panel();
             blue = new Panel();
             green = new Panel();
-            slideNumberLabel = new AntdUI.Label();
             red = new Panel();
+            slideNumberLabel = new AntdUI.Label();
             panel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             red.SuspendLayout();
@@ -105,15 +105,6 @@
             green.TabIndex = 1;
             green.Click += miniMultipleChoice_Click;
             // 
-            // slideNumberLabel
-            // 
-            slideNumberLabel.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            slideNumberLabel.Location = new Point(0, 0);
-            slideNumberLabel.Name = "slideNumberLabel";
-            slideNumberLabel.Size = new Size(75, 23);
-            slideNumberLabel.TabIndex = 0;
-            slideNumberLabel.Text = "label1";
-            // 
             // red
             // 
             red.BackColor = Color.FromArgb(249, 112, 104);
@@ -125,6 +116,15 @@
             red.Size = new Size(59, 38);
             red.TabIndex = 0;
             red.Click += miniMultipleChoice_Click;
+            // 
+            // slideNumberLabel
+            // 
+            slideNumberLabel.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            slideNumberLabel.Location = new Point(0, 0);
+            slideNumberLabel.Name = "slideNumberLabel";
+            slideNumberLabel.Size = new Size(75, 23);
+            slideNumberLabel.TabIndex = 0;
+            slideNumberLabel.Text = "label1";
             // 
             // miniMultipleChoice
             // 
@@ -144,10 +144,10 @@
 
         private Panel panel1;
         private TableLayoutPanel tableLayoutPanel1;
+        private Panel red;
         private Panel yellow;
         private Panel blue;
         private Panel green;
-        private Panel red;
         private AntdUI.Label slideNumberLabel;
     }
 }
