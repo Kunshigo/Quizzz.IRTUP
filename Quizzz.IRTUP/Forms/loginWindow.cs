@@ -1,4 +1,5 @@
 using Quizzz.IRTUP.Classes;
+using Quizzz.IRTUP.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -64,36 +65,49 @@ namespace Quizzz.IRTUP
         {
             string username = usernameTxtBox.Text.Trim();
             string password = passwordTxtBox.Text.Trim();
+
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
                 MessageBox.Show("Please fill in all fields.");
                 return;
             }
+
+            bool loginSuccessful = false;
+
+            // Try teacher login first
             TeacherManager teacherManager = new TeacherManager();
             int teacherId = teacherManager.LoginTeacher(username, password);
 
             if (teacherId > 0)
             {
                 var teacherDetails = teacherManager.GetTeacherDetails(teacherId);
-
                 if (teacherDetails != null)
                 {
-                    // Pass details to MainMenu
-                    MainMenu mainMenu = new MainMenu(teacherDetails);
-                    mainMenu.Show();
+                    new MainMenuTeacher(teacherDetails).Show();
                     this.Hide();
-                }
-                else
-                {
-                    MessageBox.Show("Error loading teacher details.");
+                    return;
                 }
             }
-            else
+
+            // If not a teacher, try student login
+            StudentManager studentManager = new StudentManager();
+            int studentId = studentManager.LoginStudent(username, password);
+
+            if (studentId > 0)
             {
-                //clears the textboxes
-                passwordTxtBox.Clear();
-                passwordTxtBox.Focus();
+                var studentDetails = studentManager.GetStudentDetails(studentId);
+                if (studentDetails != null)
+                {
+                    new MainMenuStudent(studentDetails).Show();
+                    this.Hide();
+                    return;
+                }
             }
+
+            // If neither worked
+            passwordTxtBox.Clear();
+            passwordTxtBox.Focus();
+            MessageBox.Show("Invalid username/email or password.");
         }
 
         private void showPasswordCheckBox_CheckedChanged(object sender, EventArgs e)

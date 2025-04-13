@@ -155,6 +155,7 @@
             studentBtn.Text = "Student";
             studentBtn.TextAlign = ContentAlignment.BottomCenter;
             studentBtn.UseVisualStyleBackColor = false;
+            studentBtn.Click += studentBtn_Click;
             studentBtn.MouseEnter += studentBtn_MouseEnter;
             studentBtn.MouseLeave += studentBtn_MouseLeave;
             // 

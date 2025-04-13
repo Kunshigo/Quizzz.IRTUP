@@ -37,13 +37,13 @@
             addQuestionBtn = new AntdUI.Button();
             selectedQuizPanel = new FlowLayoutPanel();
             settingsPanel = new Panel();
+            delQuestionBtn = new AntdUI.Button();
             saveQuizBtn = new AntdUI.Button();
             dPCheckBox = new AntdUI.Checkbox();
             timeLimitComboBox = new ComboBox();
             questionTypeComboBox = new ComboBox();
             label2 = new Label();
             label1 = new Label();
-            delQuestionBtn = new AntdUI.Button();
             Header.SuspendLayout();
             controlBox.SuspendLayout();
             questionsPanel.SuspendLayout();
@@ -98,6 +98,7 @@
             minimizeBtn.Size = new Size(19, 19);
             minimizeBtn.TabIndex = 1;
             minimizeBtn.UseVisualStyleBackColor = false;
+            minimizeBtn.Click += minimizeBtn_Click;
             // 
             // closeBtn
             // 
@@ -111,6 +112,7 @@
             closeBtn.Size = new Size(19, 19);
             closeBtn.TabIndex = 0;
             closeBtn.UseVisualStyleBackColor = false;
+            closeBtn.Click += closeBtn_Click;
             // 
             // questionsPanel
             // 
@@ -161,6 +163,17 @@
             settingsPanel.Size = new Size(200, 601);
             settingsPanel.TabIndex = 6;
             // 
+            // delQuestionBtn
+            // 
+            delQuestionBtn.DefaultBack = Color.FromArgb(127, 216, 190);
+            delQuestionBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            delQuestionBtn.Location = new Point(22, 525);
+            delQuestionBtn.Name = "delQuestionBtn";
+            delQuestionBtn.Size = new Size(162, 29);
+            delQuestionBtn.TabIndex = 4;
+            delQuestionBtn.Text = "Delete";
+            delQuestionBtn.Click += delQuestionBtn_Click;
+            // 
             // saveQuizBtn
             // 
             saveQuizBtn.DefaultBack = Color.FromArgb(127, 216, 190);
@@ -184,7 +197,7 @@
             // timeLimitComboBox
             // 
             timeLimitComboBox.FormattingEnabled = true;
-            timeLimitComboBox.Items.AddRange(new object[] { "5 Seconds", "10 Seconds", "20 Seconds", "30 Seconds", "50 Seconds", "1 Minute", "2 Minutes", "4 Minutes" });
+            timeLimitComboBox.Items.AddRange(new object[] { "No Limit", "5 Seconds", "10 Seconds", "20 Seconds", "30 Seconds", "50 Seconds", "1 Minute", "2 Minutes", "4 Minutes" });
             timeLimitComboBox.Location = new Point(26, 177);
             timeLimitComboBox.Name = "timeLimitComboBox";
             timeLimitComboBox.Size = new Size(146, 23);
@@ -193,7 +206,7 @@
             // questionTypeComboBox
             // 
             questionTypeComboBox.FormattingEnabled = true;
-            questionTypeComboBox.Items.AddRange(new object[] { "Multiple Choice", "Identification", "True or False", "Drag and Drop", "Open - Ended" });
+            questionTypeComboBox.Items.AddRange(new object[] { "Multiple Choice", "Identification", "True or False", "Open-Ended", "Fill in the blanks" });
             questionTypeComboBox.Location = new Point(26, 49);
             questionTypeComboBox.Name = "questionTypeComboBox";
             questionTypeComboBox.Size = new Size(146, 23);
@@ -219,17 +232,6 @@
             label1.Size = new Size(121, 21);
             label1.TabIndex = 1;
             label1.Text = "Question Type";
-            // 
-            // delQuestionBtn
-            // 
-            delQuestionBtn.DefaultBack = Color.FromArgb(127, 216, 190);
-            delQuestionBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            delQuestionBtn.Location = new Point(22, 525);
-            delQuestionBtn.Name = "delQuestionBtn";
-            delQuestionBtn.Size = new Size(162, 29);
-            delQuestionBtn.TabIndex = 4;
-            delQuestionBtn.Text = "Delete";
-            delQuestionBtn.Click += delQuestionBtn_Click;
             // 
             // CreateQuizForm
             // 

@@ -33,6 +33,8 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             trueBtn = new Button();
             falseBtn = new Button();
+            btnAddImage = new Button();
+            btnRemoveImage = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -101,10 +103,30 @@
             falseBtn.UseVisualStyleBackColor = false;
             falseBtn.Click += falseBtn_Click;
             // 
+            // btnAddImage
+            // 
+            btnAddImage.Location = new Point(236, 127);
+            btnAddImage.Name = "btnAddImage";
+            btnAddImage.Size = new Size(116, 23);
+            btnAddImage.TabIndex = 14;
+            btnAddImage.Text = "Add Image";
+            btnAddImage.UseVisualStyleBackColor = true;
+            // 
+            // btnRemoveImage
+            // 
+            btnRemoveImage.Location = new Point(236, 156);
+            btnRemoveImage.Name = "btnRemoveImage";
+            btnRemoveImage.Size = new Size(116, 23);
+            btnRemoveImage.TabIndex = 14;
+            btnRemoveImage.Text = "Remove Image";
+            btnRemoveImage.UseVisualStyleBackColor = true;
+            // 
             // TrueFalse
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(btnRemoveImage);
+            Controls.Add(btnAddImage);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(questionTxtBox);
             Controls.Add(pictureBox1);
@@ -124,5 +146,7 @@
         private TableLayoutPanel tableLayoutPanel1;
         public Button trueBtn;
         public Button falseBtn;
+        private Button btnAddImage;
+        private Button btnRemoveImage;
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace Quizzz.IRTUP
+﻿namespace Quizzz.IRTUP.Forms
 {
-    partial class MainMenu
+    partial class MainMenuStudent
     {
         /// <summary>
         /// Required designer variable.
@@ -29,10 +29,9 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenu));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenuStudent));
             Header = new Panel();
             welcomeLbl = new Label();
-            label2 = new Label();
             label1 = new Label();
             menuPanelBtn = new PictureBox();
             controlBox = new Panel();
@@ -45,9 +44,9 @@
             pictureBox1 = new PictureBox();
             menuBtn = new Button();
             panel5 = new Panel();
-            manageQuizBtn = new Button();
+            viewQuizBtn = new Button();
             panel6 = new Panel();
-            button6 = new Button();
+            notificationBtn = new Button();
             menuContainer2 = new FlowLayoutPanel();
             panel2 = new Panel();
             pictureBox2 = new PictureBox();
@@ -62,10 +61,10 @@
             panel4 = new Panel();
             pictureBox4 = new PictureBox();
             button4 = new Button();
-            menuTransition = new System.Windows.Forms.Timer(components);
-            sideBarTransition = new System.Windows.Forms.Timer(components);
-            menuTransition2 = new System.Windows.Forms.Timer(components);
             mainMenuPanel = new FlowLayoutPanel();
+            sideBarTransition = new System.Windows.Forms.Timer(components);
+            menuTransition = new System.Windows.Forms.Timer(components);
+            menuTransition2 = new System.Windows.Forms.Timer(components);
             Header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)menuPanelBtn).BeginInit();
             controlBox.SuspendLayout();
@@ -90,15 +89,14 @@
             // 
             Header.BackColor = Color.Black;
             Header.Controls.Add(welcomeLbl);
-            Header.Controls.Add(label2);
             Header.Controls.Add(label1);
             Header.Controls.Add(menuPanelBtn);
             Header.Controls.Add(controlBox);
             Header.Dock = DockStyle.Top;
             Header.Location = new Point(0, 0);
             Header.Name = "Header";
-            Header.Size = new Size(1243, 43);
-            Header.TabIndex = 3;
+            Header.Size = new Size(1227, 43);
+            Header.TabIndex = 4;
             Header.MouseDown += OnMouseDown;
             // 
             // welcomeLbl
@@ -111,17 +109,6 @@
             welcomeLbl.Size = new Size(49, 20);
             welcomeLbl.TabIndex = 5;
             welcomeLbl.Text = "blank";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Century Gothic", 10.75F);
-            label2.ForeColor = SystemColors.ButtonHighlight;
-            label2.Location = new Point(199, 17);
-            label2.Name = "label2";
-            label2.Size = new Size(117, 20);
-            label2.TabIndex = 5;
-            label2.Text = "Teacher Mode";
             // 
             // label1
             // 
@@ -153,7 +140,7 @@
             controlBox.Controls.Add(minimizeBtn);
             controlBox.Controls.Add(closeBtn);
             controlBox.Dock = DockStyle.Right;
-            controlBox.Location = new Point(1158, 0);
+            controlBox.Location = new Point(1142, 0);
             controlBox.Name = "controlBox";
             controlBox.Size = new Size(85, 43);
             controlBox.TabIndex = 3;
@@ -202,7 +189,7 @@
             // 
             // sideBar
             // 
-            sideBar.BackColor = Color.FromArgb(3, 121, 113);
+            sideBar.BackColor = Color.FromArgb(50, 170, 160);
             sideBar.Controls.Add(menuContainer1);
             sideBar.Controls.Add(menuContainer2);
             sideBar.Controls.Add(panel3);
@@ -210,8 +197,8 @@
             sideBar.Dock = DockStyle.Left;
             sideBar.Location = new Point(0, 43);
             sideBar.Name = "sideBar";
-            sideBar.Size = new Size(199, 601);
-            sideBar.TabIndex = 4;
+            sideBar.Size = new Size(199, 562);
+            sideBar.TabIndex = 5;
             // 
             // menuContainer1
             // 
@@ -225,7 +212,7 @@
             menuContainer1.Margin = new Padding(0);
             menuContainer1.Name = "menuContainer1";
             menuContainer1.Size = new Size(196, 58);
-            menuContainer1.TabIndex = 6;
+            menuContainer1.TabIndex = 9;
             menuContainer1.WrapContents = false;
             // 
             // panel1
@@ -241,11 +228,11 @@
             // pictureBox1
             // 
             pictureBox1.Anchor = AnchorStyles.Left;
-            pictureBox1.BackColor = Color.FromArgb(3, 121, 113);
+            pictureBox1.BackColor = Color.FromArgb(50, 170, 160);
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox1.ErrorImage = null;
             pictureBox1.Image = Properties.Resources.homeicon;
-            pictureBox1.Location = new Point(9, 11);
+            pictureBox1.Location = new Point(12, 11);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(35, 35);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -254,7 +241,7 @@
             // 
             // menuBtn
             // 
-            menuBtn.BackColor = Color.FromArgb(3, 121, 113);
+            menuBtn.BackColor = Color.FromArgb(50, 170, 160);
             menuBtn.Cursor = Cursors.Hand;
             menuBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             menuBtn.Location = new Point(-50, -19);
@@ -268,48 +255,49 @@
             // 
             // panel5
             // 
-            panel5.Controls.Add(manageQuizBtn);
+            panel5.Controls.Add(viewQuizBtn);
             panel5.Location = new Point(0, 58);
             panel5.Margin = new Padding(0);
             panel5.Name = "panel5";
             panel5.Size = new Size(196, 58);
             panel5.TabIndex = 5;
             // 
-            // manageQuizBtn
+            // viewQuizBtn
             // 
-            manageQuizBtn.BackColor = Color.FromArgb(66, 226, 184);
-            manageQuizBtn.Cursor = Cursors.Hand;
-            manageQuizBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            manageQuizBtn.Location = new Point(-12, -19);
-            manageQuizBtn.Margin = new Padding(0);
-            manageQuizBtn.Name = "manageQuizBtn";
-            manageQuizBtn.Size = new Size(242, 100);
-            manageQuizBtn.TabIndex = 6;
-            manageQuizBtn.Text = "Manage Quizzes";
-            manageQuizBtn.UseVisualStyleBackColor = false;
-            manageQuizBtn.Click += manageQuizBtn_Click;
+            viewQuizBtn.BackColor = Color.FromArgb(66, 226, 184);
+            viewQuizBtn.Cursor = Cursors.Hand;
+            viewQuizBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            viewQuizBtn.Location = new Point(-12, -19);
+            viewQuizBtn.Margin = new Padding(0);
+            viewQuizBtn.Name = "viewQuizBtn";
+            viewQuizBtn.Size = new Size(242, 100);
+            viewQuizBtn.TabIndex = 6;
+            viewQuizBtn.Text = "Available Quizzes";
+            viewQuizBtn.UseVisualStyleBackColor = false;
+            viewQuizBtn.Click += viewQuizBtn_Click;
             // 
             // panel6
             // 
-            panel6.Controls.Add(button6);
+            panel6.Controls.Add(notificationBtn);
             panel6.Location = new Point(0, 116);
             panel6.Margin = new Padding(0);
             panel6.Name = "panel6";
             panel6.Size = new Size(196, 58);
             panel6.TabIndex = 5;
             // 
-            // button6
+            // notificationBtn
             // 
-            button6.BackColor = Color.FromArgb(66, 226, 184);
-            button6.Cursor = Cursors.Hand;
-            button6.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button6.Location = new Point(-12, -19);
-            button6.Margin = new Padding(0);
-            button6.Name = "button6";
-            button6.Size = new Size(242, 100);
-            button6.TabIndex = 6;
-            button6.Text = "Student Results";
-            button6.UseVisualStyleBackColor = false;
+            notificationBtn.BackColor = Color.FromArgb(66, 226, 184);
+            notificationBtn.Cursor = Cursors.Hand;
+            notificationBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            notificationBtn.Location = new Point(-12, -19);
+            notificationBtn.Margin = new Padding(0);
+            notificationBtn.Name = "notificationBtn";
+            notificationBtn.Size = new Size(242, 100);
+            notificationBtn.TabIndex = 6;
+            notificationBtn.Text = "Notifications";
+            notificationBtn.UseVisualStyleBackColor = false;
+            notificationBtn.Click += notificationBtn_Click;
             // 
             // menuContainer2
             // 
@@ -323,7 +311,7 @@
             menuContainer2.Margin = new Padding(0);
             menuContainer2.Name = "menuContainer2";
             menuContainer2.Size = new Size(196, 58);
-            menuContainer2.TabIndex = 6;
+            menuContainer2.TabIndex = 10;
             menuContainer2.WrapContents = false;
             // 
             // panel2
@@ -339,11 +327,11 @@
             // pictureBox2
             // 
             pictureBox2.Anchor = AnchorStyles.Left;
-            pictureBox2.BackColor = Color.FromArgb(3, 121, 113);
+            pictureBox2.BackColor = Color.FromArgb(50, 170, 160);
             pictureBox2.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox2.ErrorImage = null;
             pictureBox2.Image = Properties.Resources.settingicon;
-            pictureBox2.Location = new Point(9, 11);
+            pictureBox2.Location = new Point(15, 10);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(35, 35);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -352,7 +340,7 @@
             // 
             // settingsBtn
             // 
-            settingsBtn.BackColor = Color.FromArgb(3, 121, 113);
+            settingsBtn.BackColor = Color.FromArgb(50, 170, 160);
             settingsBtn.Cursor = Cursors.Hand;
             settingsBtn.Font = new Font("Century Gothic", 9F);
             settingsBtn.Location = new Point(-12, -19);
@@ -415,16 +403,16 @@
             panel3.Margin = new Padding(0);
             panel3.Name = "panel3";
             panel3.Size = new Size(196, 58);
-            panel3.TabIndex = 5;
+            panel3.TabIndex = 7;
             // 
             // pictureBox3
             // 
             pictureBox3.Anchor = AnchorStyles.Left;
-            pictureBox3.BackColor = Color.FromArgb(3, 121, 113);
+            pictureBox3.BackColor = Color.FromArgb(50, 170, 160);
             pictureBox3.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox3.ErrorImage = null;
             pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
-            pictureBox3.Location = new Point(9, 11);
+            pictureBox3.Location = new Point(16, 12);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new Size(35, 35);
             pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -433,7 +421,7 @@
             // 
             // button3
             // 
-            button3.BackColor = Color.FromArgb(3, 121, 113);
+            button3.BackColor = Color.FromArgb(50, 170, 160);
             button3.Cursor = Cursors.Hand;
             button3.Font = new Font("Century Gothic", 9F);
             button3.Location = new Point(-26, -19);
@@ -451,16 +439,16 @@
             panel4.Margin = new Padding(0);
             panel4.Name = "panel4";
             panel4.Size = new Size(196, 58);
-            panel4.TabIndex = 5;
+            panel4.TabIndex = 8;
             // 
             // pictureBox4
             // 
             pictureBox4.Anchor = AnchorStyles.Left;
-            pictureBox4.BackColor = Color.FromArgb(3, 121, 113);
+            pictureBox4.BackColor = Color.FromArgb(50, 170, 160);
             pictureBox4.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox4.ErrorImage = null;
             pictureBox4.Image = (Image)resources.GetObject("pictureBox4.Image");
-            pictureBox4.Location = new Point(9, 11);
+            pictureBox4.Location = new Point(15, 13);
             pictureBox4.Name = "pictureBox4";
             pictureBox4.Size = new Size(35, 35);
             pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -469,7 +457,7 @@
             // 
             // button4
             // 
-            button4.BackColor = Color.FromArgb(3, 121, 113);
+            button4.BackColor = Color.FromArgb(50, 170, 160);
             button4.Cursor = Cursors.Hand;
             button4.Font = new Font("Century Gothic", 9F);
             button4.Location = new Point(-26, -19);
@@ -479,46 +467,42 @@
             button4.Text = "Logout";
             button4.UseVisualStyleBackColor = false;
             // 
-            // menuTransition
-            // 
-            menuTransition.Interval = 10;
-            menuTransition.Tick += menuTransition_Tick;
-            // 
-            // sideBarTransition
-            // 
-            sideBarTransition.Interval = 10;
-            sideBarTransition.Tick += sideBarTransition_Tick;
-            // 
-            // menuTransition2
-            // 
-            menuTransition2.Interval = 10;
-            menuTransition2.Tick += menuTransition2_Tick;
-            // 
             // mainMenuPanel
             // 
             mainMenuPanel.Dock = DockStyle.Fill;
             mainMenuPanel.Location = new Point(199, 43);
             mainMenuPanel.Margin = new Padding(0);
             mainMenuPanel.Name = "mainMenuPanel";
-            mainMenuPanel.Size = new Size(1044, 601);
-            mainMenuPanel.TabIndex = 5;
+            mainMenuPanel.Size = new Size(1028, 562);
+            mainMenuPanel.TabIndex = 6;
             mainMenuPanel.WrapContents = false;
             // 
-            // MainMenu
+            // sideBarTransition
+            // 
+            sideBarTransition.Interval = 10;
+            sideBarTransition.Tick += sideBarTransition_Tick;
+            // 
+            // menuTransition
+            // 
+            menuTransition.Interval = 10;
+            menuTransition.Tick += menuTransition_Tick;
+            // 
+            // menuTransition2
+            // 
+            menuTransition2.Interval = 10;
+            menuTransition2.Tick += menuTransition2_Tick;
+            // 
+            // MainMenuStudent
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(238, 229, 233);
-            ClientSize = new Size(1243, 644);
-            ControlBox = false;
+            ClientSize = new Size(1227, 605);
             Controls.Add(mainMenuPanel);
             Controls.Add(sideBar);
             Controls.Add(Header);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "MainMenu";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "MainMenu";
-            Resize += MainMenu_Resize;
+            Name = "MainMenuStudent";
+            Text = "MainMenuStudent";
             Header.ResumeLayout(false);
             Header.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)menuPanelBtn).EndInit();
@@ -544,40 +528,39 @@
         #endregion
 
         private Panel Header;
+        private Label welcomeLbl;
+        private Label label1;
+        private PictureBox menuPanelBtn;
         private Panel controlBox;
+        private Button maximizeBtn;
         private Button minimizeBtn;
         private Button closeBtn;
-        private Button maximizeBtn;
-        private PictureBox menuPanelBtn;
         private FlowLayoutPanel sideBar;
-        private Label label1;
+        private FlowLayoutPanel mainMenuPanel;
+        private System.Windows.Forms.Timer sideBarTransition;
+        private FlowLayoutPanel menuContainer1;
         private Panel panel1;
-        private Button menuBtn;
         private PictureBox pictureBox1;
+        private Button menuBtn;
+        private Panel panel5;
+        private Button viewQuizBtn;
+        private Panel panel6;
+        private Button notificationBtn;
+        private FlowLayoutPanel menuContainer2;
         private Panel panel2;
         private PictureBox pictureBox2;
         private Button settingsBtn;
+        private Panel panel7;
+        private Button generalSettingsBtn;
+        private Panel panel8;
+        private Button accountSettingsBtn;
         private Panel panel3;
         private PictureBox pictureBox3;
         private Button button3;
         private Panel panel4;
         private PictureBox pictureBox4;
         private Button button4;
-        private FlowLayoutPanel menuContainer1;
-        private Panel panel5;
-        private Button manageQuizBtn;
-        private Panel panel6;
-        private Button button6;
-        private FlowLayoutPanel menuContainer2;
-        private Panel panel7;
-        private Button generalSettingsBtn;
-        private Panel panel8;
-        private Button accountSettingsBtn;
         private System.Windows.Forms.Timer menuTransition;
-        private System.Windows.Forms.Timer sideBarTransition;
         private System.Windows.Forms.Timer menuTransition2;
-        private FlowLayoutPanel mainMenuPanel;
-        private Label label2;
-        private Label welcomeLbl;
     }
 }

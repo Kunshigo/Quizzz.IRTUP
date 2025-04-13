@@ -74,5 +74,11 @@ namespace Quizzz.IRTUP
         {
             RegisterTeacher?.Invoke(this, EventArgs.Empty);
         }
+
+        public event EventHandler RegisterStudent;
+        private void studentBtn_Click(object sender, EventArgs e)
+        {
+            RegisterStudent?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

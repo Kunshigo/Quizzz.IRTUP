@@ -55,7 +55,7 @@
             // 
             cmbSort.Anchor = AnchorStyles.Right;
             cmbSort.FormattingEnabled = true;
-            cmbSort.Location = new Point(833, 17);
+            cmbSort.Location = new Point(833, 10);
             cmbSort.Name = "cmbSort";
             cmbSort.ShowSymbolFontPreview = false;
             cmbSort.Size = new Size(200, 24);
@@ -80,6 +80,7 @@
             // 
             // panel1
             // 
+            panel1.AutoSize = true;
             panel1.BackColor = Color.FromArgb(3, 121, 113);
             panel1.Controls.Add(txtSearch);
             panel1.Controls.Add(label1);
@@ -88,27 +89,28 @@
             panel1.Location = new Point(0, 0);
             panel1.Margin = new Padding(0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1047, 59);
+            panel1.Size = new Size(1047, 43);
             panel1.TabIndex = 3;
             // 
             // txtSearch
             // 
             txtSearch.Anchor = AnchorStyles.Right;
             txtSearch.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtSearch.Location = new Point(607, 18);
+            txtSearch.Location = new Point(607, 11);
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(200, 23);
             txtSearch.TabIndex = 3;
             // 
             // quizzesPanel
             // 
-            quizzesPanel.AutoScroll = true;
-            quizzesPanel.BackColor = Color.FromArgb(137, 207, 240);
+            quizzesPanel.AutoSize = true;
+            quizzesPanel.BackColor = Color.FromArgb(160, 220, 180);
+            quizzesPanel.BorderStyle = BorderStyle.FixedSingle;
             quizzesPanel.Controls.Add(panel2);
             quizzesPanel.Dock = DockStyle.Top;
-            quizzesPanel.Location = new Point(0, 59);
+            quizzesPanel.Location = new Point(0, 43);
             quizzesPanel.Name = "quizzesPanel";
-            quizzesPanel.Size = new Size(1047, 209);
+            quizzesPanel.Size = new Size(1047, 208);
             quizzesPanel.TabIndex = 4;
             // 
             // panel2
@@ -137,7 +139,7 @@
             // delQuizBtn
             // 
             delQuizBtn.Cursor = Cursors.Hand;
-            delQuizBtn.DefaultBack = Color.AntiqueWhite;
+            delQuizBtn.DefaultBack = Color.PaleVioletRed;
             delQuizBtn.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             delQuizBtn.Location = new Point(763, 543);
             delQuizBtn.Name = "delQuizBtn";
@@ -150,7 +152,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(137, 207, 240);
+            BackColor = Color.FromArgb(160, 220, 180);
             Controls.Add(delQuizBtn);
             Controls.Add(btnAddQuiz);
             Controls.Add(quizzesPanel);
@@ -163,6 +165,7 @@
             panel1.PerformLayout();
             quizzesPanel.ResumeLayout(false);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

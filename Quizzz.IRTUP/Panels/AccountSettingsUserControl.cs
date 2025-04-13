@@ -87,8 +87,7 @@ namespace Quizzz.IRTUP.Panels
                 username: newUsername,
                 email: newEmail,
                 password: finalPassword,
-                subject: newSubject,
-                gradeLevel: newGrade
+                subject: newSubject
             );
 
             if (updated)

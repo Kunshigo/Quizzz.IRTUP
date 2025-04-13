@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using Syncfusion;
+using Quizzz.IRTUP.Panels;
 
 namespace Quizzz.IRTUP
 {
@@ -19,7 +20,8 @@ namespace Quizzz.IRTUP
             InitializeComponent();
             LoadRegisterMenu();
             registerMenu registerMenu = new registerMenu();
-            registerMenu.RegisterTeacher += changeUserControl;
+            registerMenu.RegisterTeacher += changeUserControlToTeacher;
+            registerMenu.RegisterStudent += changeUserControlToStudent;
             teacherPanel teacherForm = new teacherPanel();
             teacherForm.goBackBtn += BackBtn;
 
@@ -28,7 +30,8 @@ namespace Quizzz.IRTUP
         private void LoadRegisterMenu()
         {
             _registerMenu = new registerMenu(); // Assign to the field
-            _registerMenu.RegisterTeacher += changeUserControl; // Subscribe to its event
+            _registerMenu.RegisterTeacher += changeUserControlToTeacher; // Subscribe to its event
+            _registerMenu.RegisterStudent += changeUserControlToStudent;
             signUpPanel.Controls.Add(_registerMenu);
         }
 
@@ -41,7 +44,7 @@ namespace Quizzz.IRTUP
         {
             signUpPanel.Controls.Clear();
             // Reattach the event in case it was lost
-            _registerMenu.RegisterTeacher += changeUserControl;
+            _registerMenu.RegisterTeacher += changeUserControlToTeacher;
             signUpPanel.Controls.Add(_registerMenu);
         }
 
@@ -70,10 +73,27 @@ namespace Quizzz.IRTUP
             signUpPanel.Controls.Clear();
             signUpPanel.Controls.Add(_teacherForm);
         }
+
+        private StudentPanel1 _studentForm1;
+        private void changeToStudent()
+        {
+            if (_studentForm1 == null)
+            {
+                _studentForm1 = new StudentPanel1();
+                _studentForm1.goBackBtn += BackBtn;
+            }
+            signUpPanel.Controls.Clear();
+            signUpPanel.Controls.Add(_studentForm1);
+        }
         
-        private void changeUserControl(object sender, EventArgs e)
+        private void changeUserControlToTeacher(object sender, EventArgs e)
         {
             changeToTeacher();
+        }
+
+        private void changeUserControlToStudent(object sender, EventArgs e)
+        {
+            changeToStudent();
         }
 
         public const int WM_NCLBUTTONDOWN = 0xA1;

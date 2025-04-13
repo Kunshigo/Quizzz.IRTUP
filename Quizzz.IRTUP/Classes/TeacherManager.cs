@@ -17,7 +17,7 @@ namespace Quizzz.IRTUP.Classes
             dbHelper = new DatabaseHelper();
         }
 
-        public bool RegisterTeacher(string username, string email, string password, string subject, string gradeLevel)
+        public bool RegisterTeacher(string username, string email, string password, string subject)
         {
             if (!IsValidEmail(email))
             {
@@ -44,13 +44,12 @@ namespace Quizzz.IRTUP.Classes
 
             string hashedPassword = HashPassword(password);
 
-            string insertQuery = "INSERT INTO Teachers (Username, Email, [Password], Subject, GradeLevel) VALUES (@Username, @Email, @Password, @Subject, @GradeLevel)";
+            string insertQuery = "INSERT INTO Teachers (Username, Email, [Password], Subject) VALUES (@Username, @Email, @Password, @Subject)";
             return dbHelper.ExecuteQuery(insertQuery,
                 new OleDbParameter("@Username", username),
                 new OleDbParameter("@Email", email),
                 new OleDbParameter("@Password", hashedPassword),
-                new OleDbParameter("@Subject", subject),
-                new OleDbParameter("@GradeLevel", gradeLevel));
+                new OleDbParameter("@Subject", subject));
         }
 
         public int LoginTeacher(string usernameOrEmail, string password)
@@ -70,13 +69,12 @@ namespace Quizzz.IRTUP.Classes
                 }
             }
 
-            MessageBox.Show("Invalid username/email or password.");
             return -1;
         }
 
         public Dictionary<string, string> GetTeacherDetails(int teacherID)
         {
-            string query = "SELECT Username, Email, [Password], Subject, GradeLevel FROM Teachers WHERE TeacherID = @TeacherID";
+            string query = "SELECT Username, Email, [Password], Subject FROM Teachers WHERE TeacherID = @TeacherID";
             DataTable dt = dbHelper.GetData(query, new OleDbParameter("@TeacherID", teacherID));
 
             if (dt.Rows.Count > 0)
@@ -87,7 +85,6 @@ namespace Quizzz.IRTUP.Classes
             { "Email", dt.Rows[0]["Email"].ToString() },
             { "Password", dt.Rows[0]["Password"].ToString() },  // ✅ add this
             { "Subject", dt.Rows[0]["Subject"].ToString() },
-            { "GradeLevel", dt.Rows[0]["GradeLevel"].ToString() },
             { "TeacherID", teacherID.ToString() } // helpful for updates
         };
             }
@@ -141,7 +138,7 @@ namespace Quizzz.IRTUP.Classes
             return hasUpper && hasLower && hasDigit && hasSpecial;
         }
 
-        public bool UpdateTeacherInfo(int teacherId, string username, string email, string password, string subject, string gradeLevel)
+        public bool UpdateTeacherInfo(int teacherId, string username, string email, string password, string subject)
         {
             if (!IsValidEmail(email))
             {
@@ -153,7 +150,7 @@ namespace Quizzz.IRTUP.Classes
 
             string query = @"UPDATE Teachers 
                              SET Username = @Username, Email = @Email, [Password] = @Password, 
-                                 Subject = @Subject, GradeLevel = @GradeLevel 
+                                 Subject = @Subject 
                              WHERE TeacherID = @TeacherID";
 
             return dbHelper.ExecuteQuery(query,
@@ -161,7 +158,6 @@ namespace Quizzz.IRTUP.Classes
                 new OleDbParameter("@Email", email),
                 new OleDbParameter("@Password", hashedPassword),
                 new OleDbParameter("@Subject", subject),
-                new OleDbParameter("@GradeLevel", gradeLevel),
                 new OleDbParameter("@TeacherID", teacherId)
             );
         }

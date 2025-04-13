@@ -16,11 +16,11 @@ using AntdUI.In;
 
 namespace Quizzz.IRTUP
 {
-    public partial class MainMenu : Form
+    public partial class MainMenuTeacher : Form
     {
         public Dictionary<string, string> teacherDetails;
 
-        public MainMenu(Dictionary<string, string> teacherDetails)
+        public MainMenuTeacher(Dictionary<string, string> teacherDetails)
         {
             InitializeComponent();
             this.teacherDetails = teacherDetails;

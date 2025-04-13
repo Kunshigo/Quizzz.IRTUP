@@ -46,13 +46,30 @@ namespace Quizzz.IRTUP.Panels
 
         private void CreateQuizCard(string quizName, int quizID, DateTime dateCreated)
         {
+            DatabaseHelper db = new DatabaseHelper();
+            DataTable quizData = db.GetData(
+                @"SELECT q.Difficulty, t.Subject 
+          FROM Quizzes q
+          INNER JOIN Teachers t ON q.TeacherID = t.TeacherID
+          WHERE q.QuizID = @QuizID",
+                new OleDbParameter("@QuizID", quizID));
+
+            string subject = "", difficulty = "";
+
+
+            if (quizData.Rows.Count > 0)
+            {
+                subject = quizData.Rows[0]["Subject"].ToString();
+                difficulty = quizData.Rows[0]["Difficulty"].ToString();
+            }
+
             Panel quizPanel = new Panel
             {
                 Width = 180,
-                Height = 180,
+                Height = 200, // Increased to fit more info
                 Padding = new Padding(10),
                 Margin = new Padding(3),
-                BackColor = isDeleteMode ? Color.FromArgb(255, 180, 180) : Color.FromArgb(255, 192, 192),
+                BackColor = isDeleteMode ? Color.FromArgb(255, 210, 210) : Color.FromArgb(230, 250, 230),
                 BorderStyle = isDeleteMode ? BorderStyle.FixedSingle : BorderStyle.None,
                 Tag = quizID
             };
@@ -62,8 +79,9 @@ namespace Quizzz.IRTUP.Panels
                 Text = quizName,
                 Dock = DockStyle.Top,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Century Gothic", 12, FontStyle.Bold),
-                Height = 40
+                Font = new Font("Century Gothic", 11, FontStyle.Bold),
+                ForeColor = Color.DarkOliveGreen,
+                Height = 35
             };
 
             Label dateLabel = new Label
@@ -71,9 +89,29 @@ namespace Quizzz.IRTUP.Panels
                 Text = $"Created: {dateCreated:MMM dd, yyyy}",
                 Dock = DockStyle.Top,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Segoe UI", 9, FontStyle.Italic),
-                ForeColor = Color.Gray,
-                Height = 30
+                Font = new Font("Century Gothic", 9, FontStyle.Italic),
+                ForeColor = Color.SeaGreen,
+                Height = 25
+            };
+
+            Label subjectLabel = new Label
+            {
+                Text = $"Grade Level: {subject}",
+                Dock = DockStyle.Top,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Century Gothic", 9),
+                ForeColor = Color.SeaGreen,
+                Height = 20
+            };
+
+            Label difficultyLabel = new Label
+            {
+                Text = $"Difficulty: {difficulty}",
+                Dock = DockStyle.Top,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Century Gothic", 9),
+                ForeColor = Color.SeaGreen,
+                Height = 20
             };
 
             Button quizButton = new Button
@@ -81,61 +119,184 @@ namespace Quizzz.IRTUP.Panels
                 Text = isDeleteMode ? "🗑 Click to Delete" : "Open Quiz",
                 Dock = DockStyle.Bottom,
                 Tag = quizID,
-                BackColor = isDeleteMode ? Color.IndianRed : Color.DarkSlateBlue,
+                BackColor = isDeleteMode ? Color.IndianRed : Color.MediumSeaGreen,
                 ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat
+                FlatStyle = FlatStyle.Flat,
+                Height = 35
             };
             quizButton.FlatAppearance.BorderSize = 0;
             quizButton.Click += QuizButton_Click;
 
-            // Hover highlight effect
             quizPanel.MouseEnter += (s, e) =>
             {
-                if (isDeleteMode)
-                    quizPanel.BackColor = Color.FromArgb(255, 150, 150);
+                if (isDeleteMode) quizPanel.BackColor = Color.FromArgb(255, 150, 150);
             };
             quizPanel.MouseLeave += (s, e) =>
             {
-                if (isDeleteMode)
-                    quizPanel.BackColor = Color.FromArgb(255, 180, 180);
+                if (isDeleteMode) quizPanel.BackColor = Color.FromArgb(255, 180, 180);
             };
 
-            // Add controls
+            // Add context menu for editing
+            ContextMenuStrip menu = new ContextMenuStrip();
+            menu.Items.Add("Edit Quiz Info").Click += (s, e) => ShowEditQuizDialog(quizID);
+            quizPanel.ContextMenuStrip = menu;
+
+            // Add controls to the panel
             quizPanel.Controls.Add(quizButton);
+            quizPanel.Controls.Add(difficultyLabel);
+            quizPanel.Controls.Add(subjectLabel);
             quizPanel.Controls.Add(dateLabel);
             quizPanel.Controls.Add(quizTitle);
             quizzesPanel.Controls.Add(quizPanel);
         }
 
+        private void ShowEditQuizDialog(int quizID)
+        {
+            DatabaseHelper db = new DatabaseHelper();
+            DataTable quizData = db.GetData("SELECT * FROM Quizzes WHERE QuizID = @QuizID", new OleDbParameter("@QuizID", quizID));
+            if (quizData.Rows.Count == 0) return;
+
+            DataRow quiz = quizData.Rows[0];
+            string title = quiz["Title"].ToString();
+            string grade = quiz["Subject"].ToString();
+            string difficulty = quiz["Difficulty"].ToString();
+
+            Form editForm = new Form
+            {
+                Text = "Edit Quiz Info",
+                Size = new Size(350, 300),
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterScreen,
+                BackColor = Color.FromArgb(240, 248, 255),
+            };
+
+            Label lblTitle = new Label { Text = "Quiz Title", Left = 20, Top = 20, Width = 100, Font = new Font("Century Gothic", 10) };
+            TextBox txtTitle = new TextBox { Text = title, Left = 20, Top = 45, Width = 280, Font = new Font("Century Gothic", 10) };
+
+            Label lblSubject = new Label
+            {
+                Text = $"Subject: {teacherDetails["Subject"]}",
+                Left = 20,
+                Top = 85,
+                Width = 280,
+                Font = new Font("Century Gothic", 10)
+            };
+
+            Label lblDifficulty = new Label { Text = "Difficulty", Left = 20, Top = 150, Width = 100, Font = new Font("Century Gothic", 10) };
+            ComboBox cboDifficulty = new ComboBox { Left = 20, Top = 175, Width = 280, DropDownStyle = ComboBoxStyle.DropDownList };
+            cboDifficulty.Items.AddRange(new string[] { "Easy", "Medium", "Hard" });
+            cboDifficulty.SelectedItem = difficulty;
+
+            Button btnSave = new Button
+            {
+                Text = "Save Changes",
+                Left = 90,
+                Top = 220,
+                Width = 150,
+                BackColor = Color.MediumSeaGreen,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
+            };
+            btnSave.FlatAppearance.BorderSize = 0;
+
+            btnSave.Click += (s, ev) =>
+            {
+                string updatedTitle = txtTitle.Text.Trim();
+                string updatedGrade = lblSubject.Text.ToString() ?? "";
+                string updatedDiff = cboDifficulty.SelectedItem?.ToString() ?? "";
+
+                if (string.IsNullOrWhiteSpace(updatedTitle)) return;
+
+                string updateQuery = "UPDATE Quizzes SET Title = @Title, Subject = @Subject, Difficulty = @Difficulty WHERE QuizID = @QuizID";
+                OleDbParameter[] parameters = new OleDbParameter[]
+                {
+            new OleDbParameter("@Title", updatedTitle),
+            new OleDbParameter("@Subject", updatedGrade),
+            new OleDbParameter("@Difficulty", updatedDiff),
+            new OleDbParameter("@QuizID", quizID)
+                };
+
+                if (db.ExecuteQuery(updateQuery, parameters))
+                {
+                    MessageBox.Show("Quiz updated!");
+                    editForm.Close();
+                    LoadQuizzes(_teacherID);
+                }
+            };
+
+            editForm.Controls.AddRange(new Control[] { lblTitle, txtTitle, lblSubject, lblDifficulty, cboDifficulty, btnSave });
+            editForm.ShowDialog();
+        }
 
 
         private void btnAddQuiz_Click(object sender, EventArgs e)
         {
-            string quizName = Microsoft.VisualBasic.Interaction.InputBox("Enter Quiz Name:", "Add New Quiz");
-
-            if (!string.IsNullOrWhiteSpace(quizName))
+            Form newQuizForm = new Form
             {
-                DatabaseHelper db = new DatabaseHelper();
+                Text = "Create New Quiz",
+                Size = new Size(350, 300),
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterScreen,
+                BackColor = Color.FromArgb(245, 245, 255)
+            };
 
-                string insertQuery = "INSERT INTO Quizzes (Title, TeacherID, CreatedDate) VALUES (@Title, @TeacherID, @CreatedDate);";
+            Label lblTitle = new Label { Text = "Quiz Title", Left = 20, Top = 20, Width = 100, Font = new Font("Century Gothic", 10) };
+            TextBox txtTitle = new TextBox { Left = 20, Top = 45, Width = 280, Font = new Font("Century Gothic", 10) };
+
+            Label lblSubject = new Label
+            {
+                Text = $"Subject: {teacherDetails["Subject"]}",
+                Left = 20,
+                Top = 85,
+                Width = 280,
+                Font = new Font("Century Gothic", 10)
+            };
+
+            Label lblDifficulty = new Label { Text = "Difficulty", Left = 20, Top = 150, Width = 100, Font = new Font("Century Gothic", 10) };
+            ComboBox cboDifficulty = new ComboBox { Left = 20, Top = 175, Width = 280, DropDownStyle = ComboBoxStyle.DropDownList };
+            cboDifficulty.Items.AddRange(new string[] { "Easy", "Medium", "Hard" });
+
+            Button btnCreate = new Button
+            {
+                Text = "Create Quiz",
+                Left = 90,
+                Top = 220,
+                Width = 150,
+                BackColor = Color.MediumSlateBlue,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
+            };
+            btnCreate.FlatAppearance.BorderSize = 0;
+
+            btnCreate.Click += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(txtTitle.Text)) return;
+
+                DatabaseHelper db = new DatabaseHelper();
+                string insertQuery = @"INSERT INTO Quizzes 
+                             (Title, TeacherID, CreatedDate, Difficulty) 
+                             VALUES (@Title, @TeacherID, @CreatedDate, @Difficulty)";
                 OleDbParameter[] parameters = new OleDbParameter[]
                 {
-            new OleDbParameter("@Title", quizName),
+            new OleDbParameter("@Title", txtTitle.Text.Trim()),
             new OleDbParameter("@TeacherID", _teacherID),
-            new OleDbParameter("@CreatedDate", DateTime.Now.ToString("yyyy-MM-dd"))
+            new OleDbParameter("@CreatedDate", DateTime.Now.ToString("yyyy-MM-dd")),
+            new OleDbParameter("@Difficulty", cboDifficulty.SelectedItem?.ToString() ?? "")
                 };
 
-                bool success = db.ExecuteQuery(insertQuery, parameters);
+                if (db.ExecuteQuery(insertQuery, parameters))
+                {
+                    MessageBox.Show("Quiz created!");
+                    newQuizForm.Close();
+                    LoadQuizzes(_teacherID);
+                }
+            };
 
-                if (success)
-                {
-                    LoadQuizzes(_teacherID); // Refresh list of quizzes
-                }
-                else
-                {
-                    MessageBox.Show("Failed to add quiz.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            newQuizForm.Controls.Add(txtTitle);
+            newQuizForm.Controls.Add(lblSubject);
+            newQuizForm.Controls.Add(cboDifficulty);
+            newQuizForm.Controls.Add(btnCreate);
+            newQuizForm.ShowDialog();
         }
 
         private void LoadQuizzes(int teacherID)

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AntdUI;
+using Quizzz.IRTUP.Classes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,6 +22,7 @@ namespace Quizzz.IRTUP.QuestionTypePanels
         public string CorrectAnswer { get; set; } = null;
         public string QuestionText => questionTxtBox.Text;
         public int QuestionNo { get; set; }
+        public byte[] ImageData { get; private set; }
 
         public TrueFalse()
         {
@@ -30,6 +33,12 @@ namespace Quizzz.IRTUP.QuestionTypePanels
             this.Resize += TrueFalse_Resize;
             formOriginalSize = this.Size;
             recTxt = new Rectangle(questionTxtBox.Location, questionTxtBox.Size);
+
+            QuestionImageHelper.InitializeImageHandling(
+            pictureBox1,
+            btnAddImage,
+            btnRemoveImage,
+            data => ImageData = data);
         }
 
         public void SelectCorrectAnswer(int index)
@@ -50,13 +59,25 @@ namespace Quizzz.IRTUP.QuestionTypePanels
             }
         }
 
-        public void LoadData(string questionText, string correctAnswer)
+        public void LoadData(string questionText, string correctAnswer, byte[] imageData = null)
         {
             questionTxtBox.Text = questionText;
             if (correctAnswer == "True")
                 SelectCorrectAnswer(0);
             else if (correctAnswer == "False")
                 SelectCorrectAnswer(1);
+            ImageData = imageData;
+            QuestionImageHelper.LoadImage(pictureBox1, imageData);
+        }
+        public Image GetImage()
+        {
+            return QuestionImageHelper.BytesToImage(ImageData);
+        }
+
+        public void SetImage(Image image)
+        {
+            ImageData = QuestionImageHelper.GetImageBytes(image);
+            QuestionImageHelper.LoadImage(pictureBox1, ImageData);
         }
 
         private void trueBtn_Click(object sender, EventArgs e)
