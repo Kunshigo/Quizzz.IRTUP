@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.OleDb;
 
 namespace Quizzz.IRTUP.Panels
 {
@@ -78,8 +79,10 @@ namespace Quizzz.IRTUP.Panels
                 subjectFilter == "All Subjects" ? null : subjectFilter,
                 difficultyFilter == "All Difficulties" ? null : difficultyFilter);
 
-            // Get completed quiz IDs for this student
-            DataTable completedQuizzes = db.GetCompletedQuizzes(_studentID);
+            // Get completed quiz data for this student (including CompletedDate)
+            DataTable completedQuizzes = db.GetData(
+                "SELECT QuizID, CompletedDate FROM CompletedQuizzes WHERE StudentID = @StudentID",
+                new OleDbParameter("@StudentID", _studentID));
 
             foreach (DataRow quiz in quizzes.Rows)
             {
@@ -89,19 +92,29 @@ namespace Quizzz.IRTUP.Panels
                 string difficulty = quiz["Difficulty"].ToString();
                 DateTime createdDate = SafeDate(quiz["CreatedDate"]);
 
-                bool isCompleted = completedQuizzes.AsEnumerable()
-                    .Any(row => Convert.ToInt32(row["QuizID"]) == quizID);
+                // Find if this quiz is completed and get the completion date
+                DateTime? completedDate = null;
+                bool isCompleted = false;
 
-                CreateQuizCard(quizID, title, subject, difficulty, createdDate, isCompleted);
+                var completedRow = completedQuizzes.AsEnumerable()
+                    .FirstOrDefault(row => Convert.ToInt32(row["QuizID"]) == quizID);
+
+                if (completedRow != null)
+                {
+                    isCompleted = true;
+                    completedDate = SafeDate(completedRow["CompletedDate"]);
+                }
+
+                CreateQuizCard(quizID, title, subject, difficulty, createdDate, isCompleted, completedDate);
             }
         }
 
-        private void CreateQuizCard(int quizID, string title, string subject, string difficulty, DateTime createdDate, bool isCompleted)
+        private void CreateQuizCard(int quizID, string title, string subject, string difficulty, DateTime createdDate, bool isCompleted, DateTime? completedDate = null)
         {
             Panel quizPanel = new Panel
             {
                 Width = 200,
-                Height = 180,
+                Height = 200, // Increased height to accommodate extra label
                 Padding = new Padding(10),
                 Margin = new Padding(10),
                 BackColor = isCompleted ? Color.FromArgb(230, 255, 230) : Color.FromArgb(230, 240, 255),
@@ -148,6 +161,21 @@ namespace Quizzz.IRTUP.Panels
                 ForeColor = Color.Gray,
                 Height = 20
             };
+
+            // Add completed date label if the quiz is completed
+            if (isCompleted && completedDate.HasValue)
+            {
+                Label completedDateLabel = new Label
+                {
+                    Text = $"Completed: {completedDate.Value:MMM dd, yyyy}",
+                    Dock = DockStyle.Top,
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    Font = new Font("Century Gothic", 8, FontStyle.Italic),
+                    ForeColor = Color.Green,
+                    Height = 20
+                };
+                quizPanel.Controls.Add(completedDateLabel);
+            }
 
             Button actionButton = new Button
             {

@@ -221,7 +221,7 @@ namespace Quizzz.IRTUP.Classes
             string query = "SELECT * FROM Questions WHERE QuizID = @QuizID ORDER BY QuestionNo";
             OleDbParameter[] parameters = new OleDbParameter[]
             {
-        new OleDbParameter("@QuizID", quizID)
+                new OleDbParameter("@QuizID", quizID)
             };
             return GetData(query, parameters);
         }
@@ -966,15 +966,136 @@ namespace Quizzz.IRTUP.Classes
             }
         }
 
-        public DataTable GetCompletedQuizzes(int studentID)
-        {
-            string query = "SELECT QuizID FROM CompletedQuizzes WHERE StudentID = @StudentID";
-            OleDbParameter[] parameters = new OleDbParameter[]
-            {
-        new OleDbParameter("@StudentID", studentID)
-            };
 
-            return GetData(query, parameters);
+
+
+        public DataTable GetTeacherQuizzes(int teacherID)
+        {
+            string query = "SELECT QuizID, Title, Subject FROM Quizzes WHERE TeacherID = @TeacherID";
+            return GetData(query, new OleDbParameter("@TeacherID", teacherID));
+        }
+
+        public DataTable GetQuizResults(int quizID)
+        {
+            string query = @"
+        SELECT 
+            s.StudentID,
+            s.Username, 
+            cq.Score, 
+            cq.CompletedDate,
+            (
+                SELECT COUNT(*) 
+                FROM OpenEndedAnswers oea
+                WHERE oea.QuizID = cq.QuizID 
+                  AND oea.StudentID = cq.StudentID 
+                  AND oea.IsGraded = 0
+            ) AS UngradedCount
+        FROM CompletedQuizzes cq
+        INNER JOIN Students s ON cq.StudentID = s.StudentID
+        WHERE cq.QuizID = ?";
+
+            return GetData(query, new OleDbParameter("@QuizID", quizID.ToString()));
+        }
+
+        public DataTable GetStudentAnswers(int quizID, int studentID)
+        {
+            string query = @"
+        SELECT 
+            q.QuestionNo, 
+            q.QuestionText, 
+            oe.Answer AS StudentAnswer,
+            oe.IsGraded,
+            oe.Score
+        FROM Questions q
+        INNER JOIN OpenEndedAnswers oe 
+            ON q.QuizID = oe.QuizID AND q.QuestionNo = oe.QuestionNo
+        WHERE q.QuizID = ? 
+          AND oe.StudentID = ? 
+          AND q.QuestionType = 'Open-Ended'
+          AND (oe.IsGraded = 0 OR oe.IsGraded IS NULL)
+        ORDER BY q.QuestionNo";
+
+            try
+            {
+                OleDbParameter[] parameters = new OleDbParameter[]
+                {
+            new OleDbParameter("@QuizID", OleDbType.Integer) { Value = quizID },
+            new OleDbParameter("@StudentID", OleDbType.Integer) { Value = studentID }
+                };
+
+                DataTable result = GetData(query, parameters);
+                return result ?? new DataTable();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error getting student answers: {ex.Message}");
+                return new DataTable();
+            }
+        }
+
+
+        public object ExecuteScalar(string query, params OleDbParameter[] parameters)
+        {
+            try
+            {
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                {
+                    conn.Open();
+                    using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                    {
+                        cmd.Parameters.AddRange(parameters);
+                        return cmd.ExecuteScalar();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Database Error (ExecuteScalar): " + ex.Message);
+                return null;
+            }
+        }
+
+        // For checking if answer exists
+        public bool SaveOpenEndedAnswer(int quizID, int questionNo, int studentID, string answer)
+        {
+            try
+            {
+                // Check if answer exists (MS Access version)
+                object result = ExecuteScalar(
+                    "SELECT COUNT(*) FROM OpenEndedAnswers WHERE QuizID = ? AND QuestionNo = ? AND StudentID = ?",
+                    new OleDbParameter("@QuizID", quizID),
+                    new OleDbParameter("@QuestionNo", questionNo),
+                    new OleDbParameter("@StudentID", studentID));
+
+                int count = Convert.ToInt32(result);
+                bool exists = count > 0;
+
+                if (exists)
+                {
+                    // Update existing answer (MS Access uses -1 for True, 0 for False)
+                    return ExecuteQuery(
+                        "UPDATE OpenEndedAnswers SET Answer = ?, IsGraded = 0 WHERE QuizID = ? AND QuestionNo = ? AND StudentID = ?",
+                        new OleDbParameter("@Answer", answer),
+                        new OleDbParameter("@QuizID", quizID),
+                        new OleDbParameter("@QuestionNo", questionNo),
+                        new OleDbParameter("@StudentID", studentID));
+                }
+                else
+                {
+                    // Insert new answer
+                    return ExecuteQuery(
+                        "INSERT INTO OpenEndedAnswers (QuizID, QuestionNo, StudentID, Answer, IsGraded) VALUES (?, ?, ?, ?, 0)",
+                        new OleDbParameter("@QuizID", quizID),
+                        new OleDbParameter("@QuestionNo", questionNo),
+                        new OleDbParameter("@StudentID", studentID),
+                        new OleDbParameter("@Answer", answer));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error saving open-ended answer: " + ex.Message);
+                return false;
+            }
         }
     }
 }

@@ -223,5 +223,18 @@ namespace Quizzz.IRTUP
             loginWindow.Show();
             this.Close();
         }
+
+        private void studentResultsBtn_Click(object sender, EventArgs e)
+        {
+            mainMenuPanel.Controls.Clear();
+            resultsViewer resultsViewer = new resultsViewer(this.teacherDetails);
+            mainMenuPanel.Controls.Add(resultsViewer);
+        }
+
+        private void ShowQuizResults(int quizID)
+        {
+            mainMenuPanel.Controls.Clear();
+            
+        }
     }
 }

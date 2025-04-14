@@ -45,8 +45,6 @@
             menuBtn = new Button();
             panel5 = new Panel();
             viewQuizBtn = new Button();
-            panel6 = new Panel();
-            notificationBtn = new Button();
             menuContainer2 = new FlowLayoutPanel();
             panel2 = new Panel();
             pictureBox2 = new PictureBox();
@@ -73,7 +71,6 @@
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel5.SuspendLayout();
-            panel6.SuspendLayout();
             menuContainer2.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -206,7 +203,6 @@
             menuContainer1.BackColor = Color.FromArgb(66, 226, 184);
             menuContainer1.Controls.Add(panel1);
             menuContainer1.Controls.Add(panel5);
-            menuContainer1.Controls.Add(panel6);
             menuContainer1.FlowDirection = FlowDirection.TopDown;
             menuContainer1.Location = new Point(0, 0);
             menuContainer1.Margin = new Padding(0);
@@ -275,29 +271,6 @@
             viewQuizBtn.Text = "Available Quizzes";
             viewQuizBtn.UseVisualStyleBackColor = false;
             viewQuizBtn.Click += viewQuizBtn_Click;
-            // 
-            // panel6
-            // 
-            panel6.Controls.Add(notificationBtn);
-            panel6.Location = new Point(0, 116);
-            panel6.Margin = new Padding(0);
-            panel6.Name = "panel6";
-            panel6.Size = new Size(196, 58);
-            panel6.TabIndex = 5;
-            // 
-            // notificationBtn
-            // 
-            notificationBtn.BackColor = Color.FromArgb(66, 226, 184);
-            notificationBtn.Cursor = Cursors.Hand;
-            notificationBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            notificationBtn.Location = new Point(-12, -19);
-            notificationBtn.Margin = new Padding(0);
-            notificationBtn.Name = "notificationBtn";
-            notificationBtn.Size = new Size(242, 100);
-            notificationBtn.TabIndex = 6;
-            notificationBtn.Text = "Notifications";
-            notificationBtn.UseVisualStyleBackColor = false;
-            notificationBtn.Click += notificationBtn_Click;
             // 
             // menuContainer2
             // 
@@ -513,7 +486,6 @@
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel5.ResumeLayout(false);
-            panel6.ResumeLayout(false);
             menuContainer2.ResumeLayout(false);
             panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
@@ -545,8 +517,6 @@
         private Button menuBtn;
         private Panel panel5;
         private Button viewQuizBtn;
-        private Panel panel6;
-        private Button notificationBtn;
         private FlowLayoutPanel menuContainer2;
         private Panel panel2;
         private PictureBox pictureBox2;

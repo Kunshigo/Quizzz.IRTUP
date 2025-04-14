@@ -1,137 +1,275 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Quizzz.IRTUP.Properties.Resources" Collapsed="true">
-    <Position X="9.25" Y="7.75" Width="1.5" />
+    <Position X="16.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACIAAAAQAAA0AAAAAJEAAAAQAAAQAAEIAAAAADAIA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Quizzz.IRTUP.Properties.Settings" Collapsed="true">
-    <Position X="16.5" Y="0.5" Width="1.5" />
+    <Position X="0.75" Y="13" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAQABAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="Quizzz.IRTUP.Classes.DatabaseHelper" Collapsed="true">
-    <Position X="2.5" Y="7.75" Width="1.5" />
+  <Class Name="Quizzz.IRTUP.Classes.DatabaseHelper">
+    <Position X="3.75" Y="7.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAEAAAAAgAAAAAAEAAAAAAAAAIAAAABAAAAAA=</HashCode>
+      <HashCode>AIQBESBkEAAIIAwAAAABAEAAEoAAQAAFAAAQBAEgECQ=</HashCode>
       <FileName>Classes\DatabaseHelper.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Quizzz.IRTUP.Classes.MultipleChoiceData">
+    <Position X="6.75" Y="7.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAhAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Classes\MultipleChoiceData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.Classes.QuestionData">
+    <Position X="1.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAABAAAAAAAAAhAAAAAAAKAABAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Classes\QuestionData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="Quizzz.IRTUP.Classes.Resize" Collapsed="true">
-    <Position X="7" Y="7.75" Width="1.5" />
+    <Position X="11.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Classes\Resize.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Quizzz.IRTUP.Classes.TeacherManager" Collapsed="true">
-    <Position X="4.75" Y="7.75" Width="1.5" />
+  <Class Name="Quizzz.IRTUP.Classes.StudentManager">
+    <Position X="9.25" Y="7.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>ACAAAACAAAAEAAAAAAACQAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <HashCode>BAAQAAAAAAAEAAAAAAACQBCAAAAAAAACARBAAAAAAAA=</HashCode>
+      <FileName>Classes\StudentManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.Classes.TeacherManager">
+    <Position X="14" Y="7.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ACAAAACAAAAEAAAAAAACQAAAAAAAAAACAABAAEQAABA=</HashCode>
       <FileName>Classes\TeacherManager.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quizzz.IRTUP.Forms.CreateQuizForm" Collapsed="true">
-    <Position X="2.75" Y="5" Width="1.5" />
+    <Position X="4" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BBBIQAAAACQBEBEACGKgwAACACCgEhADILAkwwkQQAI=</HashCode>
+      <HashCode>BBBYQAAAIKQBEBEACGKiwAACECCkEhADYLAkwwkQUCI=</HashCode>
       <FileName>Forms\CreateQuizForm.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Quizzz.IRTUP.Forms.MainMenuStudent" Collapsed="true">
+    <Position X="1.5" Y="5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>BoBAohABUCACQBEAADDhBEgCQMCgAIABYAg5gQBQIBI=</HashCode>
+      <FileName>Forms\MainMenuStudent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="Quizzz.IRTUP.Forms.quizDetails" Collapsed="true">
-    <Position X="5" Y="5" Width="1.5" />
+    <Position X="15.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAABAAAACgAAACAAABAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Forms\quizDetails.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Quizzz.IRTUP.Forms.TakeQuizForm" Collapsed="true">
+    <Position X="8.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>XAAAFUAACLAABAAQIAugAAAOARQIQAABgAUIgwAAgCI=</HashCode>
+      <FileName>Forms\TakeQuizForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="Quizzz.IRTUP.LoadingForm" Collapsed="true">
-    <Position X="9.5" Y="5" Width="1.5" />
+    <Position X="10.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAADAAAAAAAACAAAACAIAIAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Forms\LoadingForm.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quizzz.IRTUP.loginWindow" Collapsed="true">
-    <Position X="11.75" Y="5" Width="1.5" />
+    <Position X="17.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BABAAAAAACAAIBEAACCgAAACIAwAAAABYAJggABQAAA=</HashCode>
       <FileName>Forms\loginWindow.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Quizzz.IRTUP.MainMenu" Collapsed="true">
-    <Position X="14" Y="5" Width="1.5" />
+  <Class Name="Quizzz.IRTUP.MainMenuTeacher" Collapsed="true">
+    <Position X="13" Y="5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>BIhAohQBECACQBEAADDhRAgCQcChAJABYEAxgQBQIBI=</HashCode>
-      <FileName>Forms\MainMenu.cs</FileName>
+      <HashCode>BIhAohQBEGACQBEAADDhRAgCQcDgAJABYEA5gQBQIBI=</HashCode>
+      <FileName>Forms\MainMenuTeacher.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quizzz.IRTUP.signupWindow" Collapsed="true">
-    <Position X="7.25" Y="5" Width="1.5" />
+    <Position X="6.25" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BAAAAAAAACAAAAIAAACgAAACAAAAAAABAAAAgQAAAAA=</HashCode>
+      <HashCode>BABAAAAAACEABAIAASCgAgECAAAAAAAJaAgggQAQAAA=</HashCode>
+      <FileName>Forms\signupWindow.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quizzz.IRTUP.registerMenu" Collapsed="true">
-    <Position X="7.25" Y="2" Width="1.5" />
+    <Position X="36.5" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAEAACAAABAAAgCAAAACAAQABAAAAAAAAQBAAAA=</HashCode>
+      <HashCode>AAAAAAGAACAAYBEAAgCAAIACAAQEBABAABgAgQDIAAA=</HashCode>
+      <FileName>Panels\registerMenu.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quizzz.IRTUP.teacherPanel" Collapsed="true">
-    <Position X="11.75" Y="2" Width="1.5" />
+    <Position X="46.25" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>wgsAIAAAACAAKBAgAgCQAEECIAEAQJAAAABEAYAAAAA=</HashCode>
-      <FileName>Panels\teacherPanel.cs</FileName>
+      <HashCode>wAsAAAAAACAAIBAgAACAAEECIAAAABAAAABEAYAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Quizzz.IRTUP.Program" Collapsed="true">
-    <Position X="11.5" Y="7.75" Width="1.5" />
+    <Position X="18.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Quizzz.IRTUP.Panels.manageQuizMenu" Collapsed="true">
-    <Position X="2.75" Y="2" Width="1.5" />
+  <Class Name="Quizzz.IRTUP.Panels.AccountSettingsUserControl" Collapsed="true">
+    <Position X="3" Y="2" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAICAAAgCAAABABAACgAAAiAAAAAAAAABAAARACBCA=</HashCode>
+      <HashCode>AACAIAAAQSAAIBACIACAAEACYAAAAAAKAEBEAQAAEAA=</HashCode>
+      <FileName>Panels\AccountSettingsUserControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.Panels.manageQuizMenu" Collapsed="true">
+    <Position X="48.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAICAAQgCAAARABAACgAAAiAgIAAAAAAHAAARECBCQ=</HashCode>
       <FileName>Panels\manageQuizMenu.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quizzz.IRTUP.Panels.miniMultipleChoice" Collapsed="true">
-    <Position X="5" Y="2" Width="1.5" />
+    <Position X="10.75" Y="2" Width="1.75" />
     <TypeIdentifier>
       <HashCode>EAAAAAAAICAAAAAAAgKAEQACAAAAAAAAIAAAAQAAAig=</HashCode>
       <FileName>Panels\miniMultipleChoice.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quizzz.IRTUP.Panels.QuizCard" Collapsed="true">
-    <Position X="14" Y="2" Width="1.5" />
+    <Position X="22.5" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABIACAAAAAAAACAAAAKEAAAEAAEBAAEAQABCAA=</HashCode>
+      <HashCode>AAAEAAAAACAAAAAAQACAAAACMAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Panels\QuizCard.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Quizzz.IRTUP.QuestionTypePanels.MultipleChoice" Collapsed="true">
-    <Position X="9.5" Y="2" Width="1.5" />
+  <Class Name="Quizzz.IRTUP.Panels.StudentPanel1" Collapsed="true">
+    <Position X="24.75" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ICAKAAAAACAAAAAAAACACABCIGA4AAAAEAAAQQBAAAA=</HashCode>
+      <HashCode>8AsAIAAAACAAKAAgAACQAEECIAEAQJAAAABAAQAAAAA=</HashCode>
+      <FileName>Panels\StudentPanel1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.Panels.ViewQuizzes" Collapsed="true">
+    <Position X="20.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAACAgAACFAABIAAACAAAgiAAAAAAAACAAAAVECACA=</HashCode>
+      <FileName>Panels\ViewQuizzes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.QuestionTypePanels.DragDrop" Collapsed="true">
+    <Position X="27" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>QuestionTypePanels\DragDrop.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.QuestionTypePanels.FillInTheBlanks" Collapsed="true">
+    <Position X="32" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JAASAgAACCQQABAAgICAgAACCCAAAAAAQAAAAIAAAEA=</HashCode>
+      <FileName>QuestionTypePanels\FillInTheBlanks.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.QuestionTypePanels.Identification" Collapsed="true">
+    <Position X="44" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JBAGAAAAACwQABAA8ACAgAACCCAAAABAAAAAAIJQAAA=</HashCode>
+      <FileName>QuestionTypePanels\Identification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.QuestionTypePanels.ImageMultipleChoice" Collapsed="true">
+    <Position X="13.25" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>BAAAAhDAACAEBAAAgCCAQAECCGA4AAAAACAAAIBAAAA=</HashCode>
+      <FileName>QuestionTypePanels\ImageMultipleChoice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.QuestionTypePanels.MultipleChoice" Collapsed="true">
+    <Position X="18" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JCAKAABAACAQAAAAgACACABCKGA4AAQAEAAAQYBAAAA=</HashCode>
       <FileName>QuestionTypePanels\MultipleChoice.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="System.Windows.Forms.Form" Collapsed="true">
-    <Position X="8.25" Y="3.5" Width="1.5" />
-    <TypeIdentifier />
+  <Class Name="Quizzz.IRTUP.QuestionTypePanels.OpenEnded" Collapsed="true">
+    <Position X="34.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAgAAAAAACAAABAAgACAAAACACAAAAAAAAAAAYBAAAA=</HashCode>
+      <FileName>QuestionTypePanels\OpenEnded.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.QuestionTypePanels.TrueFalse" Collapsed="true">
+    <Position X="6" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JBADAAAAACAQAAAAgACACABCCCAAgIBAAAAAIIBQACA=</HashCode>
+      <FileName>QuestionTypePanels\TrueFalse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.QuestionTypeStudentsPanels.FillInTheBlanksStudent" Collapsed="true">
+    <Position X="38.75" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAACIAAAAAAACCAAACAAAAAABAAQIIAJAAABA=</HashCode>
+      <FileName>QuestionTypeStudentsPanels\FillInTheBlanksStudent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.QuestionTypeStudentsPanels.IdentificationStudent" Collapsed="true">
+    <Position X="8.25" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAABCACAAAACAAAAAAAAACIIAJAAABA=</HashCode>
+      <FileName>QuestionTypeStudentsPanels\IdentificationStudent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.QuestionTypeStudentsPanels.MultipleChoiceStudent" Collapsed="true">
+    <Position X="29.25" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACgAAAAAAACAAAACQEA4AABAACIAAJAAADA=</HashCode>
+      <FileName>QuestionTypeStudentsPanels\MultipleChoiceStudent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.QuestionTypeStudentsPanels.OpenEndedStudent" Collapsed="true">
+    <Position X="41.5" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAQAAAAAACAAAACAAAAAAAAACAAAAAAAEA=</HashCode>
+      <FileName>QuestionTypeStudentsPanels\OpenEndedStudent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quizzz.IRTUP.QuestionTypeStudentsPanels.TrueFalseStudent" Collapsed="true">
+    <Position X="15.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACgAABAAAACAAAACQEAIAABAACIEAJAAADA=</HashCode>
+      <FileName>QuestionTypeStudentsPanels\TrueFalseStudent.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Class Name="System.Windows.Forms.UserControl" Collapsed="true">
-    <Position X="8.25" Y="0.5" Width="1.5" />
+    <Position X="25.75" Y="0.5" Width="1.5" />
     <TypeIdentifier />
   </Class>
   <Class Name="System.Object" Collapsed="true">
-    <Position X="7" Y="6.5" Width="1.5" />
+    <Position X="10.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Configuration.ApplicationSettingsBase" Collapsed="true">
+    <Position X="0.75" Y="11.5" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Forms.Form" Collapsed="true">
+    <Position X="9.5" Y="3.5" Width="1.5" />
     <TypeIdentifier />
   </Class>
   <Font Name="Segoe UI" Size="9" />

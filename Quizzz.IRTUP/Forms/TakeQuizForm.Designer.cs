@@ -131,7 +131,7 @@
             // lblQuestionCount
             // 
             lblQuestionCount.AutoSize = true;
-            lblQuestionCount.Location = new Point(81, 15);
+            lblQuestionCount.Location = new Point(557, 15);
             lblQuestionCount.Name = "lblQuestionCount";
             lblQuestionCount.Size = new Size(38, 15);
             lblQuestionCount.TabIndex = 1;

@@ -30,13 +30,14 @@
         {
             questionLabel = new Label();
             answerTxtBox = new RichTextBox();
+            submitButton = new Button();
             SuspendLayout();
             // 
             // questionLabel
             // 
             questionLabel.AutoSize = true;
             questionLabel.Font = new Font("Century Gothic", 26.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            questionLabel.Location = new Point(458, 33);
+            questionLabel.Location = new Point(446, 33);
             questionLabel.Name = "questionLabel";
             questionLabel.Size = new Size(230, 42);
             questionLabel.TabIndex = 1;
@@ -53,10 +54,22 @@
             answerTxtBox.TabIndex = 2;
             answerTxtBox.Text = "";
             // 
+            // submitButton
+            // 
+            submitButton.FlatStyle = FlatStyle.Flat;
+            submitButton.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            submitButton.Location = new Point(1088, 122);
+            submitButton.Name = "submitButton";
+            submitButton.Size = new Size(75, 23);
+            submitButton.TabIndex = 3;
+            submitButton.Text = "Submit";
+            submitButton.UseVisualStyleBackColor = true;
+            // 
             // OpenEndedStudent
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(submitButton);
             Controls.Add(answerTxtBox);
             Controls.Add(questionLabel);
             Name = "OpenEndedStudent";
@@ -69,5 +82,6 @@
 
         private Label questionLabel;
         private RichTextBox answerTxtBox;
+        private Button submitButton;
     }
 }

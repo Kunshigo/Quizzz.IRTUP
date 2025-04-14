@@ -6,6 +6,8 @@ namespace Quizzz.IRTUP.QuestionTypeStudentsPanels
 {
     public partial class OpenEndedStudent : UserControl
     {
+
+        public event EventHandler NextQuestionRequested;
         public int QuestionNo { get; set; }
         public string UserAnswer => answerTxtBox.Text.Trim();
         public int WordCount => CountWords(answerTxtBox.Text);
@@ -19,6 +21,10 @@ namespace Quizzz.IRTUP.QuestionTypeStudentsPanels
         {
             InitializeComponent();
             SetupUI();
+            submitButton.Click += (sender, e) =>
+            {
+                NextQuestionRequested?.Invoke(this, EventArgs.Empty);
+            };
         }
 
         private void SetupUI()
@@ -59,7 +65,6 @@ namespace Quizzz.IRTUP.QuestionTypeStudentsPanels
                 FlatStyle = FlatStyle.Flat
             };
             nextButton.FlatAppearance.BorderSize = 0;
-            nextButton.Click += (s, e) => NextQuestionRequested?.Invoke(this, EventArgs.Empty);
 
 
             buttonPanel.Controls.Add(nextButton);
@@ -119,6 +124,5 @@ namespace Quizzz.IRTUP.QuestionTypeStudentsPanels
         }
 
         public event EventHandler AnswerSelected;
-        public event EventHandler NextQuestionRequested;
     }
 }

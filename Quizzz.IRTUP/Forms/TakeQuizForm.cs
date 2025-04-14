@@ -136,8 +136,8 @@ namespace Quizzz.IRTUP.Forms
             var control = new OpenEndedStudent();
             control.LoadQuestion(questionText);
             control.QuestionNo = qNo;
-            control.NextQuestionRequested += (s, e) => {
-                questionTimer.Stop();
+            control.NextQuestionRequested += (s, e) =>
+            {
                 HandleAnswerSelection();
             };
             return control;
@@ -151,13 +151,20 @@ namespace Quizzz.IRTUP.Forms
 
             DataRow choiceRow = choicesTable.Rows[0];
             string[] choices = {
-                choiceRow["Choice1"].ToString(),
-                choiceRow["Choice2"].ToString(),
-                choiceRow["Choice3"].ToString(),
-                choiceRow["Choice4"].ToString()
-            };
+        choiceRow["Choice1"].ToString(),
+        choiceRow["Choice2"].ToString(),
+        choiceRow["Choice3"].ToString(),
+        choiceRow["Choice4"].ToString()
+    };
 
+            // Add validation
             int correctIndex = Convert.ToInt32(choiceRow["CorrectAnswer"]) - 1;
+            if (correctIndex < 0 || correctIndex >= choices.Length)
+            {
+                MessageBox.Show($"Invalid correct answer index ({correctIndex + 1}) for question {qNo}. Using first choice as fallback.");
+                correctIndex = 0; // Fallback to first choice
+            }
+
             string correctAnswer = choices[correctIndex];
 
             var control = new MultipleChoiceStudent();
@@ -232,7 +239,7 @@ namespace Quizzz.IRTUP.Forms
             if (currentQuestion.Value.QuestionType == "Open-Ended")
             {
                 StopTimer();
-                lblTimer.Text = "Timer Paused";
+                lblTimer.Text = "Open-Ended (No Time Limit)";
                 lblTimer.ForeColor = Color.Blue;
             }
             else
@@ -270,9 +277,20 @@ namespace Quizzz.IRTUP.Forms
             {
                 selectedAnswer = id.UserAnswer;
             }
-            else if (currentQuestion.Key is OpenEndedStudent oe)
+            if (currentQuestion.Key is OpenEndedStudent oe)
             {
-                selectedAnswer = oe.UserAnswer;
+                DatabaseHelper db = new DatabaseHelper();
+                bool saved = db.SaveOpenEndedAnswer(
+                    currentQuizID,
+                    currentQuestion.Value.QuestionNo,
+                    currentStudentID,
+                    oe.UserAnswer);
+
+                if (!saved)
+                {
+                    MessageBox.Show("Failed to save your open-ended answer");
+                    return;
+                }
             }
 
 

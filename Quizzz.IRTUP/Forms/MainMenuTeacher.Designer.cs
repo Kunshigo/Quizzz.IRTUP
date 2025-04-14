@@ -47,7 +47,7 @@
             panel5 = new Panel();
             manageQuizBtn = new Button();
             panel6 = new Panel();
-            button6 = new Button();
+            studentResultsBtn = new Button();
             menuContainer2 = new FlowLayoutPanel();
             panel2 = new Panel();
             pictureBox2 = new PictureBox();
@@ -291,25 +291,26 @@
             // 
             // panel6
             // 
-            panel6.Controls.Add(button6);
+            panel6.Controls.Add(studentResultsBtn);
             panel6.Location = new Point(0, 116);
             panel6.Margin = new Padding(0);
             panel6.Name = "panel6";
             panel6.Size = new Size(196, 58);
             panel6.TabIndex = 5;
             // 
-            // button6
+            // studentResultsBtn
             // 
-            button6.BackColor = Color.FromArgb(66, 226, 184);
-            button6.Cursor = Cursors.Hand;
-            button6.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button6.Location = new Point(-12, -19);
-            button6.Margin = new Padding(0);
-            button6.Name = "button6";
-            button6.Size = new Size(242, 100);
-            button6.TabIndex = 6;
-            button6.Text = "Student Results";
-            button6.UseVisualStyleBackColor = false;
+            studentResultsBtn.BackColor = Color.FromArgb(66, 226, 184);
+            studentResultsBtn.Cursor = Cursors.Hand;
+            studentResultsBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            studentResultsBtn.Location = new Point(-12, -19);
+            studentResultsBtn.Margin = new Padding(0);
+            studentResultsBtn.Name = "studentResultsBtn";
+            studentResultsBtn.Size = new Size(242, 100);
+            studentResultsBtn.TabIndex = 6;
+            studentResultsBtn.Text = "Student Results";
+            studentResultsBtn.UseVisualStyleBackColor = false;
+            studentResultsBtn.Click += studentResultsBtn_Click;
             // 
             // menuContainer2
             // 
@@ -568,7 +569,7 @@
         private Panel panel5;
         private Button manageQuizBtn;
         private Panel panel6;
-        private Button button6;
+        private Button studentResultsBtn;
         private FlowLayoutPanel menuContainer2;
         private Panel panel7;
         private Button generalSettingsBtn;
