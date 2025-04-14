@@ -103,15 +103,16 @@
             // 
             // quizzesPanel
             // 
-            quizzesPanel.AutoSize = true;
+            quizzesPanel.AutoScroll = true;
             quizzesPanel.BackColor = Color.FromArgb(160, 220, 180);
             quizzesPanel.BorderStyle = BorderStyle.FixedSingle;
             quizzesPanel.Controls.Add(panel2);
             quizzesPanel.Dock = DockStyle.Top;
             quizzesPanel.Location = new Point(0, 43);
             quizzesPanel.Name = "quizzesPanel";
-            quizzesPanel.Size = new Size(1047, 208);
+            quizzesPanel.Size = new Size(1047, 494);
             quizzesPanel.TabIndex = 4;
+            quizzesPanel.WrapContents = false;
             // 
             // panel2
             // 
@@ -129,7 +130,7 @@
             btnAddQuiz.Cursor = Cursors.Hand;
             btnAddQuiz.DefaultBack = Color.AntiqueWhite;
             btnAddQuiz.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnAddQuiz.Location = new Point(18, 287);
+            btnAddQuiz.Location = new Point(14, 543);
             btnAddQuiz.Name = "btnAddQuiz";
             btnAddQuiz.Size = new Size(250, 42);
             btnAddQuiz.TabIndex = 0;

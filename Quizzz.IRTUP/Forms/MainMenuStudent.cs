@@ -27,19 +27,9 @@ namespace Quizzz.IRTUP.Forms
         {
             welcomeLbl.Text = $"Welcome, {studentDetails["Username"]}!";
 
-            var quizMenuButton = new Button
-            {
-                Text = "Take Quizzes",
-                Dock = DockStyle.Top,
-                Height = 50
-            };
-            quizMenuButton.Click += (s, e) => {
-                mainMenuPanel.Controls.Clear();
-                mainMenuPanel.Controls.Add(new ViewQuizzes(studentDetails));
-            };
+            mainMenuPanel.Controls.Clear();
+            mainMenuPanel.Controls.Add(new ViewQuizzes(studentDetails));
 
-            // Add to your menu panel
-            mainMenuPanel.Controls.Add(quizMenuButton);
         }
 
         private void closeBtn_Click(object sender, EventArgs e)
@@ -116,7 +106,8 @@ namespace Quizzz.IRTUP.Forms
 
         private void viewQuizBtn_Click(object sender, EventArgs e)
         {
-
+            mainMenuPanel.Controls.Clear();
+            mainMenuPanel.Controls.Add(new ViewQuizzes(studentDetails));
         }
 
         private void menuBtn_Click(object sender, EventArgs e)
@@ -183,6 +174,13 @@ namespace Quizzz.IRTUP.Forms
         private void accountSettingsBtn_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            loginWindow loginWindow = new loginWindow();
+            loginWindow.Show();
+            this.Close();
         }
     }
 }

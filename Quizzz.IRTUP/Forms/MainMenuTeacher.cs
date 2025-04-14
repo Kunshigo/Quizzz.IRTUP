@@ -216,5 +216,12 @@ namespace Quizzz.IRTUP
         {
 
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            loginWindow loginWindow = new loginWindow();
+            loginWindow.Show();
+            this.Close();
+        }
     }
 }

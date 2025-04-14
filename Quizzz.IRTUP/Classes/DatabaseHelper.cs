@@ -624,76 +624,6 @@ namespace Quizzz.IRTUP.Classes
             }
         }
 
-        private void SaveQuestionWithImage(int quizID, QuestionData question)
-        {
-            using (OleDbConnection conn = new OleDbConnection(connectionString))
-            {
-                conn.Open();
-                using (OleDbTransaction transaction = conn.BeginTransaction())
-                {
-                    try
-                    {
-                        // Check if question exists
-                        int existingQuestionId = -1;
-                        using (OleDbCommand checkCmd = new OleDbCommand(
-                            "SELECT QuestionID FROM Questions WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo",
-                            conn, transaction))
-                        {
-                            checkCmd.Parameters.AddWithValue("@QuizID", quizID);
-                            checkCmd.Parameters.AddWithValue("@QuestionNo", question.QuestionNo);
-                            object result = checkCmd.ExecuteScalar();
-                            if (result != null) existingQuestionId = Convert.ToInt32(result);
-                        }
-
-                        string query = existingQuestionId > 0 ?
-                            @"UPDATE Questions SET 
-                        QuestionText = @QuestionText, 
-                        QuestionType = @QuestionType,
-                        ImageData = @ImageData
-                      WHERE QuestionID = @QuestionID" :
-                            @"INSERT INTO Questions 
-                        (QuizID, QuestionText, QuestionType, QuestionNo, ImageData) 
-                      VALUES 
-                        (@QuizID, @QuestionText, @QuestionType, @QuestionNo, @ImageData)";
-
-                        using (OleDbCommand cmd = new OleDbCommand(query, conn, transaction))
-                        {
-                            cmd.Parameters.AddWithValue("@QuestionText", question.QuestionText);
-                            cmd.Parameters.AddWithValue("@QuestionType", question.QuestionType);
-
-                            // Handle image parameter
-                            if (question.ImageData != null && question.ImageData.Length > 0)
-                            {
-                                cmd.Parameters.Add("@ImageData", OleDbType.Binary).Value = question.ImageData;
-                            }
-                            else
-                            {
-                                cmd.Parameters.AddWithValue("@ImageData", DBNull.Value);
-                            }
-
-                            if (existingQuestionId > 0)
-                            {
-                                cmd.Parameters.AddWithValue("@QuestionID", existingQuestionId);
-                            }
-                            else
-                            {
-                                cmd.Parameters.AddWithValue("@QuizID", quizID);
-                                cmd.Parameters.AddWithValue("@QuestionNo", question.QuestionNo);
-                            }
-
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        MessageBox.Show("Error saving question: " + ex.Message);
-                    }
-                }
-            }
-        }
 
         public DataTable GetIdentificationQuestion(int quizID, int questionNo)
         {
@@ -945,11 +875,106 @@ namespace Quizzz.IRTUP.Classes
             return GetData(query, parameters.ToArray());
         }
 
+        public int GetQuizDuration(int quizID)
+        {
+            string query = "SELECT DurationMinutes FROM Quizzes WHERE QuizID = @QuizID";
+            OleDbParameter[] parameters = new OleDbParameter[]
+            {
+        new OleDbParameter("@QuizID", quizID)
+            };
+
+            DataTable dt = GetData(query, parameters);
+            return dt.Rows.Count > 0 ? Convert.ToInt32(dt.Rows[0]["DurationMinutes"]) : 30; // Default 30 mins
+        }
+
+        public bool SaveStudentQuizAttempt(int studentID, int quizID, int score, DateTime completedDate)
+        {
+            try
+            {
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                {
+                    conn.Open();
+
+                    string insertQuery = "INSERT INTO CompletedQuizzes " +
+                                       "(StudentID, QuizID, Score, CompletedDate) " +
+                                       "VALUES (?, ?, ?, ?)";
+
+                    using (OleDbCommand cmd = new OleDbCommand(insertQuery, conn))
+                    {
+                        cmd.Parameters.Add("@StudentID", OleDbType.Integer).Value = studentID;
+                        cmd.Parameters.Add("@QuizID", OleDbType.Integer).Value = quizID;
+                        cmd.Parameters.Add("@Score", OleDbType.Integer).Value = score;
+                        cmd.Parameters.Add("@CompletedDate", OleDbType.Date).Value = completedDate;
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error saving quiz result: " + ex.Message);
+                return false;
+            }
+        }
+
+        public void UpdateQuizTimeLimit(int quizID, int timeLimitSeconds)
+        {
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+                string query = "UPDATE Quizzes SET TimeLimit = @TimeLimit WHERE QuizID = @QuizID";
+
+                using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@TimeLimit", timeLimitSeconds);
+                    cmd.Parameters.AddWithValue("@QuizID", quizID);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public int GetQuizTimeLimit(int quizID)
+        {
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT TimeLimit FROM Quizzes WHERE QuizID = @QuizID";
+                using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@QuizID", quizID);
+                    object result = cmd.ExecuteScalar();
+                    return result != DBNull.Value ? Convert.ToInt32(result) : 60;
+                }
+            }
+        }
+
+        public bool HasStudentCompletedQuiz(int studentID, int quizID)
+        {
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT COUNT(*) FROM CompletedQuizzes WHERE StudentID = @StudentID AND QuizID = @QuizID";
+                using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@StudentID", studentID);
+                    cmd.Parameters.AddWithValue("@QuizID", quizID);
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
         public DataTable GetCompletedQuizzes(int studentID)
         {
-            string query = @"SELECT DISTINCT QuizID FROM QuizResults 
-                    WHERE StudentID = @StudentID";
-            return GetData(query, new OleDbParameter("@StudentID", studentID));
+            string query = "SELECT QuizID FROM CompletedQuizzes WHERE StudentID = @StudentID";
+            OleDbParameter[] parameters = new OleDbParameter[]
+            {
+        new OleDbParameter("@StudentID", studentID)
+            };
+
+            return GetData(query, parameters);
         }
     }
 }

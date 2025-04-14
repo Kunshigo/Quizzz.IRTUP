@@ -466,6 +466,7 @@
             button4.TabIndex = 6;
             button4.Text = "Logout";
             button4.UseVisualStyleBackColor = false;
+            button4.Click += button4_Click;
             // 
             // mainMenuPanel
             // 

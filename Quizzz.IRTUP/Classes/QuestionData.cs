@@ -16,7 +16,6 @@ namespace Quizzz.IRTUP.Classes
         public int CorrectAnswerIndex { get; set; }
         public string QuestionType { get; set; }
         public int QuestionNo { get; set; }
-        public byte[] ImageData { get; set; }
-
+        public int TimeLimitSeconds { get; set; }
     }
 }

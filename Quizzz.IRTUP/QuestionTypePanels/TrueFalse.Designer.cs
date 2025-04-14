@@ -33,8 +33,7 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             trueBtn = new Button();
             falseBtn = new Button();
-            btnAddImage = new Button();
-            btnRemoveImage = new Button();
+            uploadImageButton = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -53,9 +52,11 @@
             // pictureBox1
             // 
             pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            pictureBox1.Location = new Point(358, 70);
+            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
+            pictureBox1.Location = new Point(373, 66);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(285, 150);
+            pictureBox1.Size = new Size(250, 180);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 11;
             pictureBox1.TabStop = false;
             // 
@@ -103,30 +104,21 @@
             falseBtn.UseVisualStyleBackColor = false;
             falseBtn.Click += falseBtn_Click;
             // 
-            // btnAddImage
+            // uploadImageButton
             // 
-            btnAddImage.Location = new Point(236, 127);
-            btnAddImage.Name = "btnAddImage";
-            btnAddImage.Size = new Size(116, 23);
-            btnAddImage.TabIndex = 14;
-            btnAddImage.Text = "Add Image";
-            btnAddImage.UseVisualStyleBackColor = true;
-            // 
-            // btnRemoveImage
-            // 
-            btnRemoveImage.Location = new Point(236, 156);
-            btnRemoveImage.Name = "btnRemoveImage";
-            btnRemoveImage.Size = new Size(116, 23);
-            btnRemoveImage.TabIndex = 14;
-            btnRemoveImage.Text = "Remove Image";
-            btnRemoveImage.UseVisualStyleBackColor = true;
+            uploadImageButton.Location = new Point(640, 147);
+            uploadImageButton.Name = "uploadImageButton";
+            uploadImageButton.Size = new Size(136, 23);
+            uploadImageButton.TabIndex = 14;
+            uploadImageButton.Text = "Upload Image";
+            uploadImageButton.UseVisualStyleBackColor = true;
+            uploadImageButton.Click += uploadImageButton_Click;
             // 
             // TrueFalse
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(btnRemoveImage);
-            Controls.Add(btnAddImage);
+            Controls.Add(uploadImageButton);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(questionTxtBox);
             Controls.Add(pictureBox1);
@@ -142,11 +134,10 @@
         #endregion
 
         public TextBox questionTxtBox;
-        private PictureBox pictureBox1;
         private TableLayoutPanel tableLayoutPanel1;
         public Button trueBtn;
         public Button falseBtn;
-        private Button btnAddImage;
-        private Button btnRemoveImage;
+        private Button uploadImageButton;
+        public PictureBox pictureBox1;
     }
 }

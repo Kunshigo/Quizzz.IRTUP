@@ -478,6 +478,7 @@
             button4.TabIndex = 6;
             button4.Text = "Logout";
             button4.UseVisualStyleBackColor = false;
+            button4.Click += button4_Click;
             // 
             // menuTransition
             // 
@@ -504,7 +505,7 @@
             mainMenuPanel.TabIndex = 5;
             mainMenuPanel.WrapContents = false;
             // 
-            // MainMenu
+            // MainMenuTeacher
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -515,7 +516,7 @@
             Controls.Add(sideBar);
             Controls.Add(Header);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "MainMenu";
+            Name = "MainMenuTeacher";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MainMenu";
             Resize += MainMenu_Resize;

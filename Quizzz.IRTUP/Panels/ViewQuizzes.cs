@@ -29,16 +29,14 @@ namespace Quizzz.IRTUP.Panels
         private void InitializeQuizPanels()
         {
             // Panel for available quizzes
-            availableQuizzesPanel.FlowDirection = FlowDirection.LeftToRight;
-            availableQuizzesPanel.WrapContents = true;
-            availableQuizzesPanel.AutoScroll = true;
-            availableQuizzesPanel.BackColor = Color.FromArgb(240, 248, 255);
+            //availableQuizzesPanel.FlowDirection = FlowDirection.LeftToRight;
+            //availableQuizzesPanel.WrapContents = true;
+            //availableQuizzesPanel.BackColor = Color.FromArgb(240, 248, 255);
 
             // Panel for completed quizzes
-            completedQuizzesPanel.FlowDirection = FlowDirection.LeftToRight;
-            completedQuizzesPanel.WrapContents = true;
-            completedQuizzesPanel.AutoScroll = true;
-            completedQuizzesPanel.BackColor = Color.FromArgb(240, 255, 240);
+            //completedQuizzesPanel.FlowDirection = FlowDirection.LeftToRight;
+            //completedQuizzesPanel.WrapContents = true;
+            //completedQuizzesPanel.BackColor = Color.FromArgb(240, 255, 240);
 
             // Initialize filter controls
             InitializeFilterControls();
@@ -190,7 +188,6 @@ namespace Quizzz.IRTUP.Panels
                 TakeQuizForm takeQuiz = new TakeQuizForm(quizID, _studentID);
                 if (takeQuiz.ShowDialog() == DialogResult.OK)
                 {
-                    // Quiz completed, refresh the list
                     LoadQuizzes();
                 }
             }

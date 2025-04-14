@@ -22,7 +22,6 @@ namespace Quizzz.IRTUP.QuestionTypePanels
         public string CorrectAnswer { get; set; } = null;
         public string QuestionText => questionTxtBox.Text;
         public int QuestionNo { get; set; }
-        public byte[] ImageData { get; private set; }
 
         public TrueFalse()
         {
@@ -34,11 +33,6 @@ namespace Quizzz.IRTUP.QuestionTypePanels
             formOriginalSize = this.Size;
             recTxt = new Rectangle(questionTxtBox.Location, questionTxtBox.Size);
 
-            QuestionImageHelper.InitializeImageHandling(
-            pictureBox1,
-            btnAddImage,
-            btnRemoveImage,
-            data => ImageData = data);
         }
 
         public void SelectCorrectAnswer(int index)
@@ -66,18 +60,6 @@ namespace Quizzz.IRTUP.QuestionTypePanels
                 SelectCorrectAnswer(0);
             else if (correctAnswer == "False")
                 SelectCorrectAnswer(1);
-            ImageData = imageData;
-            QuestionImageHelper.LoadImage(pictureBox1, imageData);
-        }
-        public Image GetImage()
-        {
-            return QuestionImageHelper.BytesToImage(ImageData);
-        }
-
-        public void SetImage(Image image)
-        {
-            ImageData = QuestionImageHelper.GetImageBytes(image);
-            QuestionImageHelper.LoadImage(pictureBox1, ImageData);
         }
 
         private void trueBtn_Click(object sender, EventArgs e)
@@ -92,7 +74,7 @@ namespace Quizzz.IRTUP.QuestionTypePanels
 
         private void TrueFalse_Resize(object sender, EventArgs e)
         {
-            resize_Control(questionTxtBox, recTxt); 
+            resize_Control(questionTxtBox, recTxt);
         }
         private void resize_Control(Control c, Rectangle r)
         {
@@ -106,6 +88,11 @@ namespace Quizzz.IRTUP.QuestionTypePanels
 
             c.Location = new Point(newX, newY);
             c.Size = new Size(newWidth, newHeight);
+        }
+
+        private void uploadImageButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

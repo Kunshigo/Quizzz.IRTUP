@@ -29,7 +29,6 @@ namespace Quizzz.IRTUP.Panels
             emailTxtBox.Text = teacherDetails["Email"];
             passwordTxtBox.Text = "";
             subjectComboBox.SelectedItem = teacherDetails["Subject"];
-            gradeLvlComboBox.SelectedItem = teacherDetails["GradeLevel"];
         }
 
         private void gradeLvlTxtBox_SelectedIndexChanged(object sender, EventArgs e)

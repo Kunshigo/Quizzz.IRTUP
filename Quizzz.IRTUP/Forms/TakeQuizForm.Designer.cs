@@ -28,14 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             Header = new Panel();
             controlBox = new Panel();
             maximizeBtn = new Button();
             minimizeBtn = new Button();
             closeBtn = new Button();
-            flowLayoutPanel1 = new FlowLayoutPanel();
+            quizTakingPanel = new FlowLayoutPanel();
+            panel1 = new Panel();
+            lblQuestionCount = new Label();
+            lblTimer = new Label();
+            prevBtn = new Button();
+            nextBtn = new Button();
+            answerDelayTimer = new System.Windows.Forms.Timer(components);
             Header.SuspendLayout();
             controlBox.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // Header
@@ -98,20 +106,79 @@
             closeBtn.TabIndex = 0;
             closeBtn.UseVisualStyleBackColor = false;
             // 
-            // flowLayoutPanel1
+            // quizTakingPanel
             // 
-            flowLayoutPanel1.Dock = DockStyle.Fill;
-            flowLayoutPanel1.Location = new Point(0, 27);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(1185, 564);
-            flowLayoutPanel1.TabIndex = 5;
+            quizTakingPanel.Dock = DockStyle.Fill;
+            quizTakingPanel.Location = new Point(0, 73);
+            quizTakingPanel.Margin = new Padding(0);
+            quizTakingPanel.Name = "quizTakingPanel";
+            quizTakingPanel.Size = new Size(1185, 544);
+            quizTakingPanel.TabIndex = 5;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.FromArgb(50, 170, 160);
+            panel1.Controls.Add(lblQuestionCount);
+            panel1.Controls.Add(lblTimer);
+            panel1.Controls.Add(prevBtn);
+            panel1.Controls.Add(nextBtn);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 27);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1185, 46);
+            panel1.TabIndex = 6;
+            // 
+            // lblQuestionCount
+            // 
+            lblQuestionCount.AutoSize = true;
+            lblQuestionCount.Location = new Point(81, 15);
+            lblQuestionCount.Name = "lblQuestionCount";
+            lblQuestionCount.Size = new Size(38, 15);
+            lblQuestionCount.TabIndex = 1;
+            lblQuestionCount.Text = "label1";
+            // 
+            // lblTimer
+            // 
+            lblTimer.AutoSize = true;
+            lblTimer.Location = new Point(12, 15);
+            lblTimer.Name = "lblTimer";
+            lblTimer.Size = new Size(38, 15);
+            lblTimer.TabIndex = 1;
+            lblTimer.Text = "label1";
+            // 
+            // prevBtn
+            // 
+            prevBtn.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            prevBtn.Location = new Point(1007, 7);
+            prevBtn.Name = "prevBtn";
+            prevBtn.Size = new Size(75, 29);
+            prevBtn.TabIndex = 0;
+            prevBtn.Text = "Prev";
+            prevBtn.UseVisualStyleBackColor = true;
+            prevBtn.Click += nextBtn_Click;
+            // 
+            // nextBtn
+            // 
+            nextBtn.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            nextBtn.Location = new Point(1099, 7);
+            nextBtn.Name = "nextBtn";
+            nextBtn.Size = new Size(75, 29);
+            nextBtn.TabIndex = 0;
+            nextBtn.Text = "Next";
+            nextBtn.UseVisualStyleBackColor = true;
+            nextBtn.Click += nextBtn_Click;
+            // 
+            // answerDelayTimer
+            // 
+            answerDelayTimer.Interval = 1500;
             // 
             // TakeQuizForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1185, 591);
-            Controls.Add(flowLayoutPanel1);
+            ClientSize = new Size(1185, 617);
+            Controls.Add(quizTakingPanel);
+            Controls.Add(panel1);
             Controls.Add(Header);
             FormBorderStyle = FormBorderStyle.None;
             Name = "TakeQuizForm";
@@ -119,6 +186,8 @@
             Text = "TakeQuizForm";
             Header.ResumeLayout(false);
             controlBox.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -129,6 +198,12 @@
         private Button maximizeBtn;
         private Button minimizeBtn;
         private Button closeBtn;
-        private FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel quizTakingPanel;
+        private Panel panel1;
+        private Button nextBtn;
+        private Label lblTimer;
+        private Button prevBtn;
+        private Label lblQuestionCount;
+        private System.Windows.Forms.Timer answerDelayTimer;
     }
 }

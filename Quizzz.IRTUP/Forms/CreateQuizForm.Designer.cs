@@ -196,15 +196,18 @@
             // 
             // timeLimitComboBox
             // 
+            timeLimitComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             timeLimitComboBox.FormattingEnabled = true;
-            timeLimitComboBox.Items.AddRange(new object[] { "No Limit", "5 Seconds", "10 Seconds", "20 Seconds", "30 Seconds", "50 Seconds", "1 Minute", "2 Minutes", "4 Minutes" });
+            timeLimitComboBox.Items.AddRange(new object[] { "5 Seconds", "10 Seconds", "20 Seconds", "30 Seconds", "50 Seconds", "1 Minute", "2 Minutes", "4 Minutes" });
             timeLimitComboBox.Location = new Point(26, 177);
             timeLimitComboBox.Name = "timeLimitComboBox";
             timeLimitComboBox.Size = new Size(146, 23);
             timeLimitComboBox.TabIndex = 2;
+            timeLimitComboBox.SelectedIndexChanged += timeLimitComboBox_SelectedIndexChanged;
             // 
             // questionTypeComboBox
             // 
+            questionTypeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             questionTypeComboBox.FormattingEnabled = true;
             questionTypeComboBox.Items.AddRange(new object[] { "Multiple Choice", "Identification", "True or False", "Open-Ended", "Fill in the blanks" });
             questionTypeComboBox.Location = new Point(26, 49);

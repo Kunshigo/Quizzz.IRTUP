@@ -29,7 +29,9 @@
         private void InitializeComponent()
         {
             availableQuizzesPanel = new FlowLayoutPanel();
+            availableQuizLbl = new Label();
             completedQuizzesPanel = new FlowLayoutPanel();
+            completeQuizLbl = new Label();
             panel1 = new Panel();
             label2 = new Label();
             label1 = new Label();
@@ -37,30 +39,54 @@
             subjectFilterComboBox = new ComboBox();
             txtSearch = new TextBox();
             cmbSort = new Syncfusion.Windows.Forms.Tools.FontComboBox();
+            panel2 = new Panel();
             panel1.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // availableQuizzesPanel
             // 
+            availableQuizzesPanel.AutoScroll = true;
             availableQuizzesPanel.BackColor = Color.FromArgb(160, 220, 180);
-            availableQuizzesPanel.Dock = DockStyle.Fill;
             availableQuizzesPanel.Location = new Point(0, 68);
             availableQuizzesPanel.Name = "availableQuizzesPanel";
-            availableQuizzesPanel.Size = new Size(1028, 494);
+            availableQuizzesPanel.Size = new Size(1028, 215);
             availableQuizzesPanel.TabIndex = 0;
+            availableQuizzesPanel.WrapContents = false;
+            // 
+            // availableQuizLbl
+            // 
+            availableQuizLbl.AutoSize = true;
+            availableQuizLbl.Font = new Font("Century Gothic", 12F);
+            availableQuizLbl.Location = new Point(3, 45);
+            availableQuizLbl.Name = "availableQuizLbl";
+            availableQuizLbl.Size = new Size(146, 21);
+            availableQuizLbl.TabIndex = 5;
+            availableQuizLbl.Text = "Available Quizzes";
             // 
             // completedQuizzesPanel
             // 
             completedQuizzesPanel.BackColor = Color.FromArgb(140, 170, 140);
             completedQuizzesPanel.Dock = DockStyle.Bottom;
-            completedQuizzesPanel.Location = new Point(0, 321);
+            completedQuizzesPanel.Location = new Point(0, 317);
             completedQuizzesPanel.Name = "completedQuizzesPanel";
-            completedQuizzesPanel.Size = new Size(1028, 241);
+            completedQuizzesPanel.Size = new Size(1028, 245);
             completedQuizzesPanel.TabIndex = 1;
+            // 
+            // completeQuizLbl
+            // 
+            completeQuizLbl.AutoSize = true;
+            completeQuizLbl.Font = new Font("Century Gothic", 12F);
+            completeQuizLbl.Location = new Point(0, 297);
+            completeQuizLbl.Name = "completeQuizLbl";
+            completeQuizLbl.Size = new Size(161, 21);
+            completeQuizLbl.TabIndex = 5;
+            completeQuizLbl.Text = "Completed Quizzes";
             // 
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(3, 121, 113);
+            panel1.Controls.Add(availableQuizLbl);
             panel1.Controls.Add(label2);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(difficultyFilterComboBox);
@@ -146,18 +172,31 @@
             cmbSort.ThemeStyle.ScrollBarStyle.ThumbPressedBorderColor = Color.FromArgb(150, 150, 150);
             cmbSort.ThemeStyle.ScrollBarStyle.ThumbPressedColor = Color.FromArgb(197, 197, 197);
             // 
+            // panel2
+            // 
+            panel2.BackColor = Color.FromArgb(3, 121, 113);
+            panel2.Controls.Add(completeQuizLbl);
+            panel2.Dock = DockStyle.Fill;
+            panel2.Location = new Point(0, 0);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(1028, 562);
+            panel2.TabIndex = 5;
+            // 
             // ViewQuizzes
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(completedQuizzesPanel);
             Controls.Add(availableQuizzesPanel);
+            Controls.Add(completedQuizzesPanel);
             Controls.Add(panel1);
+            Controls.Add(panel2);
             Margin = new Padding(0);
             Name = "ViewQuizzes";
             Size = new Size(1028, 562);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -172,5 +211,8 @@
         private Label label1;
         private Label label2;
         private ComboBox difficultyFilterComboBox;
+        private Label availableQuizLbl;
+        private Label completeQuizLbl;
+        private Panel panel2;
     }
 }

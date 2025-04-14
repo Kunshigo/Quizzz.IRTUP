@@ -27,6 +27,8 @@ namespace Quizzz.IRTUP.Forms
             this.quizID = quizID;
             questionTypeComboBox.SelectedItem = "Multiple Choice";
             this.Resize += CreateQuizForm_Resize;
+            InitializeTimeLimitComboBox();
+
 
             if (quizID > 0)
             {
@@ -36,6 +38,10 @@ namespace Quizzz.IRTUP.Forms
             {
                 CreateFlowLayoutPanels();
             }
+        }
+        private void InitializeTimeLimitComboBox()
+        {
+            timeLimitComboBox.SelectedIndex = 1;
         }
 
         private void LoadQuizQuestions(int quizID)
@@ -583,6 +589,19 @@ namespace Quizzz.IRTUP.Forms
             }
         }
 
+        private int ConvertTimeStringToSeconds(string timeString)
+        {
+            if (timeString.Contains("Second"))
+            {
+                return int.Parse(timeString.Split(' ')[0]);
+            }
+            else if (timeString.Contains("Minute"))
+            {
+                return int.Parse(timeString.Split(' ')[0]) * 60;
+            }
+            return 10; // Default fallback
+        }
+
         private void saveQuizBtn_Click(object sender, EventArgs e)
         {
             DatabaseHelper db = new DatabaseHelper();
@@ -592,6 +611,9 @@ namespace Quizzz.IRTUP.Forms
                 int questionNo = entry.Value.QuestionNo; // Get from dictionary
                 string questionText = "";
                 string questionType = entry.Value.QuestionType;
+                int timeLimitSeconds = ConvertTimeStringToSeconds(timeLimitComboBox.SelectedItem.ToString());
+                db.UpdateQuizTimeLimit(quizID, timeLimitSeconds);
+
 
                 if (entry.Value.Control is MultipleChoice mc)
                 {
@@ -606,10 +628,11 @@ namespace Quizzz.IRTUP.Forms
                     mc.textBox1.Text,
                     mc.textBox2.Text,
                     mc.textBox3.Text,
-                    mc.textBox4.Text
+                    mc.textBox4.Text,
+
                 },
                         CorrectAnswerIndex = mc.correctAnswerIndex,
-                        QuestionNo = questionNo // Use from dictionary
+                        QuestionNo = questionNo, // Use from dictionary
                     };
                     db.SaveMultipleChoiceQuestion(question, quizID);
                 }
@@ -684,6 +707,11 @@ namespace Quizzz.IRTUP.Forms
         }
 
         private void minimizeBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timeLimitComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
