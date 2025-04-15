@@ -214,7 +214,7 @@ namespace Quizzz.IRTUP
 
         private void generalSettingsBtn_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("Not implemented yet hehe", "see you next time", MessageBoxButtons.OK);
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -234,7 +234,12 @@ namespace Quizzz.IRTUP
         private void ShowQuizResults(int quizID)
         {
             mainMenuPanel.Controls.Clear();
-            
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Not implemented yet hehe", "see you next time", MessageBoxButtons.OK);
         }
     }
 }

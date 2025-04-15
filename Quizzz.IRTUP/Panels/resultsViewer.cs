@@ -19,230 +19,151 @@ namespace Quizzz.IRTUP.Panels
         public resultsViewer(Dictionary<string, string> teacherDetails)
         {
             InitializeComponent();
-            _teacherDetails = teacherDetails;
-            cmbStatus.SelectedIndex = 0;
-            cmbSort.SelectedIndex = 0;
-            LoadQuizzesIntoPanels();
-            txtSearch.TextChanged += (s, e) => LoadQuizzesIntoPanels();
-            cmbStatus.SelectedIndexChanged += (s, e) => LoadQuizzesIntoPanels();
-            cmbSort.SelectedIndexChanged += (s, e) => LoadQuizzesIntoPanels();
+            this._teacherDetails = teacherDetails;
+            LoadTeacherQuizzes();
         }
 
-        private void LoadQuizzesIntoPanels()
+        private void LoadTeacherQuizzes()
         {
             answersPanel.Controls.Clear();
-            resultsPanel.Controls.Clear();
 
             int teacherID = int.Parse(_teacherDetails["TeacherID"]);
             DatabaseHelper db = new DatabaseHelper();
             DataTable quizzes = db.GetTeacherQuizzes(teacherID);
 
-            string searchTerm = txtSearch.Text.Trim().ToLower();
-            string statusFilter = cmbStatus.SelectedItem?.ToString();
-            string sortOption = cmbSort.SelectedItem?.ToString();
-
-            // Filter
-            var filtered = quizzes.AsEnumerable().Where(row =>
-            {
-                string title = row["Title"].ToString().ToLower();
-                bool titleMatches = title.Contains(searchTerm);
-
-                if (!titleMatches)
-                    return false;
-
-                // Status filtering will be applied later
-                return true;
-            });
-
-            // Sort
-            switch (sortOption)
-            {
-                case "Title A-Z":
-                    filtered = filtered.OrderBy(r => r["Title"].ToString());
-                    break;
-                case "Title Z-A":
-                    filtered = filtered.OrderByDescending(r => r["Title"].ToString());
-                    break;
-                case "Newest First":
-                    filtered = filtered.OrderByDescending(r => Convert.ToDateTime(r["CreatedDate"]));
-                    break;
-                case "Oldest First":
-                    filtered = filtered.OrderBy(r => Convert.ToDateTime(r["CreatedDate"]));
-                    break;
-            }
-
-            foreach (var row in filtered)
+            foreach (DataRow row in quizzes.Rows)
             {
                 int quizID = Convert.ToInt32(row["QuizID"]);
                 string title = row["Title"].ToString();
                 string subject = row["Subject"].ToString();
 
-                DataTable results = db.GetQuizResults(quizID);
-                bool hasUngraded = results.AsEnumerable().Any(r => Convert.ToInt32(r["UngradedCount"]) > 0);
+                Panel quizCard = new Panel
+                {
+                    Width = 250,
+                    Height = 100,
+                    Margin = new Padding(10),
+                    BackColor = Color.White,
+                    BorderStyle = BorderStyle.FixedSingle,
+                    Tag = quizID
+                };
 
-                // Apply status filter now
-                if (statusFilter == "Needs Grading" && !hasUngraded) continue;
-                if (statusFilter == "Graded" && hasUngraded) continue;
+                Label titleLabel = new Label
+                {
+                    Text = title,
+                    Font = new Font("Century Gothic", 10, FontStyle.Bold),
+                    Location = new Point(10, 10),
+                    AutoSize = true
+                };
 
-                var quizCard = CreateQuizCard(quizID, title, subject, hasUngraded);
+                Label subjectLabel = new Label
+                {
+                    Text = "Subject: " + subject,
+                    Font = new Font("Century Gothic", 9),
+                    Location = new Point(10, 35),
+                    AutoSize = true
+                };
 
-                if (hasUngraded)
-                    answersPanel.Controls.Add(quizCard);
-                else
-                    resultsPanel.Controls.Add(quizCard);
+                Button viewBtn = new Button
+                {
+                    Text = "View Students",
+                    Width = 110,
+                    Height = 30,
+                    Location = new Point(10, 60),
+                    BackColor = Color.MediumSlateBlue,
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Cursor = Cursors.Hand
+                };
+                viewBtn.Click += (s, e) => ShowStudentResults(quizID, title);
+
+                quizCard.Controls.Add(titleLabel);
+                quizCard.Controls.Add(subjectLabel);
+                quizCard.Controls.Add(viewBtn);
+
+                answersPanel.Controls.Add(quizCard);
             }
         }
 
-        private Panel CreateQuizCard(int quizID, string title, string subject, bool hasUngraded)
+        private void ShowStudentResults(int quizID, string quizTitle)
         {
-            var card = new Panel
-            {
-                Width = 200,
-                Height = 160,
-                Margin = new Padding(10),
-                BackColor = Color.FromArgb(240, 250, 240),
-                BorderStyle = BorderStyle.FixedSingle,
-                Tag = quizID
-            };
+            answersPanel.Controls.Clear();
 
-            var lblTitle = new Label
-            {
-                Text = title,
-                Font = new Font("Century Gothic", 11, FontStyle.Bold),
-                Dock = DockStyle.Top,
-                Height = 40,
-                TextAlign = ContentAlignment.MiddleCenter
-            };
+            DatabaseHelper db = new DatabaseHelper();
+            DataTable attempts = db.GetCompletedAttemptsForQuiz(quizID);
 
-            var lblSubject = new Label
+            Label header = new Label
             {
-                Text = $"Subject: {subject}",
-                Font = new Font("Century Gothic", 9),
-                Dock = DockStyle.Top,
-                Height = 20,
-                TextAlign = ContentAlignment.MiddleCenter
+                Text = $"Results for: {quizTitle}",
+                Font = new Font("Century Gothic", 12, FontStyle.Bold),
+                ForeColor = Color.DarkSlateBlue,
+                AutoSize = true,
+                Location = new Point(10, 10)
             };
+            answersPanel.Controls.Add(header);
 
-            var lblStatus = new Label
-            {
-                Text = hasUngraded ? "⚠ Needs Grading" : "✔ Fully Graded",
-                ForeColor = hasUngraded ? Color.IndianRed : Color.SeaGreen,
-                Font = new Font("Century Gothic", 9, FontStyle.Italic),
-                Dock = DockStyle.Top,
-                Height = 20,
-                TextAlign = ContentAlignment.MiddleCenter
-            };
+            int y = 50;
 
-            var btnView = new Button
+            foreach (DataRow row in attempts.Rows)
             {
-                Text = "View Results",
-                Dock = DockStyle.Bottom,
+                string studentName = row["Username"].ToString();
+                int score = Convert.ToInt32(row["Score"]);
+                DateTime date = Convert.ToDateTime(row["CompletedDate"]);
+
+                Panel studentCard = new Panel
+                {
+                    Width = 450,
+                    Height = 60,
+                    Location = new Point(10, y),
+                    BackColor = Color.WhiteSmoke,
+                    BorderStyle = BorderStyle.FixedSingle
+                };
+
+                Label nameLbl = new Label
+                {
+                    Text = $"Student: {studentName}",
+                    Font = new Font("Century Gothic", 9, FontStyle.Bold),
+                    Location = new Point(10, 10),
+                    AutoSize = true
+                };
+
+                Label scoreLbl = new Label
+                {
+                    Text = $"Score: {score}",
+                    Font = new Font("Century Gothic", 9),
+                    Location = new Point(10, 30),
+                    AutoSize = true
+                };
+
+                Label dateLbl = new Label
+                {
+                    Text = $"Completed: {date:MMM dd, yyyy hh:mm tt}",
+                    Font = new Font("Century Gothic", 9, FontStyle.Italic),
+                    Location = new Point(200, 30),
+                    AutoSize = true
+                };
+
+                studentCard.Controls.Add(nameLbl);
+                studentCard.Controls.Add(scoreLbl);
+                studentCard.Controls.Add(dateLbl);
+
+                answersPanel.Controls.Add(studentCard);
+                y += 70;
+            }
+
+            // Back button
+            Button backBtn = new Button
+            {
+                Text = "Back",
+                Width = 80,
                 Height = 30,
-                BackColor = Color.MediumSeaGreen,
+                Location = new Point(10, y + 10),
+                BackColor = Color.SlateGray,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Tag = quizID
+                Cursor = Cursors.Hand
             };
-
-            ToolTip tip = new ToolTip();
-            tip.SetToolTip(card, $"{title}\nUngraded: {(hasUngraded ? "Yes" : "No")}");
-
-            btnView.FlatAppearance.BorderSize = 0;
-            btnView.Click += (s, e) => ShowStudentResults((int)((Button)s).Tag);
-
-            card.Controls.Add(btnView);
-            card.Controls.Add(lblStatus);
-            card.Controls.Add(lblSubject);
-            card.Controls.Add(lblTitle);
-            return card;
-        }
-
-        private class StudentResultTag
-        {
-            public int StudentID { get; set; }
-            public bool HasUngraded { get; set; }
-        }
-
-        private void ShowStudentResults(int quizID)
-        {
-            DatabaseHelper db = new DatabaseHelper();
-            DataTable studentResults = db.GetQuizResults(quizID);
-
-            Form resultsForm = new Form
-            {
-                Text = "Student Results",
-                Size = new Size(500, 400),
-                StartPosition = FormStartPosition.CenterScreen,
-                BackColor = Color.White
-            };
-
-            ListView list = new ListView
-            {
-                Dock = DockStyle.Fill,
-                View = View.Details,
-                FullRowSelect = true,
-                Font = new Font("Century Gothic", 10),
-            };
-            list.Columns.Add("Student", 150);
-            list.Columns.Add("Score", 80);
-            list.Columns.Add("Date", 150);
-            list.Columns.Add("Rated", 80);
-
-            foreach (DataRow row in studentResults.Rows)
-            {
-                var item = new ListViewItem(row["Username"].ToString());
-                item.SubItems.Add(row["Score"].ToString());
-                item.SubItems.Add(Convert.ToDateTime(row["CompletedDate"]).ToString("MMM dd yyyy"));
-                int ungraded = row["UngradedCount"] != DBNull.Value ? Convert.ToInt32(row["UngradedCount"]) : 0;
-                item.SubItems.Add(ungraded > 0 ? "⚠" : "✔");
-                item.ForeColor = ungraded > 0 ? Color.IndianRed : Color.SeaGreen;
-
-                item.Tag = new StudentResultTag
-                {
-                    StudentID = Convert.ToInt32(row["StudentID"]),
-                    HasUngraded = ungraded > 0
-                };
-
-                list.Items.Add(item);
-            }
-            list.DoubleClick += (s, e) =>
-            {
-                if (list.SelectedItems.Count > 0)
-                {
-                    var selectedItem = list.SelectedItems[0];
-                    var tagInfo = (dynamic)selectedItem.Tag;
-
-                    if (tagInfo.HasUngraded)
-                    {
-                        OpenGradingForm(quizID, tagInfo.StudentID);
-                    }
-                    else
-                    {
-                        MessageBox.Show("All questions for this student have already been graded.");
-                    }
-                }
-            };
-
-            resultsForm.Controls.Add(list);
-            resultsForm.ShowDialog();
-        }
-
-        private void OpenGradingForm(int quizID, int studentID)
-        {
-            // Create and show the form in a way that maintains scope
-            using (var gradingForm = new GradingForm(quizID, studentID))
-            {
-                // Subscribe to the FormClosed event
-                gradingForm.FormClosed += (sender, e) =>
-                {
-                    // This will execute after the form is closed
-                    LoadQuizzesIntoPanels();
-                };
-
-                gradingForm.ShowDialog();
-            }
-
-            // No need to call LoadQuizzesIntoPanels() here anymore
+            backBtn.Click += (s, e) => LoadTeacherQuizzes();
+            answersPanel.Controls.Add(backBtn);
         }
     }
 }

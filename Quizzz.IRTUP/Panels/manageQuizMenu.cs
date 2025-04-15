@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -48,19 +49,20 @@ namespace Quizzz.IRTUP.Panels
         {
             DatabaseHelper db = new DatabaseHelper();
             DataTable quizData = db.GetData(
-                @"SELECT q.Difficulty, t.Subject 
+                @"SELECT q.Difficulty, q.GradeLevel, t.Subject 
           FROM Quizzes q
           INNER JOIN Teachers t ON q.TeacherID = t.TeacherID
           WHERE q.QuizID = @QuizID",
                 new OleDbParameter("@QuizID", quizID));
 
-            string subject = "", difficulty = "";
+            string subject = "", difficulty = "", gradelevel = "";
 
 
             if (quizData.Rows.Count > 0)
             {
                 subject = quizData.Rows[0]["Subject"].ToString();
                 difficulty = quizData.Rows[0]["Difficulty"].ToString();
+                gradelevel = quizData.Rows[0]["GradeLevel"].ToString();
             }
 
             Panel quizPanel = new Panel
@@ -94,9 +96,19 @@ namespace Quizzz.IRTUP.Panels
                 Height = 25
             };
 
+            Label gradeLevelLabel = new Label
+            {
+                Text = $"Grade: {gradelevel}",
+                Dock = DockStyle.Top,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Century Gothic", 9),
+                ForeColor = Color.SeaGreen,
+                Height = 20
+            };
+
             Label subjectLabel = new Label
             {
-                Text = $"Grade Level: {subject}",
+                Text = $"Subject: {subject}",
                 Dock = DockStyle.Top,
                 TextAlign = ContentAlignment.MiddleCenter,
                 Font = new Font("Century Gothic", 9),
@@ -144,6 +156,7 @@ namespace Quizzz.IRTUP.Panels
             // Add controls to the panel
             quizPanel.Controls.Add(quizButton);
             quizPanel.Controls.Add(difficultyLabel);
+            quizPanel.Controls.Add(gradeLevelLabel);
             quizPanel.Controls.Add(subjectLabel);
             quizPanel.Controls.Add(dateLabel);
             quizPanel.Controls.Add(quizTitle);
@@ -158,40 +171,51 @@ namespace Quizzz.IRTUP.Panels
 
             DataRow quiz = quizData.Rows[0];
             string title = quiz["Title"].ToString();
-            string grade = quiz["Subject"].ToString();
+            string subject = quiz["Subject"].ToString();
+            string gradeLevel = quiz["GradeLevel"]?.ToString() ?? ""; // Handle potential NULL
             string difficulty = quiz["Difficulty"].ToString();
 
             Form editForm = new Form
             {
                 Text = "Edit Quiz Info",
-                Size = new Size(350, 300),
+                Size = new Size(350, 380), // Increased height for additional field
                 FormBorderStyle = FormBorderStyle.FixedDialog,
                 StartPosition = FormStartPosition.CenterScreen,
                 BackColor = Color.FromArgb(240, 248, 255),
             };
 
+            // Title
             Label lblTitle = new Label { Text = "Quiz Title", Left = 20, Top = 20, Width = 100, Font = new Font("Century Gothic", 10) };
             TextBox txtTitle = new TextBox { Text = title, Left = 20, Top = 45, Width = 280, Font = new Font("Century Gothic", 10) };
 
+            // Subject (read-only)
             Label lblSubject = new Label
             {
-                Text = $"Subject: {teacherDetails["Subject"]}",
+                Text = $"Subject: {subject}",
                 Left = 20,
                 Top = 85,
                 Width = 280,
                 Font = new Font("Century Gothic", 10)
             };
 
-            Label lblDifficulty = new Label { Text = "Difficulty", Left = 20, Top = 150, Width = 100, Font = new Font("Century Gothic", 10) };
-            ComboBox cboDifficulty = new ComboBox { Left = 20, Top = 175, Width = 280, DropDownStyle = ComboBoxStyle.DropDownList };
+            // Grade Level (new field)
+            Label lblGradeLevel = new Label { Text = "Grade Level", Left = 20, Top = 120, Width = 100, Font = new Font("Century Gothic", 10) };
+            ComboBox cboGradeLevel = new ComboBox { Left = 20, Top = 145, Width = 280, DropDownStyle = ComboBoxStyle.DropDownList };
+            cboGradeLevel.Items.AddRange(new string[] { "1", "2", "3", "4", "5", "6" });
+            cboGradeLevel.SelectedItem = string.IsNullOrEmpty(gradeLevel) ? "5" : gradeLevel;
+
+            // Difficulty
+            Label lblDifficulty = new Label { Text = "Difficulty", Left = 20, Top = 180, Width = 100, Font = new Font("Century Gothic", 10) };
+            ComboBox cboDifficulty = new ComboBox { Left = 20, Top = 205, Width = 280, DropDownStyle = ComboBoxStyle.DropDownList };
             cboDifficulty.Items.AddRange(new string[] { "Easy", "Medium", "Hard" });
             cboDifficulty.SelectedItem = difficulty;
 
+            // Save Button
             Button btnSave = new Button
             {
                 Text = "Save Changes",
                 Left = 90,
-                Top = 220,
+                Top = 280,
                 Width = 150,
                 BackColor = Color.MediumSeaGreen,
                 ForeColor = Color.White,
@@ -202,16 +226,24 @@ namespace Quizzz.IRTUP.Panels
             btnSave.Click += (s, ev) =>
             {
                 string updatedTitle = txtTitle.Text.Trim();
-                string updatedGrade = lblSubject.Text.ToString() ?? "";
+                string updatedGradeLevel = cboGradeLevel.SelectedItem?.ToString() ?? "";
                 string updatedDiff = cboDifficulty.SelectedItem?.ToString() ?? "";
 
-                if (string.IsNullOrWhiteSpace(updatedTitle)) return;
+                if (string.IsNullOrWhiteSpace(updatedTitle))
+                {
+                    MessageBox.Show("Please enter a quiz title");
+                    return;
+                }
 
-                string updateQuery = "UPDATE Quizzes SET Title = @Title, Subject = @Subject, Difficulty = @Difficulty WHERE QuizID = @QuizID";
+                string updateQuery = @"UPDATE Quizzes SET 
+                            Title = @Title, 
+                            GradeLevel = @GradeLevel, 
+                            Difficulty = @Difficulty 
+                            WHERE QuizID = @QuizID";
                 OleDbParameter[] parameters = new OleDbParameter[]
                 {
             new OleDbParameter("@Title", updatedTitle),
-            new OleDbParameter("@Subject", updatedGrade),
+            new OleDbParameter("@GradeLevel", updatedGradeLevel),
             new OleDbParameter("@Difficulty", updatedDiff),
             new OleDbParameter("@QuizID", quizID)
                 };
@@ -224,7 +256,13 @@ namespace Quizzz.IRTUP.Panels
                 }
             };
 
-            editForm.Controls.AddRange(new Control[] { lblTitle, txtTitle, lblSubject, lblDifficulty, cboDifficulty, btnSave });
+            editForm.Controls.AddRange(new Control[] {
+        lblTitle, txtTitle,
+        lblSubject,
+        lblGradeLevel, cboGradeLevel,
+        lblDifficulty, cboDifficulty,
+        btnSave
+    });
             editForm.ShowDialog();
         }
 
@@ -252,6 +290,10 @@ namespace Quizzz.IRTUP.Panels
                 Font = new Font("Century Gothic", 10)
             };
 
+            Label lblGradeLevel = new Label { Text = "Grade Level", Left = 20, Top = 120, Width = 100, Font = new Font("Century Gothic", 10) };
+            ComboBox cboGradeLevel = new ComboBox { Left = 20, Top = 145, Width = 280, DropDownStyle = ComboBoxStyle.DropDownList };
+            cboGradeLevel.Items.AddRange(new string[] { "1", "2", "3", "4", "5", "6" });
+
             Label lblDifficulty = new Label { Text = "Difficulty", Left = 20, Top = 150, Width = 100, Font = new Font("Century Gothic", 10) };
             ComboBox cboDifficulty = new ComboBox { Left = 20, Top = 175, Width = 280, DropDownStyle = ComboBoxStyle.DropDownList };
             cboDifficulty.Items.AddRange(new string[] { "Easy", "Medium", "Hard" });
@@ -274,14 +316,16 @@ namespace Quizzz.IRTUP.Panels
 
                 DatabaseHelper db = new DatabaseHelper();
                 string insertQuery = @"INSERT INTO Quizzes 
-                             (Title, TeacherID, CreatedDate, Difficulty) 
-                             VALUES (@Title, @TeacherID, @CreatedDate, @Difficulty)";
+                     (Title, TeacherID, CreatedDate, Difficulty, GradeLevel, Subject) 
+                     VALUES (@Title, @TeacherID, @CreatedDate, @Difficulty, @GradeLevel, @Subject)";
                 OleDbParameter[] parameters = new OleDbParameter[]
                 {
-            new OleDbParameter("@Title", txtTitle.Text.Trim()),
-            new OleDbParameter("@TeacherID", _teacherID),
-            new OleDbParameter("@CreatedDate", DateTime.Now.ToString("yyyy-MM-dd")),
-            new OleDbParameter("@Difficulty", cboDifficulty.SelectedItem?.ToString() ?? "")
+                new OleDbParameter("@Title", txtTitle.Text.Trim()),
+                new OleDbParameter("@TeacherID", _teacherID),
+                new OleDbParameter("@CreatedDate", DateTime.Now.ToString("yyyy-MM-dd")),
+                new OleDbParameter("@Difficulty", cboDifficulty.SelectedItem?.ToString() ?? "Medium"),
+                new OleDbParameter("@GradeLevel", cboGradeLevel.SelectedItem.ToString()),
+                new OleDbParameter("@Subject", teacherDetails["Subject"]) // Add this parameter
                 };
 
                 if (db.ExecuteQuery(insertQuery, parameters))
@@ -294,6 +338,8 @@ namespace Quizzz.IRTUP.Panels
 
             newQuizForm.Controls.Add(txtTitle);
             newQuizForm.Controls.Add(lblSubject);
+            newQuizForm.Controls.Add(lblGradeLevel);
+            newQuizForm.Controls.Add(cboGradeLevel);
             newQuizForm.Controls.Add(cboDifficulty);
             newQuizForm.Controls.Add(btnCreate);
             newQuizForm.ShowDialog();

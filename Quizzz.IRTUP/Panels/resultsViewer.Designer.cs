@@ -38,12 +38,8 @@
             panel2 = new Panel();
             label1 = new Label();
             button1 = new Button();
-            panel3 = new Panel();
-            label2 = new Label();
-            button2 = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
-            panel3.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -106,16 +102,16 @@
             answersPanel.Dock = DockStyle.Top;
             answersPanel.Location = new Point(0, 78);
             answersPanel.Name = "answersPanel";
-            answersPanel.Size = new Size(1044, 242);
+            answersPanel.Size = new Size(1044, 354);
             answersPanel.TabIndex = 8;
             // 
             // resultsPanel
             // 
             resultsPanel.BackColor = Color.MediumSeaGreen;
             resultsPanel.Dock = DockStyle.Fill;
-            resultsPanel.Location = new Point(0, 352);
+            resultsPanel.Location = new Point(0, 432);
             resultsPanel.Name = "resultsPanel";
-            resultsPanel.Size = new Size(1044, 249);
+            resultsPanel.Size = new Size(1044, 169);
             resultsPanel.TabIndex = 9;
             // 
             // panel2
@@ -135,9 +131,9 @@
             label1.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.Location = new Point(3, 10);
             label1.Name = "label1";
-            label1.Size = new Size(151, 21);
+            label1.Size = new Size(67, 21);
             label1.TabIndex = 1;
-            label1.Text = "Ungraded Quizzes";
+            label1.Text = "Quizzes";
             // 
             // button1
             // 
@@ -149,43 +145,11 @@
             button1.Text = "Next";
             button1.UseVisualStyleBackColor = true;
             // 
-            // panel3
-            // 
-            panel3.BackColor = Color.SeaGreen;
-            panel3.Controls.Add(label2);
-            panel3.Controls.Add(button2);
-            panel3.Dock = DockStyle.Top;
-            panel3.Location = new Point(0, 320);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(1044, 32);
-            panel3.TabIndex = 11;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(3, 11);
-            label2.Name = "label2";
-            label2.Size = new Size(133, 21);
-            label2.TabIndex = 1;
-            label2.Text = "Graded Quizzes";
-            // 
-            // button2
-            // 
-            button2.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button2.Location = new Point(1099, 7);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 29);
-            button2.TabIndex = 0;
-            button2.Text = "Next";
-            button2.UseVisualStyleBackColor = true;
-            // 
             // resultsViewer
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(resultsPanel);
-            Controls.Add(panel3);
             Controls.Add(answersPanel);
             Controls.Add(panel2);
             Controls.Add(panel1);
@@ -196,8 +160,6 @@
             panel1.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
-            panel3.ResumeLayout(false);
-            panel3.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -212,8 +174,5 @@
         private Panel panel2;
         private Label label1;
         private Button button1;
-        private Panel panel3;
-        private Button button2;
-        private Label label2;
     }
 }

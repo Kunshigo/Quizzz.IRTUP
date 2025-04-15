@@ -70,7 +70,15 @@ namespace Quizzz.IRTUP.Classes
                     conn.Open();
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
                     {
-                        cmd.Parameters.AddRange(parameters);
+                        // Clear any existing parameters first
+                        cmd.Parameters.Clear();
+
+                        // Add parameters with proper types
+                        foreach (var param in parameters)
+                        {
+                            cmd.Parameters.Add(param);
+                        }
+
                         using (OleDbDataAdapter adapter = new OleDbDataAdapter(cmd))
                         {
                             adapter.Fill(dt);
@@ -78,9 +86,14 @@ namespace Quizzz.IRTUP.Classes
                     }
                 }
             }
+            catch (OleDbException oleEx)
+            {
+                // More specific handling for OleDb exceptions
+                MessageBox.Show($"Database error (OleDb): {oleEx.Message}\nQuery: {query}");
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Error retrieving data: " + ex.Message);
+                MessageBox.Show($"General error retrieving data: {ex.Message}\nQuery: {query}");
             }
             return dt;
         }
@@ -450,7 +463,6 @@ namespace Quizzz.IRTUP.Classes
                         transaction.Rollback();
                         MessageBox.Show("Error saving True/False question: " + ex.Message);
                         // Add debug output to see parameter values
-                        MessageBox.Show($"Debug values - QuizID: {quizID}, QNo: {questionNo}, Text: {questionText}, Ans: {correctAnswer}");
                     }
                 }
             }
@@ -460,7 +472,7 @@ namespace Quizzz.IRTUP.Classes
             string query = "SELECT * FROM TrueFalseQuestion WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo";
 
             // Debug output to verify parameters
-            MessageBox.Show($"Executing query with: QuizID={quizID}, QuestionNo={questionNo}");
+
 
             OleDbParameter[] parameters = new OleDbParameter[]
             {
@@ -475,7 +487,6 @@ namespace Quizzz.IRTUP.Classes
                 if (result.Rows.Count > 0)
                 {
                     var row = result.Rows[0];
-                    MessageBox.Show($"✅ Loaded: QuestionNo = {row["QuestionNo"]}, CorrectAnswer = {row["CorrectAnswer"]}");
                 }
                 else
                 {
@@ -997,42 +1008,20 @@ namespace Quizzz.IRTUP.Classes
             return GetData(query, new OleDbParameter("@QuizID", quizID.ToString()));
         }
 
-        public DataTable GetStudentAnswers(int quizID, int studentID)
+        public DataTable GetCompletedAttemptsForQuiz(int quizID)
         {
             string query = @"
-        SELECT 
-            q.QuestionNo, 
-            q.QuestionText, 
-            oe.Answer AS StudentAnswer,
-            oe.IsGraded,
-            oe.Score
-        FROM Questions q
-        INNER JOIN OpenEndedAnswers oe 
-            ON q.QuizID = oe.QuizID AND q.QuestionNo = oe.QuestionNo
-        WHERE q.QuizID = ? 
-          AND oe.StudentID = ? 
-          AND q.QuestionType = 'Open-Ended'
-          AND (oe.IsGraded = 0 OR oe.IsGraded IS NULL)
-        ORDER BY q.QuestionNo";
+        SELECT c.Score, c.CompletedDate, s.Username
+        FROM CompletedQuizzes c
+        INNER JOIN Students s ON c.StudentID = s.StudentID
+        WHERE c.QuizID = @QuizID";
 
-            try
-            {
-                OleDbParameter[] parameters = new OleDbParameter[]
-                {
-            new OleDbParameter("@QuizID", OleDbType.Integer) { Value = quizID },
-            new OleDbParameter("@StudentID", OleDbType.Integer) { Value = studentID }
-                };
+            OleDbParameter[] parameters = {
+        new OleDbParameter("@QuizID", quizID)
+    };
 
-                DataTable result = GetData(query, parameters);
-                return result ?? new DataTable();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error getting student answers: {ex.Message}");
-                return new DataTable();
-            }
+            return GetData(query, parameters);
         }
-
 
         public object ExecuteScalar(string query, params OleDbParameter[] parameters)
         {

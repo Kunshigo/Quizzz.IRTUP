@@ -37,13 +37,14 @@
             // 
             // label1
             // 
-            label1.AutoSize = true;
+            label1.Dock = DockStyle.Fill;
             label1.Font = new Font("Century Gothic", 26.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(466, 36);
+            label1.Location = new Point(0, 0);
             label1.Name = "label1";
-            label1.Size = new Size(230, 42);
+            label1.Size = new Size(1185, 544);
             label1.TabIndex = 1;
             label1.Text = "questionText";
+            label1.TextAlign = ContentAlignment.TopCenter;
             // 
             // tableLayoutPanel1
             // 
@@ -96,7 +97,6 @@
             Size = new Size(1185, 544);
             tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion

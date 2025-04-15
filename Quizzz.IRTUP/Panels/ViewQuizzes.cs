@@ -16,6 +16,7 @@ namespace Quizzz.IRTUP.Panels
     public partial class ViewQuizzes : UserControl
     {
         private int _studentID;
+        private string _studentGradeLevel;
         private Dictionary<string, string> _studentDetails;
 
         public ViewQuizzes(Dictionary<string, string> studentDetails)
@@ -23,6 +24,7 @@ namespace Quizzz.IRTUP.Panels
             InitializeComponent();
             this._studentDetails = studentDetails;
             this._studentID = int.Parse(studentDetails["StudentID"]);
+            this._studentGradeLevel = studentDetails.ContainsKey("GradeLevel") ? studentDetails["GradeLevel"] : "1";
             InitializeQuizPanels();
             LoadQuizzes();
         }
@@ -74,14 +76,38 @@ namespace Quizzz.IRTUP.Panels
 
             DatabaseHelper db = new DatabaseHelper();
 
-            // Get quizzes matching filters
-            DataTable quizzes = db.GetFilteredQuizzesForStudent(
-                subjectFilter == "All Subjects" ? null : subjectFilter,
-                difficultyFilter == "All Difficulties" ? null : difficultyFilter);
+            // Build the query dynamically based on filters
+            string query = @"SELECT q.QuizID, q.Title, q.Subject, q.Difficulty, q.CreatedDate, t.Username AS TeacherName
+                    FROM Quizzes q
+                    INNER JOIN Teachers t ON q.TeacherID = t.TeacherID
+                    WHERE q.GradeLevel = ?";
 
-            // Get completed quiz data for this student (including CompletedDate)
+            List<OleDbParameter> parameters = new List<OleDbParameter>
+    {
+        new OleDbParameter("@GradeLevel", OleDbType.VarChar) { Value = _studentGradeLevel }
+    };
+
+            // Add subject filter if not "All Subjects"
+            if (subjectFilter != "All Subjects")
+            {
+                query += " AND q.Subject = ?";
+                parameters.Add(new OleDbParameter("@Subject", OleDbType.VarChar) { Value = subjectFilter });
+            }
+
+            // Add difficulty filter if not "All Difficulties"
+            if (difficultyFilter != "All Difficulties")
+            {
+                query += " AND q.Difficulty = ?";
+                parameters.Add(new OleDbParameter("@Difficulty", OleDbType.VarChar) { Value = difficultyFilter });
+            }
+
+            query += " ORDER BY q.CreatedDate DESC";
+
+            DataTable quizzes = db.GetData(query, parameters.ToArray());
+
+            // Rest of the method remains the same...
             DataTable completedQuizzes = db.GetData(
-                "SELECT QuizID, CompletedDate FROM CompletedQuizzes WHERE StudentID = @StudentID",
+                "SELECT QuizID, CompletedDate FROM CompletedQuizzes WHERE StudentID = ?",
                 new OleDbParameter("@StudentID", _studentID));
 
             foreach (DataRow quiz in quizzes.Rows)
@@ -92,22 +118,17 @@ namespace Quizzz.IRTUP.Panels
                 string difficulty = quiz["Difficulty"].ToString();
                 DateTime createdDate = SafeDate(quiz["CreatedDate"]);
 
-                // Find if this quiz is completed and get the completion date
-                DateTime? completedDate = null;
-                bool isCompleted = false;
-
-                var completedRow = completedQuizzes.AsEnumerable()
-                    .FirstOrDefault(row => Convert.ToInt32(row["QuizID"]) == quizID);
-
-                if (completedRow != null)
-                {
-                    isCompleted = true;
-                    completedDate = SafeDate(completedRow["CompletedDate"]);
-                }
+                bool isCompleted = completedQuizzes.AsEnumerable()
+                    .Any(row => Convert.ToInt32(row["QuizID"]) == quizID);
+                DateTime? completedDate = isCompleted ?
+                    SafeDate(completedQuizzes.AsEnumerable()
+                        .First(row => Convert.ToInt32(row["QuizID"]) == quizID)["CompletedDate"])
+                    : (DateTime?)null;
 
                 CreateQuizCard(quizID, title, subject, difficulty, createdDate, isCompleted, completedDate);
             }
         }
+
 
         private void CreateQuizCard(int quizID, string title, string subject, string difficulty, DateTime createdDate, bool isCompleted, DateTime? completedDate = null)
         {

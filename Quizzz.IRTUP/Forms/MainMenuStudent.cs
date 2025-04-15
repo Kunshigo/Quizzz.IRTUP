@@ -168,12 +168,12 @@ namespace Quizzz.IRTUP.Forms
 
         private void generalSettingsBtn_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("Not implemented yet hehe", "see you next time", MessageBoxButtons.OK);
         }
 
         private void accountSettingsBtn_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("Not implemented yet hehe", "see you next time", MessageBoxButtons.OK);
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -181,6 +181,11 @@ namespace Quizzz.IRTUP.Forms
             loginWindow loginWindow = new loginWindow();
             loginWindow.Show();
             this.Close();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Not implemented yet hehe", "see you next time", MessageBoxButtons.OK);
         }
     }
 }

@@ -39,13 +39,14 @@
             // 
             // questionLabel
             // 
-            questionLabel.AutoSize = true;
+            questionLabel.Dock = DockStyle.Fill;
             questionLabel.Font = new Font("Century Gothic", 26.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            questionLabel.Location = new Point(551, 28);
+            questionLabel.Location = new Point(0, 0);
             questionLabel.Name = "questionLabel";
-            questionLabel.Size = new Size(230, 42);
+            questionLabel.Size = new Size(1185, 544);
             questionLabel.TabIndex = 0;
             questionLabel.Text = "questionText";
+            questionLabel.TextAlign = ContentAlignment.TopCenter;
             // 
             // tableLayoutPanel1
             // 
@@ -127,7 +128,6 @@
             Size = new Size(1185, 544);
             tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion

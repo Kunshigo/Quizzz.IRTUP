@@ -30,7 +30,6 @@
         {
             Header = new Panel();
             controlBox = new Panel();
-            maximizeBtn = new Button();
             minimizeBtn = new Button();
             closeBtn = new Button();
             questionsPanel = new Panel();
@@ -39,7 +38,6 @@
             settingsPanel = new Panel();
             delQuestionBtn = new AntdUI.Button();
             saveQuizBtn = new AntdUI.Button();
-            dPCheckBox = new AntdUI.Checkbox();
             timeLimitComboBox = new ComboBox();
             questionTypeComboBox = new ComboBox();
             label2 = new Label();
@@ -63,28 +61,13 @@
             // 
             // controlBox
             // 
-            controlBox.Controls.Add(maximizeBtn);
             controlBox.Controls.Add(minimizeBtn);
             controlBox.Controls.Add(closeBtn);
             controlBox.Dock = DockStyle.Right;
-            controlBox.Location = new Point(1114, 0);
+            controlBox.Location = new Point(1132, 0);
             controlBox.Name = "controlBox";
-            controlBox.Size = new Size(85, 27);
+            controlBox.Size = new Size(67, 27);
             controlBox.TabIndex = 4;
-            // 
-            // maximizeBtn
-            // 
-            maximizeBtn.BackColor = Color.LightGreen;
-            maximizeBtn.BackgroundImage = Properties.Resources.maximize;
-            maximizeBtn.BackgroundImageLayout = ImageLayout.Stretch;
-            maximizeBtn.FlatAppearance.BorderSize = 0;
-            maximizeBtn.FlatStyle = FlatStyle.Flat;
-            maximizeBtn.Location = new Point(38, 3);
-            maximizeBtn.Name = "maximizeBtn";
-            maximizeBtn.Size = new Size(19, 19);
-            maximizeBtn.TabIndex = 1;
-            maximizeBtn.UseVisualStyleBackColor = false;
-            maximizeBtn.Click += maximizeBtn_Click;
             // 
             // minimizeBtn
             // 
@@ -107,7 +90,7 @@
             closeBtn.BackgroundImageLayout = ImageLayout.Stretch;
             closeBtn.FlatAppearance.BorderSize = 0;
             closeBtn.FlatStyle = FlatStyle.Flat;
-            closeBtn.Location = new Point(63, 3);
+            closeBtn.Location = new Point(38, 3);
             closeBtn.Name = "closeBtn";
             closeBtn.Size = new Size(19, 19);
             closeBtn.TabIndex = 0;
@@ -152,7 +135,6 @@
             settingsPanel.BackColor = SystemColors.ButtonHighlight;
             settingsPanel.Controls.Add(delQuestionBtn);
             settingsPanel.Controls.Add(saveQuizBtn);
-            settingsPanel.Controls.Add(dPCheckBox);
             settingsPanel.Controls.Add(timeLimitComboBox);
             settingsPanel.Controls.Add(questionTypeComboBox);
             settingsPanel.Controls.Add(label2);
@@ -165,7 +147,8 @@
             // 
             // delQuestionBtn
             // 
-            delQuestionBtn.DefaultBack = Color.FromArgb(127, 216, 190);
+            delQuestionBtn.BackColor = Color.DimGray;
+            delQuestionBtn.DefaultBack = Color.DarkSalmon;
             delQuestionBtn.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             delQuestionBtn.Location = new Point(22, 525);
             delQuestionBtn.Name = "delQuestionBtn";
@@ -184,15 +167,6 @@
             saveQuizBtn.TabIndex = 4;
             saveQuizBtn.Text = "Save";
             saveQuizBtn.Click += saveQuizBtn_Click;
-            // 
-            // dPCheckBox
-            // 
-            dPCheckBox.Font = new Font("Century Gothic", 11F);
-            dPCheckBox.Location = new Point(22, 249);
-            dPCheckBox.Name = "dPCheckBox";
-            dPCheckBox.Size = new Size(162, 23);
-            dPCheckBox.TabIndex = 3;
-            dPCheckBox.Text = "Double Points";
             // 
             // timeLimitComboBox
             // 
@@ -263,7 +237,6 @@
 
         private Panel Header;
         private Panel controlBox;
-        private Button maximizeBtn;
         private Button minimizeBtn;
         private Button closeBtn;
         private Panel questionsPanel;
@@ -273,7 +246,6 @@
         private AntdUI.Button addQuestionBtn;
         private Label label2;
         private ComboBox questionTypeComboBox;
-        private AntdUI.Checkbox dPCheckBox;
         private ComboBox timeLimitComboBox;
         private AntdUI.Button saveQuizBtn;
         private AntdUI.Button delQuestionBtn;

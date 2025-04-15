@@ -36,7 +36,6 @@
             label1 = new Label();
             menuPanelBtn = new PictureBox();
             controlBox = new Panel();
-            maximizeBtn = new Button();
             minimizeBtn = new Button();
             closeBtn = new Button();
             sideBar = new FlowLayoutPanel();
@@ -149,28 +148,13 @@
             // 
             // controlBox
             // 
-            controlBox.Controls.Add(maximizeBtn);
             controlBox.Controls.Add(minimizeBtn);
             controlBox.Controls.Add(closeBtn);
             controlBox.Dock = DockStyle.Right;
-            controlBox.Location = new Point(1158, 0);
+            controlBox.Location = new Point(1179, 0);
             controlBox.Name = "controlBox";
-            controlBox.Size = new Size(85, 43);
+            controlBox.Size = new Size(64, 43);
             controlBox.TabIndex = 3;
-            // 
-            // maximizeBtn
-            // 
-            maximizeBtn.BackColor = Color.LightGreen;
-            maximizeBtn.BackgroundImage = Properties.Resources.maximize;
-            maximizeBtn.BackgroundImageLayout = ImageLayout.Stretch;
-            maximizeBtn.FlatAppearance.BorderSize = 0;
-            maximizeBtn.FlatStyle = FlatStyle.Flat;
-            maximizeBtn.Location = new Point(38, 3);
-            maximizeBtn.Name = "maximizeBtn";
-            maximizeBtn.Size = new Size(19, 19);
-            maximizeBtn.TabIndex = 1;
-            maximizeBtn.UseVisualStyleBackColor = false;
-            maximizeBtn.Click += maximizeBtn_Click;
             // 
             // minimizeBtn
             // 
@@ -193,7 +177,7 @@
             closeBtn.BackgroundImageLayout = ImageLayout.Stretch;
             closeBtn.FlatAppearance.BorderSize = 0;
             closeBtn.FlatStyle = FlatStyle.Flat;
-            closeBtn.Location = new Point(63, 3);
+            closeBtn.Location = new Point(38, 3);
             closeBtn.Name = "closeBtn";
             closeBtn.Size = new Size(19, 19);
             closeBtn.TabIndex = 0;
@@ -443,6 +427,7 @@
             button3.TabIndex = 6;
             button3.Text = "About";
             button3.UseVisualStyleBackColor = false;
+            button3.Click += button3_Click;
             // 
             // panel4
             // 
@@ -549,7 +534,6 @@
         private Panel controlBox;
         private Button minimizeBtn;
         private Button closeBtn;
-        private Button maximizeBtn;
         private PictureBox menuPanelBtn;
         private FlowLayoutPanel sideBar;
         private Label label1;

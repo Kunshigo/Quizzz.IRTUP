@@ -79,7 +79,6 @@ namespace Quizzz.IRTUP.QuestionTypePanels
             buttons[index].FlatAppearance.BorderSize = 3;
             buttons[index].FlatAppearance.BorderColor = Color.Green;
 
-            MessageBox.Show($"CorrectAnswerIndex = {correctAnswerIndex}");
         }
 
         private void MultipleChoice_Resize(object sender, EventArgs e)

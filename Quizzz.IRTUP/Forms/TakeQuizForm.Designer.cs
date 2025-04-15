@@ -31,15 +31,12 @@
             components = new System.ComponentModel.Container();
             Header = new Panel();
             controlBox = new Panel();
-            maximizeBtn = new Button();
             minimizeBtn = new Button();
             closeBtn = new Button();
             quizTakingPanel = new FlowLayoutPanel();
             panel1 = new Panel();
             lblQuestionCount = new Label();
             lblTimer = new Label();
-            prevBtn = new Button();
-            nextBtn = new Button();
             answerDelayTimer = new System.Windows.Forms.Timer(components);
             Header.SuspendLayout();
             controlBox.SuspendLayout();
@@ -58,27 +55,13 @@
             // 
             // controlBox
             // 
-            controlBox.Controls.Add(maximizeBtn);
             controlBox.Controls.Add(minimizeBtn);
             controlBox.Controls.Add(closeBtn);
             controlBox.Dock = DockStyle.Right;
-            controlBox.Location = new Point(1100, 0);
+            controlBox.Location = new Point(1118, 0);
             controlBox.Name = "controlBox";
-            controlBox.Size = new Size(85, 27);
+            controlBox.Size = new Size(67, 27);
             controlBox.TabIndex = 4;
-            // 
-            // maximizeBtn
-            // 
-            maximizeBtn.BackColor = Color.LightGreen;
-            maximizeBtn.BackgroundImage = Properties.Resources.maximize;
-            maximizeBtn.BackgroundImageLayout = ImageLayout.Stretch;
-            maximizeBtn.FlatAppearance.BorderSize = 0;
-            maximizeBtn.FlatStyle = FlatStyle.Flat;
-            maximizeBtn.Location = new Point(38, 3);
-            maximizeBtn.Name = "maximizeBtn";
-            maximizeBtn.Size = new Size(19, 19);
-            maximizeBtn.TabIndex = 1;
-            maximizeBtn.UseVisualStyleBackColor = false;
             // 
             // minimizeBtn
             // 
@@ -100,7 +83,7 @@
             closeBtn.BackgroundImageLayout = ImageLayout.Stretch;
             closeBtn.FlatAppearance.BorderSize = 0;
             closeBtn.FlatStyle = FlatStyle.Flat;
-            closeBtn.Location = new Point(63, 3);
+            closeBtn.Location = new Point(38, 2);
             closeBtn.Name = "closeBtn";
             closeBtn.Size = new Size(19, 19);
             closeBtn.TabIndex = 0;
@@ -120,8 +103,6 @@
             panel1.BackColor = Color.FromArgb(50, 170, 160);
             panel1.Controls.Add(lblQuestionCount);
             panel1.Controls.Add(lblTimer);
-            panel1.Controls.Add(prevBtn);
-            panel1.Controls.Add(nextBtn);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 27);
             panel1.Name = "panel1";
@@ -145,28 +126,6 @@
             lblTimer.Size = new Size(38, 15);
             lblTimer.TabIndex = 1;
             lblTimer.Text = "label1";
-            // 
-            // prevBtn
-            // 
-            prevBtn.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            prevBtn.Location = new Point(1007, 7);
-            prevBtn.Name = "prevBtn";
-            prevBtn.Size = new Size(75, 29);
-            prevBtn.TabIndex = 0;
-            prevBtn.Text = "Prev";
-            prevBtn.UseVisualStyleBackColor = true;
-            prevBtn.Click += nextBtn_Click;
-            // 
-            // nextBtn
-            // 
-            nextBtn.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            nextBtn.Location = new Point(1099, 7);
-            nextBtn.Name = "nextBtn";
-            nextBtn.Size = new Size(75, 29);
-            nextBtn.TabIndex = 0;
-            nextBtn.Text = "Next";
-            nextBtn.UseVisualStyleBackColor = true;
-            nextBtn.Click += nextBtn_Click;
             // 
             // answerDelayTimer
             // 
@@ -195,14 +154,11 @@
 
         private Panel Header;
         private Panel controlBox;
-        private Button maximizeBtn;
         private Button minimizeBtn;
         private Button closeBtn;
         private FlowLayoutPanel quizTakingPanel;
         private Panel panel1;
-        private Button nextBtn;
         private Label lblTimer;
-        private Button prevBtn;
         private Label lblQuestionCount;
         private System.Windows.Forms.Timer answerDelayTimer;
     }

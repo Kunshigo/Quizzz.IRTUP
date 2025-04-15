@@ -35,13 +35,14 @@
             // 
             // questionLabel
             // 
-            questionLabel.AutoSize = true;
+            questionLabel.Dock = DockStyle.Fill;
             questionLabel.Font = new Font("Century Gothic", 26.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            questionLabel.Location = new Point(446, 33);
+            questionLabel.Location = new Point(0, 0);
             questionLabel.Name = "questionLabel";
-            questionLabel.Size = new Size(230, 42);
+            questionLabel.Size = new Size(1185, 544);
             questionLabel.TabIndex = 1;
             questionLabel.Text = "questionText";
+            questionLabel.TextAlign = ContentAlignment.TopCenter;
             // 
             // answerTxtBox
             // 
@@ -75,7 +76,6 @@
             Name = "OpenEndedStudent";
             Size = new Size(1185, 544);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion

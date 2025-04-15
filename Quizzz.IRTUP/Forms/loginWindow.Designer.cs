@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(loginWindow));
             label1 = new Label();
             Header = new Panel();
             controlBox = new Panel();
@@ -293,6 +294,7 @@
             Controls.Add(label1);
             ForeColor = Color.Transparent;
             FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "loginWindow";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Quizzz Login";

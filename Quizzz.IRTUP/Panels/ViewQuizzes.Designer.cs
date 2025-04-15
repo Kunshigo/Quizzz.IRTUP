@@ -66,6 +66,7 @@
             // 
             // completedQuizzesPanel
             // 
+            completedQuizzesPanel.AutoScroll = true;
             completedQuizzesPanel.BackColor = Color.FromArgb(140, 170, 140);
             completedQuizzesPanel.Dock = DockStyle.Bottom;
             completedQuizzesPanel.Location = new Point(0, 317);

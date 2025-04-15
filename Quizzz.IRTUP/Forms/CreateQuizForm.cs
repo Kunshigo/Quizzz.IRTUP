@@ -213,7 +213,6 @@ namespace Quizzz.IRTUP.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading questions: " + ex.Message);
             }
         }
 
@@ -682,6 +681,21 @@ namespace Quizzz.IRTUP.Forms
                     qNo = tf.QuestionNo;
                     qID = tf.QuestionID;
                 }
+                else if (control is Identification id && id.QuestionID > 0)
+                {
+                    qNo = id.QuestionNo;
+                    qID = id.QuestionID;
+                }
+                else if (control is OpenEnded od && od.QuestionID > 0)
+                {
+                    qNo = od.QuestionNo;
+                    qID = od.QuestionID;
+                }
+                else if (control is FillInTheBlanks fb && fb.QuestionID > 0)
+                {
+                    qNo = fb.QuestionNo;
+                    qID = fb.QuestionID;
+                }
 
                 if (qID > 0)
                 {
@@ -703,7 +717,7 @@ namespace Quizzz.IRTUP.Forms
 
         private void closeBtn_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
 
         private void minimizeBtn_Click(object sender, EventArgs e)
