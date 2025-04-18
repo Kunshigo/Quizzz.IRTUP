@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quizzz.IRTUP.Slide_Previews;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,7 +11,7 @@ using System.Windows.Forms;
 
 namespace Quizzz.IRTUP.Panels
 {
-    public partial class miniMultipleChoice : UserControl
+    public partial class miniMultipleChoice : UserControl, IMiniSlide
     {
         public event EventHandler SlideClicked;
 

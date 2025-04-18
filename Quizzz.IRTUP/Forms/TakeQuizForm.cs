@@ -260,40 +260,35 @@ namespace Quizzz.IRTUP.Forms
             var currentQuestion = questions.ElementAt(currentQuestionIndex);
             string selectedAnswer = "";
             string correctAnswer = currentQuestion.Value.CorrectAnswer;
+            bool isCorrect = false;
 
             if (currentQuestion.Key is MultipleChoiceStudent mc)
             {
                 selectedAnswer = mc.SelectedAnswer;
+                isCorrect = mc.IsCorrect;
             }
             else if (currentQuestion.Key is TrueFalseStudent tf)
             {
                 selectedAnswer = tf.SelectedAnswer;
+                isCorrect = tf.IsCorrect;
             }
             else if (currentQuestion.Key is FillInTheBlanksStudent fib)
             {
                 selectedAnswer = string.Join(",", fib.UserAnswers);
+                isCorrect = fib.IsCorrect;
             }
             else if (currentQuestion.Key is IdentificationStudent id)
             {
                 selectedAnswer = id.UserAnswer;
+                isCorrect = id.IsCorrect;
             }
             if (currentQuestion.Key is OpenEndedStudent oe)
             {
-                DatabaseHelper db = new DatabaseHelper();
-                bool saved = db.SaveOpenEndedAnswer(
-                    currentQuizID,
-                    currentQuestion.Value.QuestionNo,
-                    currentStudentID,
-                    oe.UserAnswer);
-
-                if (!saved)
-                {
-                    MessageBox.Show("Failed to save your open-ended answer");
-                    return;
-                }
+                selectedAnswer = oe.UserAnswer;
+                isCorrect = true;
             }
 
-
+            ShowAnswerFeedback(isCorrect, correctAnswer);
             // Update the dictionary with the selected answer
             questions[currentQuestion.Key] = (
                 currentQuestion.Value.QuestionNo,
@@ -328,6 +323,31 @@ namespace Quizzz.IRTUP.Forms
             }
 
             answerDelayTimer.Start();
+        }
+
+        private void ShowAnswerFeedback(bool isCorrect, string correctAnswer)
+        {
+            // Create a feedback panel
+            Panel feedbackPanel = new Panel();
+            feedbackPanel.Dock = DockStyle.Bottom;
+            feedbackPanel.Height = 50;
+            feedbackPanel.BackColor = isCorrect ? Color.LightGreen : Color.LightPink;
+
+            // Create feedback label
+            Label feedbackLabel = new Label();
+            feedbackLabel.Dock = DockStyle.Fill;
+            feedbackLabel.TextAlign = ContentAlignment.MiddleCenter;
+            feedbackLabel.Font = new Font(feedbackLabel.Font, FontStyle.Bold);
+            feedbackLabel.Text = isCorrect
+                ? "✓ Correct!"
+                : $"✗ Incorrect. Correct answer: {correctAnswer}";
+
+            // Add label to panel and panel to quizTakingPanel
+            feedbackPanel.Controls.Add(feedbackLabel);
+            quizTakingPanel.Controls.Add(feedbackPanel);
+
+            // Bring feedback to front
+            feedbackPanel.BringToFront();
         }
 
         private void StartTimer()

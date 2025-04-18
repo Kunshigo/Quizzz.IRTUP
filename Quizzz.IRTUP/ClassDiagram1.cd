@@ -50,20 +50,21 @@
   <Class Name="Quizzz.IRTUP.Forms.CreateQuizForm" Collapsed="true">
     <Position X="38" Y="9.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BBBYQAAAIKQBEBEACGKiwAACECCkEhADYLAkwwkQUCA=</HashCode>
+      <HashCode>BBBYQAAAIKQBEBEACGKiwAACECCkEgADYLAkwwkQUCA=</HashCode>
       <FileName>Forms\CreateQuizForm.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quizzz.IRTUP.Forms.MainMenuStudent" Collapsed="true">
     <Position X="40.25" Y="8" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>BIAAghAAACAAABAAAADhBEgCQMCgAAABAAAQgQBAIAI=</HashCode>
+      <HashCode>BoBAohABUCACQBEAADDhBEgCQMCgAIABYBg5gQBQIBI=</HashCode>
+      <FileName>Forms\MainMenuStudent.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quizzz.IRTUP.Forms.TakeQuizForm" Collapsed="true">
     <Position X="40.5" Y="11" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>XAAAFUAACLAABAAQIAugAAAOARQIQAABgAUIgwAAgCA=</HashCode>
+      <HashCode>XAAAFUAACLAAAAAQAAugAAAOARQIQAABgAUIgwAAgCA=</HashCode>
       <FileName>Forms\TakeQuizForm.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -84,7 +85,8 @@
   <Class Name="Quizzz.IRTUP.signupWindow" Collapsed="true">
     <Position X="38" Y="8" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BAAAAAAAACAAAAIAAACgAAACAAAAAAABAAAAgQAAAAA=</HashCode>
+      <HashCode>BABAAAAAACEABAIAASCgAgECAAAAAAAJaAgggQAQAAA=</HashCode>
+      <FileName>Forms\signupWindow.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quizzz.IRTUP.registerMenu" Collapsed="true">
@@ -123,11 +125,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Quizzz.IRTUP.Panels.miniMultipleChoice" Collapsed="true">
-    <Position X="34.25" Y="6.5" Width="1.75" />
+    <Position X="28.5" Y="14.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>EAAAAAAAICAAAAAAAgKAEQACAAAAAAAAIAAAAQAAAig=</HashCode>
-      <FileName>Panels\miniMultipleChoice.cs</FileName>
+      <FileName>Slide Previews\miniMultipleChoice.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Quizzz.IRTUP.Panels.QuizCard" Collapsed="true">
     <Position X="31.75" Y="4.75" Width="1.5" />
@@ -153,7 +156,8 @@
   <Class Name="Quizzz.IRTUP.Panels.ViewQuizzes" Collapsed="true">
     <Position X="29.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAgAACBAABIAAACAAAACAAAAAAAAAAAAAVACAAA=</HashCode>
+      <HashCode>QAAACEgAACFAABIAAACAAAgiAAAAAAAACAAAAVECACA=</HashCode>
+      <FileName>Panels\ViewQuizzes.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quizzz.IRTUP.QuestionTypePanels.FillInTheBlanks" Collapsed="true">
@@ -242,5 +246,44 @@
     <Position X="41.5" Y="5" Width="1.75" />
     <TypeIdentifier />
   </Class>
+  <Class Name="Quizzz.IRTUP.Slide_Previews.miniFillInTheBlanks" Collapsed="true">
+    <Position X="33.75" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAICAAABAAAgCAEQACgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Slide Previews\miniFillInTheBlanks.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Quizzz.IRTUP.Slide_Previews.miniIdentification" Collapsed="true">
+    <Position X="38.25" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAICAAABAAAgCAEQECgAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Slide Previews\miniIdentification.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Quizzz.IRTUP.Slide_Previews.miniOpenEnded" Collapsed="true">
+    <Position X="31.25" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAICAAABAAAgCAEQACgAAAAAAAEAAQAAAAAAA=</HashCode>
+      <FileName>Slide Previews\miniOpenEnded.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Quizzz.IRTUP.Panels.miniTrueFalse" Collapsed="true">
+    <Position X="36" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAICAAAAAAAgKAEQACAAAAAAAAQAAAAAAAAiA=</HashCode>
+      <FileName>Slide Previews\miniTrueFalse.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Quizzz.IRTUP.Slide_Previews.IMiniSlide">
+    <Position X="40.25" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Slide Previews\IMiniSlide.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

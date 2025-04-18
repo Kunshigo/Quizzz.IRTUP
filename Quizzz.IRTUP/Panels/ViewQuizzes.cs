@@ -226,10 +226,22 @@ namespace Quizzz.IRTUP.Panels
 
         private void QuizButton_Click(int quizID, bool isCompleted)
         {
+            DatabaseHelper db = new DatabaseHelper();
+            DataTable attempts = db.GetCompletedAttemptsForQuiz(quizID);
+
             if (isCompleted)
             {
-                // Show quiz results
-                MessageBox.Show($"Showing results for quiz ID: {quizID}");
+                StringBuilder message = new StringBuilder();
+                foreach (DataRow row in attempts.Rows)
+                {
+                    
+                    string username = row["Username"].ToString();
+                    string score = row["Score"].ToString();
+                    string date = Convert.ToDateTime(row["CompletedDate"]).ToString("yyyy-MM-dd HH:mm");
+
+                    message.AppendLine($"👤 {username} — 📝 Score: {score} — 📅 {date}");
+                }
+                MessageBox.Show(message.ToString(), "Completed Attempts", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {

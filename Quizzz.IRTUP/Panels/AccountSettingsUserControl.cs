@@ -36,10 +36,10 @@ namespace Quizzz.IRTUP.Panels
 
         }
 
-        private void showPasswordCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            passwordTxtBox.UseSystemPasswordChar = !showPasswordCheckBox.Checked;
-        }
+        //private void showPasswordCheckBox_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    passwordTxtBox.UseSystemPasswordChar = !showPasswordCheckBox.Checked;
+        //}
 
         private void editAccountBtn_Click(object sender, EventArgs e)
         {
@@ -96,9 +96,7 @@ namespace Quizzz.IRTUP.Panels
 
                 usernameTxtBox.Enabled = false;
                 emailTxtBox.Enabled = false;
-                passwordTxtBox.Enabled = false;
                 subjectComboBox.Enabled = false;
-                gradeLvlComboBox.Enabled = false;
 
                 // ✅ Update stored details too
                 teacherDetails["Username"] = newUsername;

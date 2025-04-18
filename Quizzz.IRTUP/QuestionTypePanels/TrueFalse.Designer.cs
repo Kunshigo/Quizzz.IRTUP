@@ -29,12 +29,9 @@
         private void InitializeComponent()
         {
             questionTxtBox = new TextBox();
-            pictureBox1 = new PictureBox();
             tableLayoutPanel1 = new TableLayoutPanel();
             trueBtn = new Button();
             falseBtn = new Button();
-            uploadImageButton = new Button();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -48,17 +45,6 @@
             questionTxtBox.Size = new Size(935, 46);
             questionTxtBox.TabIndex = 12;
             questionTxtBox.TextAlign = HorizontalAlignment.Center;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox1.Location = new Point(373, 66);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(250, 180);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 11;
-            pictureBox1.TabStop = false;
             // 
             // tableLayoutPanel1
             // 
@@ -104,28 +90,15 @@
             falseBtn.UseVisualStyleBackColor = false;
             falseBtn.Click += falseBtn_Click;
             // 
-            // uploadImageButton
-            // 
-            uploadImageButton.Location = new Point(640, 147);
-            uploadImageButton.Name = "uploadImageButton";
-            uploadImageButton.Size = new Size(136, 23);
-            uploadImageButton.TabIndex = 14;
-            uploadImageButton.Text = "Upload Image";
-            uploadImageButton.UseVisualStyleBackColor = true;
-            uploadImageButton.Click += uploadImageButton_Click;
-            // 
             // TrueFalse
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(uploadImageButton);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(questionTxtBox);
-            Controls.Add(pictureBox1);
             Name = "TrueFalse";
             Size = new Size(999, 513);
             Resize += TrueFalse_Resize;
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
@@ -137,7 +110,5 @@
         private TableLayoutPanel tableLayoutPanel1;
         public Button trueBtn;
         public Button falseBtn;
-        private Button uploadImageButton;
-        public PictureBox pictureBox1;
     }
 }

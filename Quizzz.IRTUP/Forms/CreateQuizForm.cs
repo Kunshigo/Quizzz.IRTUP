@@ -1,6 +1,7 @@
 ﻿using Quizzz.IRTUP.Classes;
 using Quizzz.IRTUP.Panels;
 using Quizzz.IRTUP.QuestionTypePanels;
+using Quizzz.IRTUP.Slide_Previews;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -77,11 +78,37 @@ namespace Quizzz.IRTUP.Forms
                         FlowDirection = FlowDirection.TopDown
                     };
 
-                    // Create mini preview
-                    miniMultipleChoice miniControl = new miniMultipleChoice();
-                    miniControl.SetSlideNumber(questionNo);
-                    miniControl.SlideClicked += (sender, e) => ChangePage(slide);
+//
+                   UserControl miniControl;
+                    switch (questionType)
+                    {
+                        case "Multiple Choice":
+                            miniControl = new miniMultipleChoice();
+                            break;
+                        case "True or False":
+                            miniControl = new miniTrueFalse();
+                            break;
+                        case "Identficiation":
+                            miniControl = new miniIdentification();
+                            break;
+                        case "Fill in the blanks":
+                            miniControl = new miniFillInTheBlanks();
+                            break;
+                        case "Open-Ended":
+                            miniControl = new miniOpenEnded();
+                            break;
+                        default:
+                            miniControl = new miniMultipleChoice();
+                            break;
+                    }
+
+                    ((IMiniSlide)miniControl).SetSlideNumber(questionNo);
+                    ((IMiniSlide)miniControl).SlideClicked += (sender, e) => ChangePage(slide);
                     slide.Controls.Add(miniControl);
+                    //miniMultipleChoice miniControl = new miniMultipleChoice();
+                    //miniControl.SetSlideNumber(questionNo);
+                    //miniControl.SlideClicked += (sender, e) => ChangePage(slide);
+                    //slide.Controls.Add(miniControl);
 
                     // Create the appropriate question control
                     if (questionType == "Multiple Choice")
@@ -315,6 +342,29 @@ namespace Quizzz.IRTUP.Forms
                 // Update the slide in our dictionary with the new type but keep the same QuestionNo
                 slides[selectedSlide] = (newControl, currentSlideData.QuestionID, newType, questionNo);
 
+                if (selectedSlide.Controls.Count > 0)
+                {
+                    selectedSlide.Controls.Clear();
+
+                    UserControl newMini = null;
+                    switch (newType)
+                    {
+                        case "Multiple Choice": newMini = new miniMultipleChoice(); break;
+                        case "True or False": newMini = new miniTrueFalse(); break;
+                        case "Identification": newMini = new miniIdentification(); break;
+                        case "Fill in the blanks": newMini = new miniFillInTheBlanks(); break;
+                        case "Open-Ended": newMini = new miniOpenEnded(); break;
+                        default: newMini = new miniMultipleChoice(); break;
+                    }
+
+                    if (newMini is IMiniSlide miniSlide)
+                    {
+                        miniSlide.SetSlideNumber(questionNo);
+                        miniSlide.SlideClicked += (s, args) => ChangePage(selectedSlide);
+                        selectedSlide.Controls.Add(newMini);
+                    }
+                }
+
                 // Update the display
                 selectedQuizPanel.Controls.Clear();
                 selectedQuizPanel.Controls.Add(newControl);
@@ -489,11 +539,41 @@ namespace Quizzz.IRTUP.Forms
 
             if (quizPage == null) return;
 
+            UserControl miniControl = null;
+            switch (questionType)
+            {
+                case "Multiple Choice":
+                    miniControl = new miniMultipleChoice();
+                    break;
+                case "True or False":
+                    miniControl = new miniTrueFalse();
+                    break;
+                case "Identification":
+                    miniControl = new miniIdentification();
+                    break;
+                case "Open-Ended":
+                    miniControl = new miniOpenEnded();
+                    break;
+                case "Fill in the blanks":
+                    miniControl = new miniFillInTheBlanks();
+                    break;
+                default:
+                    miniControl = new miniMultipleChoice(); // fallback
+                    break;
+            }
+
+            if (miniControl is IMiniSlide miniSlide)
+            {
+                miniSlide.SetSlideNumber(slideNumber);
+                miniSlide.SlideClicked += (sender, e) => ChangePage(slide);
+                slide.Controls.Add(miniControl);
+            }
+
             // Create mini preview
-            miniMultipleChoice miniControl = new miniMultipleChoice();
-            miniControl.SetSlideNumber(slideNumber);
-            miniControl.SlideClicked += (sender, e) => ChangePage(slide);
-            slide.Controls.Add(miniControl);
+            //miniMultipleChoice miniControl = new miniMultipleChoice();
+            //miniControl.SetSlideNumber(slideNumber);
+            //miniControl.SlideClicked += (sender, e) => ChangePage(slide);
+            //slide.Controls.Add(miniControl);
 
             // Add to dictionary with the correct initial type and QuestionNo
             slides.Add(slide, (quizPage, 0, questionType, slideNumber));
