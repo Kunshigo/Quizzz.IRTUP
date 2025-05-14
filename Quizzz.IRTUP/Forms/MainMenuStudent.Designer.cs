@@ -44,14 +44,6 @@
             menuBtn = new Button();
             panel5 = new Panel();
             viewQuizBtn = new Button();
-            menuContainer2 = new FlowLayoutPanel();
-            panel2 = new Panel();
-            pictureBox2 = new PictureBox();
-            settingsBtn = new Button();
-            panel7 = new Panel();
-            generalSettingsBtn = new Button();
-            panel8 = new Panel();
-            accountSettingsBtn = new Button();
             panel3 = new Panel();
             pictureBox3 = new PictureBox();
             button3 = new Button();
@@ -70,11 +62,6 @@
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel5.SuspendLayout();
-            menuContainer2.SuspendLayout();
-            panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            panel7.SuspendLayout();
-            panel8.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             panel4.SuspendLayout();
@@ -172,7 +159,6 @@
             // 
             sideBar.BackColor = Color.FromArgb(50, 170, 160);
             sideBar.Controls.Add(menuContainer1);
-            sideBar.Controls.Add(menuContainer2);
             sideBar.Controls.Add(panel3);
             sideBar.Controls.Add(panel4);
             sideBar.Dock = DockStyle.Left;
@@ -256,107 +242,11 @@
             viewQuizBtn.UseVisualStyleBackColor = false;
             viewQuizBtn.Click += viewQuizBtn_Click;
             // 
-            // menuContainer2
-            // 
-            menuContainer2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            menuContainer2.BackColor = Color.FromArgb(66, 226, 184);
-            menuContainer2.Controls.Add(panel2);
-            menuContainer2.Controls.Add(panel7);
-            menuContainer2.Controls.Add(panel8);
-            menuContainer2.FlowDirection = FlowDirection.TopDown;
-            menuContainer2.Location = new Point(0, 58);
-            menuContainer2.Margin = new Padding(0);
-            menuContainer2.Name = "menuContainer2";
-            menuContainer2.Size = new Size(196, 58);
-            menuContainer2.TabIndex = 10;
-            menuContainer2.WrapContents = false;
-            // 
-            // panel2
-            // 
-            panel2.Controls.Add(pictureBox2);
-            panel2.Controls.Add(settingsBtn);
-            panel2.Location = new Point(0, 0);
-            panel2.Margin = new Padding(0);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(196, 58);
-            panel2.TabIndex = 5;
-            // 
-            // pictureBox2
-            // 
-            pictureBox2.Anchor = AnchorStyles.Left;
-            pictureBox2.BackColor = Color.FromArgb(50, 170, 160);
-            pictureBox2.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox2.ErrorImage = null;
-            pictureBox2.Image = Properties.Resources.settingicon;
-            pictureBox2.Location = new Point(15, 10);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(35, 35);
-            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox2.TabIndex = 6;
-            pictureBox2.TabStop = false;
-            // 
-            // settingsBtn
-            // 
-            settingsBtn.BackColor = Color.FromArgb(50, 170, 160);
-            settingsBtn.Cursor = Cursors.Hand;
-            settingsBtn.Font = new Font("Century Gothic", 9F);
-            settingsBtn.Location = new Point(-12, -19);
-            settingsBtn.Name = "settingsBtn";
-            settingsBtn.Size = new Size(218, 100);
-            settingsBtn.TabIndex = 6;
-            settingsBtn.Text = "Settings";
-            settingsBtn.UseVisualStyleBackColor = false;
-            settingsBtn.Click += settingsBtn_Click;
-            // 
-            // panel7
-            // 
-            panel7.Controls.Add(generalSettingsBtn);
-            panel7.Location = new Point(0, 58);
-            panel7.Margin = new Padding(0);
-            panel7.Name = "panel7";
-            panel7.Size = new Size(196, 58);
-            panel7.TabIndex = 5;
-            // 
-            // generalSettingsBtn
-            // 
-            generalSettingsBtn.BackColor = Color.FromArgb(66, 226, 184);
-            generalSettingsBtn.Cursor = Cursors.Hand;
-            generalSettingsBtn.Font = new Font("Century Gothic", 9F);
-            generalSettingsBtn.Location = new Point(-12, -19);
-            generalSettingsBtn.Name = "generalSettingsBtn";
-            generalSettingsBtn.Size = new Size(250, 100);
-            generalSettingsBtn.TabIndex = 6;
-            generalSettingsBtn.Text = "General Settings";
-            generalSettingsBtn.UseVisualStyleBackColor = false;
-            generalSettingsBtn.Click += generalSettingsBtn_Click;
-            // 
-            // panel8
-            // 
-            panel8.Controls.Add(accountSettingsBtn);
-            panel8.Location = new Point(0, 116);
-            panel8.Margin = new Padding(0);
-            panel8.Name = "panel8";
-            panel8.Size = new Size(196, 58);
-            panel8.TabIndex = 5;
-            // 
-            // accountSettingsBtn
-            // 
-            accountSettingsBtn.BackColor = Color.FromArgb(66, 226, 184);
-            accountSettingsBtn.Cursor = Cursors.Hand;
-            accountSettingsBtn.Font = new Font("Century Gothic", 9F);
-            accountSettingsBtn.Location = new Point(-12, -19);
-            accountSettingsBtn.Name = "accountSettingsBtn";
-            accountSettingsBtn.Size = new Size(250, 100);
-            accountSettingsBtn.TabIndex = 6;
-            accountSettingsBtn.Text = "Account Settings";
-            accountSettingsBtn.UseVisualStyleBackColor = false;
-            accountSettingsBtn.Click += accountSettingsBtn_Click;
-            // 
             // panel3
             // 
             panel3.Controls.Add(pictureBox3);
             panel3.Controls.Add(button3);
-            panel3.Location = new Point(0, 116);
+            panel3.Location = new Point(0, 58);
             panel3.Margin = new Padding(0);
             panel3.Name = "panel3";
             panel3.Size = new Size(196, 58);
@@ -393,7 +283,7 @@
             // 
             panel4.Controls.Add(pictureBox4);
             panel4.Controls.Add(button4);
-            panel4.Location = new Point(0, 174);
+            panel4.Location = new Point(0, 116);
             panel4.Margin = new Padding(0);
             panel4.Name = "panel4";
             panel4.Size = new Size(196, 58);
@@ -471,11 +361,6 @@
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel5.ResumeLayout(false);
-            menuContainer2.ResumeLayout(false);
-            panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            panel7.ResumeLayout(false);
-            panel8.ResumeLayout(false);
             panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             panel4.ResumeLayout(false);
@@ -501,14 +386,6 @@
         private Button menuBtn;
         private Panel panel5;
         private Button viewQuizBtn;
-        private FlowLayoutPanel menuContainer2;
-        private Panel panel2;
-        private PictureBox pictureBox2;
-        private Button settingsBtn;
-        private Panel panel7;
-        private Button generalSettingsBtn;
-        private Panel panel8;
-        private Button accountSettingsBtn;
         private Panel panel3;
         private PictureBox pictureBox3;
         private Button button3;

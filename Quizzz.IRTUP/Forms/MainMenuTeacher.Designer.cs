@@ -51,8 +51,6 @@
             panel2 = new Panel();
             pictureBox2 = new PictureBox();
             settingsBtn = new Button();
-            panel7 = new Panel();
-            generalSettingsBtn = new Button();
             panel8 = new Panel();
             accountSettingsBtn = new Button();
             panel3 = new Panel();
@@ -77,7 +75,6 @@
             menuContainer2.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            panel7.SuspendLayout();
             panel8.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -301,7 +298,6 @@
             menuContainer2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             menuContainer2.BackColor = Color.FromArgb(66, 226, 184);
             menuContainer2.Controls.Add(panel2);
-            menuContainer2.Controls.Add(panel7);
             menuContainer2.Controls.Add(panel8);
             menuContainer2.FlowDirection = FlowDirection.TopDown;
             menuContainer2.Location = new Point(0, 58);
@@ -348,32 +344,10 @@
             settingsBtn.UseVisualStyleBackColor = false;
             settingsBtn.Click += settingsBtn_Click;
             // 
-            // panel7
-            // 
-            panel7.Controls.Add(generalSettingsBtn);
-            panel7.Location = new Point(0, 58);
-            panel7.Margin = new Padding(0);
-            panel7.Name = "panel7";
-            panel7.Size = new Size(196, 58);
-            panel7.TabIndex = 5;
-            // 
-            // generalSettingsBtn
-            // 
-            generalSettingsBtn.BackColor = Color.FromArgb(66, 226, 184);
-            generalSettingsBtn.Cursor = Cursors.Hand;
-            generalSettingsBtn.Font = new Font("Century Gothic", 9F);
-            generalSettingsBtn.Location = new Point(-12, -19);
-            generalSettingsBtn.Name = "generalSettingsBtn";
-            generalSettingsBtn.Size = new Size(250, 100);
-            generalSettingsBtn.TabIndex = 6;
-            generalSettingsBtn.Text = "General Settings";
-            generalSettingsBtn.UseVisualStyleBackColor = false;
-            generalSettingsBtn.Click += generalSettingsBtn_Click;
-            // 
             // panel8
             // 
             panel8.Controls.Add(accountSettingsBtn);
-            panel8.Location = new Point(0, 116);
+            panel8.Location = new Point(0, 58);
             panel8.Margin = new Padding(0);
             panel8.Name = "panel8";
             panel8.Size = new Size(196, 58);
@@ -519,7 +493,6 @@
             menuContainer2.ResumeLayout(false);
             panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            panel7.ResumeLayout(false);
             panel8.ResumeLayout(false);
             panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
@@ -555,8 +528,6 @@
         private Panel panel6;
         private Button studentResultsBtn;
         private FlowLayoutPanel menuContainer2;
-        private Panel panel7;
-        private Button generalSettingsBtn;
         private Panel panel8;
         private Button accountSettingsBtn;
         private System.Windows.Forms.Timer menuTransition;

@@ -17,5 +17,6 @@ namespace Quizzz.IRTUP.Classes
         public string QuestionType { get; set; }
         public int QuestionNo { get; set; }
         public int TimeLimitSeconds { get; set; }
+        public string[] ImagePaths { get; set; } = new string[4];
     }
 }

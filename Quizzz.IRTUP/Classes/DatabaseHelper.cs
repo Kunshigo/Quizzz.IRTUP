@@ -1086,5 +1086,158 @@ namespace Quizzz.IRTUP.Classes
                 return false;
             }
         }
+
+        public void SaveImageBasedMultipleChoiceQuestion(QuestionData question, int quizID)
+        {
+            string questionText = question.QuestionText;
+            string[] imagePaths = question.ImagePaths;
+            int correctAnswerIndex = question.CorrectAnswerIndex;
+            int questionNo = question.QuestionNo;
+
+            if (string.IsNullOrWhiteSpace(questionText) || imagePaths.Any(string.IsNullOrWhiteSpace))
+            {
+                MessageBox.Show("Please fill in the question and select all images.");
+                return;
+            }
+
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+                using (OleDbTransaction transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // First, check if question exists
+                        int existingQuestionId = -1;
+                        using (OleDbCommand checkCmd = new OleDbCommand(
+                            "SELECT QuestionID FROM Questions WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo", conn, transaction))
+                        {
+                            checkCmd.Parameters.AddWithValue("@QuizID", quizID);
+                            checkCmd.Parameters.AddWithValue("@QuestionNo", questionNo);
+                            object result = checkCmd.ExecuteScalar();
+                            if (result != null)
+                                existingQuestionId = Convert.ToInt32(result);
+                        }
+
+                        if (existingQuestionId > 0)
+                        {
+                            // UPDATE Questions
+                            using (OleDbCommand updateQ = new OleDbCommand(
+                                "UPDATE Questions SET QuestionText = @QuestionText, QuestionType = @QuestionType WHERE QuestionID = @QuestionID", conn, transaction))
+                            {
+                                updateQ.Parameters.AddWithValue("@QuestionText", questionText);
+                                updateQ.Parameters.AddWithValue("@QuestionType", "Multiple Choice (Image)");
+                                updateQ.Parameters.AddWithValue("@QuestionID", existingQuestionId);
+                                updateQ.ExecuteNonQuery();
+                            }
+
+                            // UPDATE ImageChoices
+                            bool hasChoices = false;
+                            using (OleDbCommand checkChoices = new OleDbCommand(
+                                "SELECT COUNT(*) FROM ImageChoices WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo", conn, transaction))
+                            {
+                                checkChoices.Parameters.AddWithValue("@QuizID", quizID);
+                                checkChoices.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                int count = Convert.ToInt32(checkChoices.ExecuteScalar());
+                                hasChoices = count > 0;
+                            }
+
+                            if (hasChoices)
+                            {
+                                // Perform UPDATE
+                                using (OleDbCommand updateC = new OleDbCommand(
+                                    "UPDATE ImageChoices SET CorrectAnswer = @CorrectAnswer, " +
+                                    "ImagePath1 = @ImagePath1, ImagePath2 = @ImagePath2, " +
+                                    "ImagePath3 = @ImagePath3, ImagePath4 = @ImagePath4 " +
+                                    "WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo", conn, transaction))
+                                {
+                                    updateC.Parameters.AddWithValue("@CorrectAnswer", correctAnswerIndex + 1);
+                                    updateC.Parameters.AddWithValue("@ImagePath1", imagePaths[0]);
+                                    updateC.Parameters.AddWithValue("@ImagePath2", imagePaths[1]);
+                                    updateC.Parameters.AddWithValue("@ImagePath3", imagePaths[2]);
+                                    updateC.Parameters.AddWithValue("@ImagePath4", imagePaths[3]);
+                                    updateC.Parameters.AddWithValue("@QuizID", quizID);
+                                    updateC.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                    updateC.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                            {
+                                // Perform INSERT
+                                using (OleDbCommand insertC = new OleDbCommand(
+                                    "INSERT INTO ImageChoices (QuizID, QuestionNo, CorrectAnswer, " +
+                                    "ImagePath1, ImagePath2, ImagePath3, ImagePath4) " +
+                                    "VALUES (@QuizID, @QuestionNo, @CorrectAnswer, " +
+                                    "@ImagePath1, @ImagePath2, @ImagePath3, @ImagePath4)", conn, transaction))
+                                {
+                                    insertC.Parameters.AddWithValue("@QuizID", quizID);
+                                    insertC.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                    insertC.Parameters.AddWithValue("@CorrectAnswer", correctAnswerIndex + 1);
+                                    insertC.Parameters.AddWithValue("@ImagePath1", imagePaths[0]);
+                                    insertC.Parameters.AddWithValue("@ImagePath2", imagePaths[1]);
+                                    insertC.Parameters.AddWithValue("@ImagePath3", imagePaths[2]);
+                                    insertC.Parameters.AddWithValue("@ImagePath4", imagePaths[3]);
+                                    insertC.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // INSERT into Questions
+                            using (OleDbCommand insertQ = new OleDbCommand(
+                                "INSERT INTO Questions (QuizID, QuestionText, QuestionType, QuestionNo) " +
+                                "VALUES (@QuizID, @QuestionText, @QuestionType, @QuestionNo)", conn, transaction))
+                            {
+                                insertQ.Parameters.AddWithValue("@QuizID", quizID);
+                                insertQ.Parameters.AddWithValue("@QuestionText", questionText);
+                                insertQ.Parameters.AddWithValue("@QuestionType", "Multiple Choice (Image)");
+                                insertQ.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                insertQ.ExecuteNonQuery();
+
+                                insertQ.CommandText = "SELECT @@IDENTITY";
+                                question.QuestionID = Convert.ToInt32(insertQ.ExecuteScalar());
+                            }
+
+                            // INSERT into ImageChoices
+                            using (OleDbCommand insertC = new OleDbCommand(
+                                "INSERT INTO ImageChoices (QuizID, QuestionNo, CorrectAnswer, " +
+                                "ImagePath1, ImagePath2, ImagePath3, ImagePath4) " +
+                                "VALUES (@QuizID, @QuestionNo, @CorrectAnswer, " +
+                                "@ImagePath1, @ImagePath2, @ImagePath3, @ImagePath4)", conn, transaction))
+                            {
+                                insertC.Parameters.AddWithValue("@QuizID", quizID);
+                                insertC.Parameters.AddWithValue("@QuestionNo", questionNo);
+                                insertC.Parameters.AddWithValue("@CorrectAnswer", correctAnswerIndex + 1);
+                                insertC.Parameters.AddWithValue("@ImagePath1", imagePaths[0]);
+                                insertC.Parameters.AddWithValue("@ImagePath2", imagePaths[1]);
+                                insertC.Parameters.AddWithValue("@ImagePath3", imagePaths[2]);
+                                insertC.Parameters.AddWithValue("@ImagePath4", imagePaths[3]);
+                                insertC.ExecuteNonQuery();
+                            }
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show("Error saving image-based question: " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        public DataTable GetImageBasedQuestion(int quizID, int questionNo)
+        {
+            string query = "SELECT * FROM ImageChoices WHERE QuizID = @QuizID AND QuestionNo = @QuestionNo";
+            OleDbParameter[] parameters = new OleDbParameter[]
+            {
+        new OleDbParameter("@QuizID", quizID),
+        new OleDbParameter("@QuestionNo", questionNo)
+            };
+            return GetData(query, parameters);
+        }
+
+
     }
 }

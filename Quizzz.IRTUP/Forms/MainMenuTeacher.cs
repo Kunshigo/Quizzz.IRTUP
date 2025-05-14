@@ -85,7 +85,7 @@ namespace Quizzz.IRTUP
             if (menuExpand2 == false)
             {
                 menuContainer2.Height += 10;
-                if (menuContainer2.Height >= 175)
+                if (menuContainer2.Height >= 116)
                 {
                     menuTransition2.Stop();
                     menuExpand2 = true;

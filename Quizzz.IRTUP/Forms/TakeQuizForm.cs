@@ -19,8 +19,6 @@ namespace Quizzz.IRTUP.Forms
         private int totalTimeLeft; // Total quiz time in seconds
         private System.Windows.Forms.Timer quizTimer;
 
-
-
         private List<MultipleChoiceStudent> mcQuestions = new List<MultipleChoiceStudent>();
         private int currentQuestionIndex = 0;
         private int totalScore = 0;
@@ -98,6 +96,9 @@ namespace Quizzz.IRTUP.Forms
                             mcQuestions.Add(mc); // Add to mcQuestions list
                         }
                         break;
+                    case "Multiple Choice (Image)":
+                        questionControl = LoadImageBasedMultipleChoiceQuestion(qNo, questionText);
+                        break;
                     case "True or False":
                         questionControl = LoadTrueFalseQuestion(qNo, questionText);
                         break;
@@ -140,6 +141,35 @@ namespace Quizzz.IRTUP.Forms
             {
                 HandleAnswerSelection();
             };
+            return control;
+        }
+
+        private UserControl LoadImageBasedMultipleChoiceQuestion(int qNo, string questionText)
+        {
+            DatabaseHelper db = new DatabaseHelper();
+            DataTable imageData = db.GetImageBasedQuestion(currentQuizID, qNo);
+            if (imageData.Rows.Count == 0) return null;
+
+            DataRow imageRow = imageData.Rows[0];
+            string[] imagePaths = {
+        imageRow["ImagePath1"].ToString(),
+        imageRow["ImagePath2"].ToString(),
+        imageRow["ImagePath3"].ToString(),
+        imageRow["ImagePath4"].ToString()
+    };
+
+            int correctIndex = Convert.ToInt32(imageRow["CorrectAnswer"]) - 1;
+            if (correctIndex < 0 || correctIndex >= imagePaths.Length)
+            {
+                MessageBox.Show($"Invalid correct answer index ({correctIndex + 1}) for question {qNo}. Using first image as fallback.");
+                correctIndex = 0;
+            }
+
+            var control = new ImageBasedMultipleChoiceStudent();
+            control.LoadQuestion(questionText, imagePaths, correctIndex);
+            control.QuestionNo = qNo;
+            control.AnswerSelected += (s, e) => HandleAnswerSelection();
+
             return control;
         }
 
@@ -267,6 +297,12 @@ namespace Quizzz.IRTUP.Forms
                 selectedAnswer = mc.SelectedAnswer;
                 isCorrect = mc.IsCorrect;
             }
+            else if (currentQuestion.Key is ImageBasedMultipleChoiceStudent ibmc)
+            {
+                selectedAnswer = $"Image {ibmc.SelectedAnswerIndex + 1}";
+                correctAnswer = $"Image {ibmc.CorrectAnswerIndex + 1}";
+                isCorrect = ibmc.IsCorrect;
+            }
             else if (currentQuestion.Key is TrueFalseStudent tf)
             {
                 selectedAnswer = tf.SelectedAnswer;
@@ -303,6 +339,10 @@ namespace Quizzz.IRTUP.Forms
                 if (ctrl is MultipleChoiceStudent mcCtrl)
                 {
                     mcCtrl.DisableButtons();
+                }
+                if (ctrl is ImageBasedMultipleChoiceStudent ibmcCtrl)
+                {
+                    ibmcCtrl.DisableSelection();
                 }
                 else if (ctrl is TrueFalseStudent tfCtrl)
                 {
@@ -407,6 +447,10 @@ namespace Quizzz.IRTUP.Forms
                 if (q.Key is MultipleChoiceStudent mc)
                 {
                     return mc.IsCorrect;
+                }
+                else if (q.Key is ImageBasedMultipleChoiceStudent ibmc)
+                {
+                    return ibmc.IsCorrect;
                 }
                 else if (q.Key is TrueFalseStudent tf)
                 {

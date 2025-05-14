@@ -121,7 +121,7 @@ namespace Quizzz.IRTUP.Forms
             if (menuExpand == false)
             {
                 menuContainer1.Height += 10;
-                if (menuContainer1.Height >= 175)
+                if (menuContainer1.Height >= 116)
                 {
                     menuTransition.Stop();
                     menuExpand = true;
@@ -146,34 +146,6 @@ namespace Quizzz.IRTUP.Forms
         bool menuExpand2 = false;
         private void menuTransition2_Tick(object sender, EventArgs e)
         {
-            if (menuExpand2 == false)
-            {
-                menuContainer2.Height += 10;
-                if (menuContainer2.Height >= 175)
-                {
-                    menuTransition2.Stop();
-                    menuExpand2 = true;
-                }
-            }
-            else
-            {
-                menuContainer2.Height -= 10;
-                if (menuContainer2.Height <= 58)
-                {
-                    menuTransition2.Stop();
-                    menuExpand2 = false;
-                }
-            }
-        }
-
-        private void generalSettingsBtn_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Not implemented yet hehe", "see you next time", MessageBoxButtons.OK);
-        }
-
-        private void accountSettingsBtn_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Not implemented yet hehe", "see you next time", MessageBoxButtons.OK);
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -185,7 +157,7 @@ namespace Quizzz.IRTUP.Forms
 
         private void button3_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Not implemented yet hehe", "see you next time", MessageBoxButtons.OK);
+            MessageBox.Show("Made with love!", "Final Project OOP2", MessageBoxButtons.OK);
         }
     }
 }

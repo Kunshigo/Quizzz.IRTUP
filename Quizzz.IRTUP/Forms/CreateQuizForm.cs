@@ -85,6 +85,9 @@ namespace Quizzz.IRTUP.Forms
                         case "Multiple Choice":
                             miniControl = new miniMultipleChoice();
                             break;
+                        case "Multiple Choice (Image)":
+                            miniControl = new miniMultipleChoice();
+                            break;
                         case "True or False":
                             miniControl = new miniTrueFalse();
                             break;
@@ -133,6 +136,30 @@ namespace Quizzz.IRTUP.Forms
                         }
 
                         slides.Add(slide, (quizPage, questionID, "Multiple Choice", questionNo));
+                    }
+                    else if (questionType == "Multiple Choice (Image)")
+                    {
+                        ImageBasedMultipleChoice quizPage = new ImageBasedMultipleChoice();
+                        quizPage.QuestionID = questionID;
+                        quizPage.QuestionNo = questionNo;
+                        quizPage.questionTxtBox.Text = questionText;
+
+                        // Load image choices
+                        DataTable imageData = db.GetImageBasedQuestion(quizID, questionNo);
+                        if (imageData.Rows.Count > 0)
+                        {
+                            DataRow imageRow = imageData.Rows[0];
+                            string[] imagePaths = new string[4];
+                            imagePaths[0] = imageRow["ImagePath1"].ToString();
+                            imagePaths[1] = imageRow["ImagePath2"].ToString();
+                            imagePaths[2] = imageRow["ImagePath3"].ToString();
+                            imagePaths[3] = imageRow["ImagePath4"].ToString();
+
+                            int correctAnswer = Convert.ToInt32(imageRow["CorrectAnswer"]) - 1;
+                            quizPage.LoadQuestion(imagePaths, correctAnswer);
+                        }
+
+                        slides.Add(slide, (quizPage, questionID, "Multiple Choice (Image)", questionNo));
                     }
                     else if (questionType == "True or False")
                     {
@@ -293,6 +320,10 @@ namespace Quizzz.IRTUP.Forms
             {
                 currentQuestionText = mc.questionTxtBox.Text;
             }
+            else if(currentSlideData.Control is ImageBasedMultipleChoice ibmc)
+            {
+                currentQuestionText = ibmc.questionTxtBox.Text;
+            }
             else if (currentSlideData.Control is TrueFalse tf)
             {
                 currentQuestionText = tf.questionTxtBox.Text;
@@ -314,6 +345,11 @@ namespace Quizzz.IRTUP.Forms
                     newControl = new MultipleChoice();
                     ((MultipleChoice)newControl).questionTxtBox.Text = currentQuestionText;
                     ((MultipleChoice)newControl).QuestionNo = questionNo; // Set from dictionary
+                    break;
+                case "Multiple Choice (Image)":
+                    newControl = new ImageBasedMultipleChoice();
+                    ((ImageBasedMultipleChoice)newControl).questionTxtBox.Text = currentQuestionText;
+                    ((ImageBasedMultipleChoice)newControl).QuestionNo = questionNo; 
                     break;
                 case "True or False":
                     newControl = new TrueFalse();
@@ -350,6 +386,7 @@ namespace Quizzz.IRTUP.Forms
                     switch (newType)
                     {
                         case "Multiple Choice": newMini = new miniMultipleChoice(); break;
+                        case "Multiple Choice (Image)": newMini = new miniMultipleChoice(); break;
                         case "True or False": newMini = new miniTrueFalse(); break;
                         case "Identification": newMini = new miniIdentification(); break;
                         case "Fill in the blanks": newMini = new miniFillInTheBlanks(); break;
@@ -514,6 +551,10 @@ namespace Quizzz.IRTUP.Forms
                     quizPage = new MultipleChoice();
                     ((MultipleChoice)quizPage).QuestionNo = slideNumber;
                     break;
+                case "Multiple Choice (Image)":
+                    quizPage = new ImageBasedMultipleChoice();
+                    ((ImageBasedMultipleChoice)quizPage).QuestionNo = slideNumber;
+                    break;
                 case "True or False":
                     quizPage = new TrueFalse();
                     ((TrueFalse)quizPage).QuestionNo = slideNumber;
@@ -543,6 +584,9 @@ namespace Quizzz.IRTUP.Forms
             switch (questionType)
             {
                 case "Multiple Choice":
+                    miniControl = new miniMultipleChoice();
+                    break;
+                case "Multiple Choice (Image)":
                     miniControl = new miniMultipleChoice();
                     break;
                 case "True or False":
@@ -639,6 +683,22 @@ namespace Quizzz.IRTUP.Forms
                 {
                     tf.QuestionNo = currentData.QuestionNo;
                 }
+                else if (currentData.Control is Identification id)
+                {
+                    id.QuestionNo = currentData.QuestionNo;
+                }
+                else if (currentData.Control is FillInTheBlanks fb)
+                {
+                    fb.QuestionNo = currentData.QuestionNo;
+                }
+                else if (currentData.Control is OpenEnded oe)
+                {
+                    oe.QuestionNo = currentData.QuestionNo;
+                }
+                else if (currentData.Control is ImageBasedMultipleChoice ibmc)
+                {
+                    ibmc.QuestionNo = currentData.QuestionNo;
+                }
 
                 // Highlight current slide
                 foreach (var slide in slides.Keys)
@@ -714,6 +774,20 @@ namespace Quizzz.IRTUP.Forms
                         QuestionNo = questionNo, // Use from dictionary
                     };
                     db.SaveMultipleChoiceQuestion(question, quizID);
+                }
+                else if (entry.Value.Control is ImageBasedMultipleChoice ibmc)
+                {
+                    questionText = ibmc.questionTxtBox.Text;
+                    QuestionData question = new QuestionData
+                    {
+                        QuizID = quizID,
+                        QuestionType = "Multiple Choice (Image)",
+                        QuestionText = questionText,
+                        ImagePaths = ibmc.GetImagePaths(),
+                        CorrectAnswerIndex = ibmc.CorrectAnswerIndex,
+                        QuestionNo = questionNo,
+                    };
+                    db.SaveImageBasedMultipleChoiceQuestion(question, quizID);
                 }
                 else if (entry.Value.Control is TrueFalse tf)
                 {

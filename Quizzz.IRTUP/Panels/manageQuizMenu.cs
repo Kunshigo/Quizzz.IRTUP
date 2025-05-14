@@ -17,6 +17,7 @@ namespace Quizzz.IRTUP.Panels
 {
     public partial class manageQuizMenu : UserControl
     {
+
         public int Checker { get; private set; }
         public event EventHandler<int> PanelSwitchRequested;
         private int _teacherID;
@@ -26,7 +27,9 @@ namespace Quizzz.IRTUP.Panels
         {
             InitializeComponent();
             this.teacherDetails = teacherDetails;
-
+            txtSearch.TextChanged += (s, e) => LoadQuizzes(_teacherID);
+            difficultyFilterComboBox.SelectedIndexChanged += (s, e) => LoadQuizzes(_teacherID);
+            gradeLevelFilterComboBox.SelectedIndexChanged += (s, e) => LoadQuizzes(_teacherID);
             _teacherID = int.Parse(teacherDetails["TeacherID"]);
             InitializeQuizzesPanelLayout();
             LoadQuizzes(_teacherID);
@@ -348,12 +351,46 @@ namespace Quizzz.IRTUP.Panels
         private void LoadQuizzes(int teacherID)
         {
             DatabaseHelper db = new DatabaseHelper();
-            DataTable quizData = db.GetAllQuizzes(teacherID); // You must define this in DatabaseHelper
 
-            // Clear existing quiz cards before adding new ones
+            string searchText = txtSearch?.Text?.Trim() ?? string.Empty;
+            string difficultyFilter = difficultyFilterComboBox?.SelectedItem?.ToString() ?? "All Difficulties";
+            string gradeFilter = gradeLevelFilterComboBox?.SelectedItem?.ToString() ?? "All Grades";
+
+            string query = @"SELECT q.QuizID, q.Title, q.CreatedDate, q.Difficulty, q.GradeLevel, t.Subject 
+                    FROM Quizzes q
+                    INNER JOIN Teachers t ON q.TeacherID = t.TeacherID
+                    WHERE q.TeacherID = @TeacherID";
+
+            List<OleDbParameter> parameters = new List<OleDbParameter>
+    {
+        new OleDbParameter("@TeacherID", teacherID)
+    };
+
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query += " AND q.Title LIKE @SearchText";
+                parameters.Add(new OleDbParameter("@SearchText", "%" + searchText + "%"));
+            }
+
+            if (difficultyFilter != "All Difficulties")
+            {
+                query += " AND q.Difficulty = @Difficulty";
+                parameters.Add(new OleDbParameter("@Difficulty", difficultyFilter));
+            }
+
+            if (gradeFilter != "All Grades")
+            {
+                query += " AND q.GradeLevel = @GradeLevel";
+                parameters.Add(new OleDbParameter("@GradeLevel", gradeFilter));
+            }
+
+            query += " ORDER BY q.CreatedDate DESC";
+
+            DataTable filteredQuizData = db.GetData(query, parameters.ToArray());
+
             quizzesPanel.Controls.Clear();
 
-            foreach (DataRow row in quizData.Rows)
+            foreach (DataRow row in filteredQuizData.Rows)
             {
                 string quizName = row["Title"].ToString();
                 int quizID = Convert.ToInt32(row["QuizID"]);

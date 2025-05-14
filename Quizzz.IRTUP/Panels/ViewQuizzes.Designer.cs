@@ -31,36 +31,34 @@
             availableQuizzesPanel = new FlowLayoutPanel();
             availableQuizLbl = new Label();
             completedQuizzesPanel = new FlowLayoutPanel();
-            completeQuizLbl = new Label();
             panel1 = new Panel();
+            completeQuizLbl = new Label();
             label2 = new Label();
             label1 = new Label();
             difficultyFilterComboBox = new ComboBox();
             subjectFilterComboBox = new ComboBox();
             txtSearch = new TextBox();
             cmbSort = new Syncfusion.Windows.Forms.Tools.FontComboBox();
-            panel2 = new Panel();
             panel1.SuspendLayout();
-            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // availableQuizzesPanel
             // 
             availableQuizzesPanel.AutoScroll = true;
             availableQuizzesPanel.BackColor = Color.FromArgb(160, 220, 180);
+            availableQuizzesPanel.Dock = DockStyle.Left;
             availableQuizzesPanel.Location = new Point(0, 68);
             availableQuizzesPanel.Name = "availableQuizzesPanel";
-            availableQuizzesPanel.Size = new Size(1028, 215);
+            availableQuizzesPanel.Size = new Size(501, 494);
             availableQuizzesPanel.TabIndex = 0;
-            availableQuizzesPanel.WrapContents = false;
             // 
             // availableQuizLbl
             // 
             availableQuizLbl.AutoSize = true;
-            availableQuizLbl.Font = new Font("Century Gothic", 12F);
+            availableQuizLbl.Font = new Font("Century Gothic", 12F, FontStyle.Bold);
             availableQuizLbl.Location = new Point(3, 45);
             availableQuizLbl.Name = "availableQuizLbl";
-            availableQuizLbl.Size = new Size(146, 21);
+            availableQuizLbl.Size = new Size(146, 19);
             availableQuizLbl.TabIndex = 5;
             availableQuizLbl.Text = "Available Quizzes";
             // 
@@ -68,25 +66,16 @@
             // 
             completedQuizzesPanel.AutoScroll = true;
             completedQuizzesPanel.BackColor = Color.FromArgb(140, 170, 140);
-            completedQuizzesPanel.Dock = DockStyle.Bottom;
-            completedQuizzesPanel.Location = new Point(0, 317);
+            completedQuizzesPanel.Dock = DockStyle.Fill;
+            completedQuizzesPanel.Location = new Point(501, 68);
             completedQuizzesPanel.Name = "completedQuizzesPanel";
-            completedQuizzesPanel.Size = new Size(1028, 245);
+            completedQuizzesPanel.Size = new Size(527, 494);
             completedQuizzesPanel.TabIndex = 1;
-            // 
-            // completeQuizLbl
-            // 
-            completeQuizLbl.AutoSize = true;
-            completeQuizLbl.Font = new Font("Century Gothic", 12F);
-            completeQuizLbl.Location = new Point(0, 297);
-            completeQuizLbl.Name = "completeQuizLbl";
-            completeQuizLbl.Size = new Size(161, 21);
-            completeQuizLbl.TabIndex = 5;
-            completeQuizLbl.Text = "Completed Quizzes";
             // 
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(3, 121, 113);
+            panel1.Controls.Add(completeQuizLbl);
             panel1.Controls.Add(availableQuizLbl);
             panel1.Controls.Add(label2);
             panel1.Controls.Add(label1);
@@ -101,38 +90,50 @@
             panel1.Size = new Size(1028, 68);
             panel1.TabIndex = 4;
             // 
+            // completeQuizLbl
+            // 
+            completeQuizLbl.AutoSize = true;
+            completeQuizLbl.Font = new Font("Century Gothic", 12F, FontStyle.Bold);
+            completeQuizLbl.Location = new Point(497, 45);
+            completeQuizLbl.Name = "completeQuizLbl";
+            completeQuizLbl.Size = new Size(158, 19);
+            completeQuizLbl.TabIndex = 6;
+            completeQuizLbl.Text = "Completed Quizzes";
+            // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Century Gothic", 9F);
-            label2.Location = new Point(809, 21);
+            label2.Font = new Font("Century Gothic", 9F, FontStyle.Bold);
+            label2.Location = new Point(910, 3);
             label2.Name = "label2";
-            label2.Size = new Size(60, 17);
+            label2.Size = new Size(55, 16);
             label2.TabIndex = 5;
             label2.Text = "Difficulty";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Century Gothic", 9F);
-            label1.Location = new Point(618, 21);
+            label1.Font = new Font("Century Gothic", 9F, FontStyle.Bold);
+            label1.Location = new Point(718, 3);
             label1.Name = "label1";
-            label1.Size = new Size(54, 17);
+            label1.Size = new Size(50, 16);
             label1.TabIndex = 5;
             label1.Text = "Subject";
             // 
             // difficultyFilterComboBox
             // 
+            difficultyFilterComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             difficultyFilterComboBox.FormattingEnabled = true;
-            difficultyFilterComboBox.Location = new Point(809, 39);
+            difficultyFilterComboBox.Location = new Point(840, 22);
             difficultyFilterComboBox.Name = "difficultyFilterComboBox";
             difficultyFilterComboBox.Size = new Size(185, 23);
             difficultyFilterComboBox.TabIndex = 4;
             // 
             // subjectFilterComboBox
             // 
+            subjectFilterComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             subjectFilterComboBox.FormattingEnabled = true;
-            subjectFilterComboBox.Location = new Point(618, 39);
+            subjectFilterComboBox.Location = new Point(649, 22);
             subjectFilterComboBox.Name = "subjectFilterComboBox";
             subjectFilterComboBox.Size = new Size(185, 23);
             subjectFilterComboBox.TabIndex = 4;
@@ -173,31 +174,18 @@
             cmbSort.ThemeStyle.ScrollBarStyle.ThumbPressedBorderColor = Color.FromArgb(150, 150, 150);
             cmbSort.ThemeStyle.ScrollBarStyle.ThumbPressedColor = Color.FromArgb(197, 197, 197);
             // 
-            // panel2
-            // 
-            panel2.BackColor = Color.FromArgb(3, 121, 113);
-            panel2.Controls.Add(completeQuizLbl);
-            panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(0, 0);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(1028, 562);
-            panel2.TabIndex = 5;
-            // 
             // ViewQuizzes
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(availableQuizzesPanel);
             Controls.Add(completedQuizzesPanel);
+            Controls.Add(availableQuizzesPanel);
             Controls.Add(panel1);
-            Controls.Add(panel2);
             Margin = new Padding(0);
             Name = "ViewQuizzes";
             Size = new Size(1028, 562);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -214,6 +202,5 @@
         private ComboBox difficultyFilterComboBox;
         private Label availableQuizLbl;
         private Label completeQuizLbl;
-        private Panel panel2;
     }
 }

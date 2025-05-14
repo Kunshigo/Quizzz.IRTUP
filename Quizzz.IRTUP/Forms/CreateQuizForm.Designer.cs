@@ -183,7 +183,7 @@
             // 
             questionTypeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             questionTypeComboBox.FormattingEnabled = true;
-            questionTypeComboBox.Items.AddRange(new object[] { "Multiple Choice", "Identification", "True or False", "Open-Ended", "Fill in the blanks" });
+            questionTypeComboBox.Items.AddRange(new object[] { "Multiple Choice", "Multiple Choice (Image)", "Identification", "True or False", "Open-Ended", "Fill in the blanks" });
             questionTypeComboBox.Location = new Point(26, 49);
             questionTypeComboBox.Name = "questionTypeComboBox";
             questionTypeComboBox.Size = new Size(146, 23);

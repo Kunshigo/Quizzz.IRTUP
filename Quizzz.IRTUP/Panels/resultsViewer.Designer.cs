@@ -31,7 +31,6 @@
             panel1 = new Panel();
             txtSearch = new TextBox();
             cmbSort = new ComboBox();
-            cmbStatus = new ComboBox();
             nextBtn = new Button();
             answersPanel = new FlowLayoutPanel();
             resultsPanel = new FlowLayoutPanel();
@@ -47,7 +46,6 @@
             panel1.BackColor = Color.FromArgb(50, 170, 160);
             panel1.Controls.Add(txtSearch);
             panel1.Controls.Add(cmbSort);
-            panel1.Controls.Add(cmbStatus);
             panel1.Controls.Add(nextBtn);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
@@ -58,8 +56,9 @@
             // txtSearch
             // 
             txtSearch.Font = new Font("Century Gothic", 9F);
-            txtSearch.Location = new Point(571, 13);
+            txtSearch.Location = new Point(725, 12);
             txtSearch.Name = "txtSearch";
+            txtSearch.PlaceholderText = "Search....";
             txtSearch.Size = new Size(144, 22);
             txtSearch.TabIndex = 2;
             // 
@@ -73,17 +72,6 @@
             cmbSort.Name = "cmbSort";
             cmbSort.Size = new Size(144, 25);
             cmbSort.TabIndex = 1;
-            // 
-            // cmbStatus
-            // 
-            cmbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbStatus.Font = new Font("Century Gothic", 9F);
-            cmbStatus.FormattingEnabled = true;
-            cmbStatus.Items.AddRange(new object[] { "All", "Needs Grading", "Graded" });
-            cmbStatus.Location = new Point(730, 12);
-            cmbStatus.Name = "cmbStatus";
-            cmbStatus.Size = new Size(144, 25);
-            cmbStatus.TabIndex = 1;
             // 
             // nextBtn
             // 
@@ -102,16 +90,16 @@
             answersPanel.Dock = DockStyle.Top;
             answersPanel.Location = new Point(0, 78);
             answersPanel.Name = "answersPanel";
-            answersPanel.Size = new Size(1044, 354);
+            answersPanel.Size = new Size(1044, 483);
             answersPanel.TabIndex = 8;
             // 
             // resultsPanel
             // 
             resultsPanel.BackColor = Color.MediumSeaGreen;
             resultsPanel.Dock = DockStyle.Fill;
-            resultsPanel.Location = new Point(0, 432);
+            resultsPanel.Location = new Point(0, 561);
             resultsPanel.Name = "resultsPanel";
-            resultsPanel.Size = new Size(1044, 169);
+            resultsPanel.Size = new Size(1044, 40);
             resultsPanel.TabIndex = 9;
             // 
             // panel2
@@ -166,7 +154,6 @@
         #endregion
         private Panel panel1;
         private Button nextBtn;
-        private ComboBox cmbStatus;
         private TextBox txtSearch;
         private ComboBox cmbSort;
         private FlowLayoutPanel answersPanel;

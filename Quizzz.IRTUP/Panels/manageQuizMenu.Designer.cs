@@ -29,8 +29,11 @@
         private void InitializeComponent()
         {
             label1 = new AntdUI.Label();
-            cmbSort = new Syncfusion.Windows.Forms.Tools.FontComboBox();
             panel1 = new Panel();
+            label3 = new Label();
+            label2 = new Label();
+            gradeLevelFilterComboBox = new ComboBox();
+            difficultyFilterComboBox = new ComboBox();
             txtSearch = new TextBox();
             quizzesPanel = new FlowLayoutPanel();
             panel2 = new Panel();
@@ -51,54 +54,73 @@
             label1.TabIndex = 0;
             label1.Text = "Your Quizzes";
             // 
-            // cmbSort
-            // 
-            cmbSort.Anchor = AnchorStyles.Right;
-            cmbSort.FormattingEnabled = true;
-            cmbSort.Location = new Point(833, 10);
-            cmbSort.Name = "cmbSort";
-            cmbSort.ShowSymbolFontPreview = false;
-            cmbSort.Size = new Size(200, 24);
-            cmbSort.TabIndex = 2;
-            cmbSort.ThemeStyle.ScrollBarStyle.ArrowButtonBackColor = Color.FromArgb(255, 255, 255);
-            cmbSort.ThemeStyle.ScrollBarStyle.ArrowButtonBorderColor = Color.FromArgb(225, 225, 225);
-            cmbSort.ThemeStyle.ScrollBarStyle.ArrowButtonDisabledBackColor = Color.FromArgb(225, 225, 225);
-            cmbSort.ThemeStyle.ScrollBarStyle.ArrowButtonDisabledBorderColor = Color.FromArgb(210, 210, 210);
-            cmbSort.ThemeStyle.ScrollBarStyle.ArrowButtonHoverBackColor = Color.FromArgb(114, 114, 114);
-            cmbSort.ThemeStyle.ScrollBarStyle.ArrowButtonHoverBorderColor = Color.FromArgb(94, 94, 94);
-            cmbSort.ThemeStyle.ScrollBarStyle.ArrowButtonPressedBackColor = Color.FromArgb(225, 225, 225);
-            cmbSort.ThemeStyle.ScrollBarStyle.ArrowButtonPressedBorderColor = Color.FromArgb(150, 150, 150);
-            cmbSort.ThemeStyle.ScrollBarStyle.ScrollBarBackColor = Color.FromArgb(225, 225, 225);
-            cmbSort.ThemeStyle.ScrollBarStyle.ThumbBorderColor = Color.FromArgb(171, 171, 171);
-            cmbSort.ThemeStyle.ScrollBarStyle.ThumbColor = Color.FromArgb(255, 255, 255);
-            cmbSort.ThemeStyle.ScrollBarStyle.ThumbDisabledBorderColor = Color.FromArgb(210, 210, 210);
-            cmbSort.ThemeStyle.ScrollBarStyle.ThumbDisabledColor = Color.FromArgb(225, 225, 225);
-            cmbSort.ThemeStyle.ScrollBarStyle.ThumbHoverBorderColor = Color.FromArgb(171, 171, 171);
-            cmbSort.ThemeStyle.ScrollBarStyle.ThumbHoverColor = Color.FromArgb(197, 197, 197);
-            cmbSort.ThemeStyle.ScrollBarStyle.ThumbPressedBorderColor = Color.FromArgb(150, 150, 150);
-            cmbSort.ThemeStyle.ScrollBarStyle.ThumbPressedColor = Color.FromArgb(197, 197, 197);
-            // 
             // panel1
             // 
             panel1.AutoSize = true;
             panel1.BackColor = Color.FromArgb(3, 121, 113);
+            panel1.Controls.Add(label3);
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(gradeLevelFilterComboBox);
+            panel1.Controls.Add(difficultyFilterComboBox);
             panel1.Controls.Add(txtSearch);
             panel1.Controls.Add(label1);
-            panel1.Controls.Add(cmbSort);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Margin = new Padding(0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1047, 43);
+            panel1.Size = new Size(1047, 50);
             panel1.TabIndex = 3;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Century Gothic", 9F, FontStyle.Bold);
+            label3.Location = new Point(890, 3);
+            label3.Name = "label3";
+            label3.Size = new Size(79, 16);
+            label3.TabIndex = 7;
+            label3.Text = "Grade Level";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Century Gothic", 9F, FontStyle.Bold);
+            label2.Location = new Point(722, 3);
+            label2.Name = "label2";
+            label2.Size = new Size(55, 16);
+            label2.TabIndex = 7;
+            label2.Text = "Difficulty";
+            // 
+            // gradeLevelFilterComboBox
+            // 
+            gradeLevelFilterComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            gradeLevelFilterComboBox.Font = new Font("Century Gothic", 9F);
+            gradeLevelFilterComboBox.FormattingEnabled = true;
+            gradeLevelFilterComboBox.Items.AddRange(new object[] { "All Grades", "1", "2", "3", "4", "5", "6" });
+            gradeLevelFilterComboBox.Location = new Point(843, 22);
+            gradeLevelFilterComboBox.Name = "gradeLevelFilterComboBox";
+            gradeLevelFilterComboBox.Size = new Size(185, 25);
+            gradeLevelFilterComboBox.TabIndex = 6;
+            // 
+            // difficultyFilterComboBox
+            // 
+            difficultyFilterComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            difficultyFilterComboBox.Font = new Font("Century Gothic", 9F);
+            difficultyFilterComboBox.FormattingEnabled = true;
+            difficultyFilterComboBox.Items.AddRange(new object[] { "All Difficulties", "Easy", "Medium", "Hard" });
+            difficultyFilterComboBox.Location = new Point(652, 22);
+            difficultyFilterComboBox.Name = "difficultyFilterComboBox";
+            difficultyFilterComboBox.Size = new Size(185, 25);
+            difficultyFilterComboBox.TabIndex = 6;
             // 
             // txtSearch
             // 
             txtSearch.Anchor = AnchorStyles.Right;
             txtSearch.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtSearch.Location = new Point(607, 11);
+            txtSearch.Location = new Point(465, 23);
             txtSearch.Name = "txtSearch";
-            txtSearch.Size = new Size(200, 23);
+            txtSearch.PlaceholderText = "Search...";
+            txtSearch.Size = new Size(181, 23);
             txtSearch.TabIndex = 3;
             // 
             // quizzesPanel
@@ -108,7 +130,7 @@
             quizzesPanel.BorderStyle = BorderStyle.FixedSingle;
             quizzesPanel.Controls.Add(panel2);
             quizzesPanel.Dock = DockStyle.Top;
-            quizzesPanel.Location = new Point(0, 43);
+            quizzesPanel.Location = new Point(0, 50);
             quizzesPanel.Name = "quizzesPanel";
             quizzesPanel.Size = new Size(1047, 494);
             quizzesPanel.TabIndex = 4;
@@ -172,12 +194,15 @@
         #endregion
 
         private AntdUI.Label label1;
-        private Syncfusion.Windows.Forms.Tools.FontComboBox cmbSort;
         private Panel panel1;
         private FlowLayoutPanel quizzesPanel;
         private TextBox txtSearch;
         private AntdUI.Button btnAddQuiz;
         private Panel panel2;
         private AntdUI.Button delQuizBtn;
+        private Label label2;
+        private ComboBox difficultyFilterComboBox;
+        private Label label3;
+        private ComboBox gradeLevelFilterComboBox;
     }
 }
